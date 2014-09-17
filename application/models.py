@@ -1,4 +1,4 @@
-import datetime, os, shutil
+import datetime, os, shutil, h5py
 
 from sqlalchemy import func, Column, Integer, String, UnicodeText, Date, ForeignKey
 from werkzeug.utils import secure_filename
@@ -73,7 +73,7 @@ class Spectrum(db.Model):
     return "%s at %s K" % (self.mixture.name, self.temperature)
   
   def gzipped(self):
-    return op.isfile(self.gz_file_path())
+    return op.isfile(self.ungz_file_path()) == False
 
   def ungz_file_path(self):
     return op.join(data_path, self.path)
@@ -83,6 +83,12 @@ class Spectrum(db.Model):
 
   def gz_file_path(self):
     return op.join(data_path, "%s.txt.gz" % self.id)
+
+  def h5_file_path(self):
+    return op.join(self.data_folder(), "%s.h5" % self.id)
+
+  def read_h5(self):
+    return h5py.File(self.h5_file_path(), 'r')['spectrum']
 
 
 # Delete hooks for models, delete files if models are getting deleted

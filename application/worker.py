@@ -11,7 +11,7 @@ import numpy as np
 @listens_for(Spectrum, 'after_update')
 def process_data(mapper, connection, target):
   # GZip raw original data
-  if target.gzipped == False:
+  if target.gzipped() == False:
     f_in = open(target.ungz_file_path(), 'rb')
     f_out = gzip.open(target.gz_file_path(), 'wb')
     f_out.writelines(f_in)
@@ -29,9 +29,9 @@ def process_data(mapper, connection, target):
   os.makedirs(data_folder, exist_ok=True)
 
   t = time.time()
-  h5 = h5py.File(op.join(data_folder, "%s.h5" % target.id), 'w')
+  h5 = h5py.File(target.h5_file_path(), 'w')
 
-  dset = h5.create_dataset('spectrum', data.shape, dtype='float64')
+  dset = h5.create_dataset('spectrum', data.shape, dtype='float64', compression='lzf')
   dset[...] = data
   dset.attrs['temperature'] = target.temperature
   h5.close()

@@ -23,7 +23,7 @@ def mixture_show(mixture_id):
 def spectrum_show(spectrum_id):
 #  experiment = get_object_or_404(Experiment, Experiment.id==experiment_id)
   spectrum = Spectrum.query.get(spectrum_id)
-  data = np.genfromtxt(spectrum.gz_file_path())
+  data = spectrum.read_h5()
   (x, y) = (data[:,0], data[:,1])
   fig, ax = plt.subplots()
   ax.plot(x, y, 'k-')
