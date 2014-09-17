@@ -1,0 +1,5 @@
+__pycache__/
+*.py[cod]
+application/db/development.db
+application/snippets.py
+application/data

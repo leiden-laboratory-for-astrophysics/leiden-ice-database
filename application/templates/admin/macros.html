@@ -1,0 +1,34 @@
+{% macro tex_expl() %}
+<div class="col-md-2"></div><div class="col-md-10">
+  <p>
+  Inline TeX is supported and must be used to write chemical formulas like 
+  $\ce{H2O}$
+  </p>
+  <p>A few examples:</p>
+  <ul>
+    <li><code>$\ce{CO2}$</code> $\ce{CO2}$</li>
+    <li>
+      <code>Mixed $\ce{H2O}:\ce{CO2}$</code>
+     Mixed $\ce{H2O}$:$\ce{CO2}$
+   </li>
+  </ul>
+  <p>For more information see
+  <a href="http://docs.mathjax.org/en/latest/tex.html#mhchem">MathJax mhchem</a>
+   or
+  <a href="http://www.ctan.org/pkg/mhchem">CTAN mhchem</a></p>
+</div>
+{% endmacro %}
+
+{% macro data_instr() %}
+<div class="form-group">
+  <div class="col-md-2"></div>
+  <div class="col-md-10">Text X Y file are accepted</div>
+</div>
+{% endmacro %}
+
+{% macro tex_preview() %}
+<div class="form-group">
+  <label class="col-md-2 control-label">Preview</label>
+  <div class="col-md-10" id="tex-name-preview"></div>
+</div>
+{% endmacro %}

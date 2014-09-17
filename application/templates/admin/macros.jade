@@ -1,0 +1,29 @@
+mixin tex_expl()
+  .col-md-2
+  .col-md-10
+    p
+      |Inline TeX is supported and must be used to write chemical formulas like 
+      |$\ce{H2O}$
+    p A few examples:
+    ul
+      li
+        code $\ce{CO2}$
+        |$\ce{CO2}$
+      li
+        code Mixed $\ce{H2O}:\ce{CO2}$
+       |Mixed $\ce{H2O}$:$\ce{CO2}$
+    p
+      |For more information see
+      a(href="http://docs.mathjax.org/en/latest/tex.html#mhchem") MathJax mhchem
+      |or
+      a(href="http://www.ctan.org/pkg/mhchem") CTAN mhchem
+
+mixin data_instr()
+  .form-group
+    .col-md-2
+    .col-md-10 Text X Y file are accepted
+
+mixin tex_preview()
+  .form-group
+    label.col-md-2.control-label Preview
+    #tex-name-preview.col-md-10

@@ -1,0 +1,37 @@
+- import 'admin/layout.html' as layout with context
+
+// Pyjade hack to make sure Jinja2 works
+- set render_ctx = h.resolve_ctx()
+extends 'admin/base.html'
+block head_css
+  {{ super() }}
+  link(href="{{ url_for('static', filename='admin/admin.css') }}" rel="stylesheet")
+
+  if current_user.is_authenticated() == False
+    link(href="{{ url_for('static', filename='admin/login.css') }}" rel="stylesheet")
+block head_tail
+  {{ super() }}
+  include mathjax.html
+
+block tail_js
+  {{ super() }}
+  script(src="{{ url_for('static', filename='admin/admin.js') }}")
+
+block page_body
+  .container
+    .row
+      if current_user.is_authenticated()
+        .col-md-2(role="navigation")
+          ul.nav.nav-pills.nav-stacked
+            {{ layout.menu() }}
+            {{ layout.menu_links() }}
+            li
+              a(href="{{ url_for('admin.logout_view') }}")
+                |Log out
+      .col-md-10
+        #content.row
+          block brand
+            h2#brand
+              {{ admin_view.name|capitalize }}
+          {{ layout.messages() }}
+          block body
