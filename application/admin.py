@@ -26,12 +26,12 @@ class SpectrumAdmin(AuthModelView):
   form_rules = ['mixture', 'temperature', Macro('m.tex_expl'), 'description', 
     Macro('m.data_instr'), 'path']
 
-  def spectrum_filename(obj, file_data):
-    return secure_filename('%s.txt' % int(time.time()))
+#  def spectrum_filename(obj, file_data):
+#    return secure_filename('%s.txt' % int(time.time()))
 
   form_extra_fields= {
-    'path': FileUploadField('Data file', namegen=spectrum_filename,
-      base_path=data_path, allowed_extensions=['asc', 'dat', ''])
+    'path': FileUploadField('Data file', base_path=data_path,
+    allowed_extensions=['asc', 'dat', ''])
   }
 
 

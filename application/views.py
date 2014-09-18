@@ -1,5 +1,5 @@
 from application import app, db
-from flask import render_template
+from flask import render_template, jsonify
 
 from application.models import Mixture, Spectrum
 
@@ -19,24 +19,15 @@ def mixture_show(mixture_id):
   mixture = Mixture.query.get(mixture_id)
   return render_template('show.jade', mixture=mixture)
 
-@app.route('/spectrum/<int:spectrum_id>', methods=['GET'])
-def spectrum_show(spectrum_id):
-#  experiment = get_object_or_404(Experiment, Experiment.id==experiment_id)
+@app.route('/spectrum/<int:spectrum_id>.json', methods=['GET'])
+def spectrum_show_json(spectrum_id):
   spectrum = Spectrum.query.get(spectrum_id)
   data = spectrum.read_h5()
-  (x, y) = (data[:,0], data[:,1])
-  fig, ax = plt.subplots()
-  ax.plot(x, y, 'k-')
+  return jsonify(
+    temperature=spectrum.temperature,
+    data=data.tolist())
 
-  ax.set_xlabel(r'Wavenumber $\rm cm^{-1}$')
-  ax.set_ylabel('Absorbance')
-
-  ax.invert_xaxis()
-  plt.ylim(-0.05, plt.ylim()[1])
-
-  
-  plt.title(
-    "%s at %s K" % (spectrum.mixture.name.replace('$', '\$'), spectrum.temperature)
-  )
-  mpld3.plugins.clear(fig)
-  return mpld3.fig_to_html(fig)
+@app.route('/mixture/<int:mixture_id>.json', methods=['GET'])
+def mixture_show_json(mixture_id):
+  mixture = Mixture.query.get(mixture_id)
+  return jsonify(spectra=[m.id for m in mixture.spectra])

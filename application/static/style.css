@@ -1,0 +1,20 @@
+#spectrum { position: relative; }
+#spectrum img.loader {
+  position: absolute;
+  height: 64px;
+  width: 64px;
+}
+/* D3 styles */
+path {
+  stroke-width: 1;
+  fill: none;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: grey;
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+

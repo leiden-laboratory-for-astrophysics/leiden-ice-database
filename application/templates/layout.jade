@@ -20,4 +20,7 @@ block head
   include mathjax.html
 block scripts
   {{super()}}
+  script(src="{{ url_for('static', filename='d3.v3.min.js') }}")
+  //script(src="http://d3js.org/d3.v3.min.js")
+  script(src="http://d3js.org/queue.v1.min.js")
   script(src="{{ url_for('static', filename='app.js') }}")

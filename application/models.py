@@ -88,7 +88,10 @@ class Spectrum(db.Model):
     return op.join(self.data_folder(), "%s.h5" % self.id)
 
   def read_h5(self):
-    return h5py.File(self.h5_file_path(), 'r')['spectrum']
+    f = h5py.File(self.h5_file_path(), 'r')
+    data = f['spectrum'].value
+    f.close()
+    return data
 
 
 # Delete hooks for models, delete files if models are getting deleted

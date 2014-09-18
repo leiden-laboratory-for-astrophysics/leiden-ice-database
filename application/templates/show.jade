@@ -1,3 +1,5 @@
 extends 'layout.jade'
 block page
-  #spectrum
+  h2= mixture.name
+  #spectrum('data-mixture-id'= mixture.id)
+    img.loader(src= '/static/loading-bars.svg')
