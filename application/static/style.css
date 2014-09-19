@@ -5,9 +5,16 @@
   width: 64px;
 }
 /* D3 styles */
+g.legend { fill: none; stroke: grey; stroke-width: 1; }
+g.legend circle { stroke: none; }
+g.legend-items { fill: black; stroke: none;}
 path {
   stroke-width: 1;
   fill: none;
+}
+text.label {
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .axis path,

@@ -1,24 +1,39 @@
 var margin = {top: 42, right: 40, bottom: 60, left: 60},
-width = 680 - margin.left - margin.right,
-height = 420 - margin.top - margin.bottom;
+width = 880 - margin.left - margin.right,
+height = 620 - margin.top - margin.bottom;
 
 var x = d3.scale.linear().range([width, 0]);
 var y = d3.scale.linear().range([height, 0]);
 
+var tickSize = -6;
 var xAxisBottom = d3.svg.axis().scale(x).orient('bottom')
-  .tickFormat(d3.format('g'));
+  .tickFormat(d3.format('g'))
+  .tickSize(tickSize, 0);
 
 var xAxisTop = d3.svg.axis().scale(x).orient('top')
   .tickValues([3, 4, 5, 6, 8, 10, 15].map(function(x) { return 10000/x; }))
-  .tickFormat(function(d, i) { return 10000/d; });
+  .tickFormat(function(d, i) { return 10000/d; })
+  .tickSize(tickSize, 0);
 
 var yAxisLeft = d3.svg.axis().scale(y)
-  .orient('left');
+  .orient('left')
+  .tickSize(tickSize, 0);
 var yAxisRight = d3.svg.axis().scale(y)
-  .orient('right').tickFormat('');
+  .orient('right').tickFormat('')
+  .tickSize(tickSize, 0);
+
+function adjustYTextLabels(selection) {
+  selection.selectAll('.tick text').attr('transform', 'translate(-2, 0)');
+}
+function adjustX0TextLabels(selection) {
+  selection.selectAll('.tick text').attr('transform', 'translate(0, 4)');
+}
+function adjustX1TextLabels(selection) {
+  selection.selectAll('.tick text').attr('transform', 'translate(0, -2)');
+}
 
 var valueline = d3.svg.line()
-  .x(function(d) { return x(d[0]); })
+  .x(function(d) { return x(Math.round(d[0])); })
   .y(function(d) { return y(d[1]); });
 
 var svg = d3.select('#spectrum')
@@ -34,13 +49,9 @@ var loader = $('#spectrum .loader')
   .css('top', height /2 + 'px');
 
 // Based on the temperature returns blue-orange-red heat color
-function heat_rgb(minimum, maximum, value) {
-  var halfmax = (minimum + maximum) / 2;
-  var b = Math.round(Math.max(0, 255 * (1 - value / halfmax)));
-  var r = 255 - b;
-  var x = Math.round(Math.max(0, 255 * (value/halfmax - 1)));
-  var g = (255 - b - x)/2;
-  return {r: r, g: g, b: b};
+function temperatureRGB(minimum, maximum, value) {
+  var x = (value - minimum) / (maximum - minimum);
+  return d3.rgb(255 * x, 0, 255 * (1 - x));
 }
 
 var spectra;
@@ -61,31 +72,42 @@ d3.json('/mixture/' + mixtureID + '.json', function(error, json) {
 
 function makeFigure(error, results) {
   if (error) return console.warn(error);
-  console.log(results);
-  var data = results[0].data;
 
   // Set X and Y Axis domain
-  x.domain(d3.extent(data, function(d) { return d[0]; }));
+  var xExtents = results.map(function(r) {
+    return d3.extent(r.data, function(d) { return d[0]; });
+  });
+  var yExtents = results.map(function(r) {
+    return d3.extent(r.data, function(d) { return d[1]; });
+  });
+
+  x.domain([
+    d3.min(xExtents, function(e) { return e[0]; }),
+    d3.max(xExtents, function(e) { return e[1]; })
+  ]);
   y.domain([
-    d3.min(data, function(d) { return d[1]; }),
-    d3.max(data, function(d) { return d[1]; }) + 0.04
+    d3.min(yExtents, function(e) { return e[0]; }),
+    d3.max(yExtents, function(e) { return e[1]; }) + 0.02
   ]);
 
   $.each(results, function(index, result) {
-    var color = heat_rgb(0, 135, result.temperature);
-    svg.append('path').attr('d', valueline(result.data))
-      .attr('stroke', d3.rgb(color.r, color.g, color.b));
+    svg.append('path')
+      .attr('d', valueline(result.data))
+      .attr('stroke', temperatureRGB(0, 135, result.temperature))
+      .attr('data-legend', result.temperature + ' K');
   });
 
-  // Add X Axis
+  // Add X Axes
   svg.append('g')
     .attr('class', 'x0 axis')
     .attr('transform', 'translate(0,' + height + ')')
-    .call(xAxisBottom);
+    .call(xAxisBottom)
+    .call(adjustX0TextLabels);
 
   svg.append('g')
     .attr('class', 'x1 axis')
-    .call(xAxisTop);
+    .call(xAxisTop)
+    .call(adjustX1TextLabels);
 
   // Add bottom X Axis label
   // SVG baseline-shift is not supported in many major browsers
@@ -100,14 +122,14 @@ function makeFigure(error, results) {
   svg.append('text')
     .attr('class', 'x0 label part2')
     .attr('text-anchor', 'middle')
-    .attr('x', width/2 + 54)
+    .attr('x', width/2 + 72)
     .attr('y', x0LabelY)
     .attr('dy', -2) // dy shifts relative Y position to simulate superscript
     .text('-1')
   svg.append('text')
     .attr('class', 'x0 label part3')
     .attr('text-anchor', 'middle')
-    .attr('x', width/2 + 60)
+    .attr('x', width/2 + 80)
     .attr('y', x0LabelY)
     .text(')')
 
@@ -122,7 +144,8 @@ function makeFigure(error, results) {
   // Add Y Axis
   svg.append('g')
     .attr('class', 'y0 axis')
-    .call(yAxisLeft);
+    .call(yAxisLeft)
+    .call(adjustYTextLabels);
   svg.append('g')
     .attr('class', 'y0 axis')
     .attr('transform', 'translate(' + width + ',0)')
@@ -133,9 +156,15 @@ function makeFigure(error, results) {
     .attr('class', 'y label')
     .attr('transform', 'rotate(-90)')
     .attr('text-anchor', 'middle')
-    .attr('y', 18 - margin.left)
+    .attr('y', 14 - margin.left)
     .attr('x', 0 - height / 2)
     .text('Absorbance');
+  
+  legend = svg.append('g')
+    .attr('class', 'legend')
+    .attr('transform', 'translate('+(width-110)+',60)')
+    .style('font-size', '14px')
+    .call(d3.legend)
 
   loader.hide();
 }

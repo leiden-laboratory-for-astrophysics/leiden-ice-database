@@ -3,13 +3,6 @@ from flask import render_template, jsonify
 
 from application.models import Mixture, Spectrum
 
-import matplotlib
-# Force matplotlib to not use any Xwindows backend.
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import mpld3
-import numpy as np
-
 @app.route('/')
 def index():
   return render_template('index.jade')
