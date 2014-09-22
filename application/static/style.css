@@ -4,10 +4,14 @@
   height: 64px;
   width: 64px;
 }
+h2 { margin-bottom: 0px; }
 /* D3 styles */
 g.legend { fill: none; stroke: grey; stroke-width: 1; }
 g.legend circle { stroke: none; }
 g.legend-items { fill: black; stroke: none;}
+.hover-plane { fill: white; }
+.hover-line line { stroke: #808080; stroke-width: 1; }
+.hover-hint { fill: grey; }
 path {
   stroke-width: 1;
   fill: none;

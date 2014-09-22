@@ -1,3 +1,17 @@
 extends 'layout.jade'
 block page
-  p Hey you, no peeking!
+  table.table.table-striped
+    tr
+      th 
+      th Ice Composition
+      th Author
+      th Author Email
+      th Date Added
+    - for mixture in mixtures
+      tr
+        td
+          a(href= url_for('mixture_show', mixture_id=mixture.id)) View
+        td= mixture.name
+        td= mixture.author
+        td= mixture.author_email
+        td= mixture.pub_date

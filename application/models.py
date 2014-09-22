@@ -93,6 +93,12 @@ class Spectrum(db.Model):
     f.close()
     return data
 
+  def download_filename(self):
+    return "%s_%sK" % (self.id, self.temperature)
+
+  def gz_file_size(self):
+    return os.path.getsize(self.gz_file_path())
+
 
 # Delete hooks for models, delete files if models are getting deleted
 @listens_for(Spectrum, 'after_delete')

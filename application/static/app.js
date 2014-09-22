@@ -1,6 +1,8 @@
+var container = '#spectrum';
 var margin = {top: 42, right: 40, bottom: 60, left: 60},
-width = 880 - margin.left - margin.right,
+width = $(container).width() - margin.left - margin.right,
 height = 620 - margin.top - margin.bottom;
+var hoverLineGroup, hoverLine, hoverHint;
 
 var x = d3.scale.linear().range([width, 0]);
 var y = d3.scale.linear().range([height, 0]);
@@ -36,7 +38,7 @@ var valueline = d3.svg.line()
   .x(function(d) { return x(Math.round(d[0])); })
   .y(function(d) { return y(d[1]); });
 
-var svg = d3.select('#spectrum')
+var svg = d3.select(container)
   .append('svg')
   .attr('width', width + margin.left + margin.right)
   .attr('height', height + margin.top + margin.bottom)
@@ -48,7 +50,7 @@ var loader = $('#spectrum .loader')
   .css('left', width / 2 + 20 + 'px')
   .css('top', height /2 + 'px');
 
-// Based on the temperature returns blue-orange-red heat color
+// Based on the temperature returns blue-red heat color
 function temperatureRGB(minimum, maximum, value) {
   var x = (value - minimum) / (maximum - minimum);
   return d3.rgb(255 * x, 0, 255 * (1 - x));
@@ -73,6 +75,12 @@ d3.json('/mixture/' + mixtureID + '.json', function(error, json) {
 function makeFigure(error, results) {
   if (error) return console.warn(error);
 
+  // Set up white hover plane
+  var hoverPlane = svg.append('rect')
+    .attr('class', 'hover-plane')
+    .attr('width', width)
+    .attr('height', height)
+
   // Set X and Y Axis domain
   var xExtents = results.map(function(r) {
     return d3.extent(r.data, function(d) { return d[0]; });
@@ -86,9 +94,9 @@ function makeFigure(error, results) {
     d3.max(xExtents, function(e) { return e[1]; })
   ]);
   y.domain([
-    d3.min(yExtents, function(e) { return e[0]; }),
-    d3.max(yExtents, function(e) { return e[1]; }) + 0.02
-  ]);
+    d3.min(yExtents, function(e) { return e[0]; }) + 0.01,
+    d3.max(yExtents, function(e) { return e[1]; }) //+ 0.02
+  ]).nice();
 
   $.each(results, function(index, result) {
     svg.append('path')
@@ -160,11 +168,47 @@ function makeFigure(error, results) {
     .attr('x', 0 - height / 2)
     .text('Absorbance');
   
+  // Draw Hover tools
+  hoverLineGroup = svg.append('g').attr('class', 'hover-line');
+
+  // Add the line to the group
+  hoverLine = hoverLineGroup
+    .append('line')
+    .attr('x1', 10).attr('x2', 10)     // vertical line so same value on each
+    .attr('y1', 0).attr('y2', height); // top to bottom
+
+  // Hide it by default
+  hoverLineGroup.classed('hide', true);
+  svg
+    .on('mousemove', mousemove);
+  svg
+    .on('mouseleave', mouseleave);
+
+  hoverHint = hoverLineGroup.append('text').attr('class', 'hover-hint');
+
+  // Draw legend
   legend = svg.append('g')
     .attr('class', 'legend')
     .attr('transform', 'translate('+(width-110)+',60)')
     .style('font-size', '14px')
-    .call(d3.legend)
-
+    .call(d3.legend);
+ 
+  // Finish drawing figure
   loader.hide();
+}
+
+function mousemove(d, i) {
+  var mouseX = Math.round(d3.mouse(this)[0]);
+  var mouseY = Math.round(d3.mouse(this)[1]);
+  if (mouseX > 0 && mouseY > 0 && mouseY < height) {
+    hoverLineGroup.classed('hide', false);
+    hoverLine.attr('x1', mouseX).attr('x2', mouseX);
+    hoverHint.attr('x', mouseX+20).attr('y', mouseY); 
+    var wavenumber = Math.round(x.invert(mouseX));
+    var absorbance = Math.round(y.invert(mouseY) * 1000) / 1000;
+    hoverHint.text('(' + wavenumber + ', ' + absorbance + ')');
+  }
+}
+function mouseleave() {
+  hoverLineGroup.classed('hide', true);
 }
