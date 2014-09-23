@@ -27,23 +27,32 @@ def spectrum_show_json(spectrum_id):
   return jsonify(temperature=spectrum.temperature, data=data.tolist())
 
 @app.route('/spectrum/download/<int:spectrum_id>/<string:download_filename>.txt.gz', methods=['GET'])
-def spectrum_download_original(spectrum_id, download_filename):
+def spectrum_download_gz(spectrum_id, download_filename):
   spectrum = Spectrum.query.get(spectrum_id)
   return send_file(spectrum.gz_file_path(), mimetype='application/x-gzip')
 
-@app.route('/spectrum/download/<int:mixture_id>.tar', methods=['GET'])
-def mixture_download_all_original(mixture_id):
+@app.route('/spectrum/download/<int:spectrum_id>/<string:download_filename>.txt', methods=['GET'])
+def spectrum_download_txt(spectrum_id, download_filename):
+  spectrum = Spectrum.query.get(spectrum_id)
+  with gzip.open(spectrum.gz_file_path(), 'r') as f:
+    data = f.read()
+  mimetype = 'text/plain'
+  rv = app.response_class(data, mimetype=mimetype, direct_passthrough=True)
+  return rv
+
+@app.route('/spectrum/download/<int:mixture_id>.tar.gz', methods=['GET'])
+def mixture_download_all_txt(mixture_id):
   spectra = Mixture.query.get(mixture_id).spectra
-  c = io.BytesIO()
-  with tarfile.open(mode='w', fileobj=c) as tar:
+  stream = io.BytesIO()
+  with tarfile.open(mode='w:gz', fileobj=stream) as tar:
     for spectrum in spectra:
       with gzip.open(spectrum.gz_file_path(), 'r') as f:
         buff = f.read()
         tarinfo = tarfile.TarInfo(name=str(spectrum.temperature)+'K.txt')
         tarinfo.size = len(buff)
         tar.addfile(tarinfo=tarinfo, fileobj=io.BytesIO(buff))
-    data = c.getvalue()
-  mimetype='application/x-tar'
+  data = stream.getvalue()
+  mimetype = 'application/x-tar'
   rv = app.response_class(data, mimetype=mimetype, direct_passthrough=True)
   return rv
 

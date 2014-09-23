@@ -1,7 +1,7 @@
 var container = '#spectrum';
 var margin = {top: 42, right: 40, bottom: 60, left: 60},
 width = $(container).width() - margin.left - margin.right,
-height = 620 - margin.top - margin.bottom;
+height = $(container).width() / 2 - margin.top - margin.bottom;
 var hoverLineGroup, hoverLine, hoverHint;
 
 var x = d3.scale.linear().range([width, 0]);
@@ -38,13 +38,19 @@ var valueline = d3.svg.line()
   .x(function(d) { return x(Math.round(d[0])); })
   .y(function(d) { return y(d[1]); });
 
+var svg_width = width + margin.left + margin.right;
+var svg_height = height + margin.top + margin.bottom;
 var svg = d3.select(container)
   .append('svg')
-  .attr('width', width + margin.left + margin.right)
-  .attr('height', height + margin.top + margin.bottom)
+  .attr('width', svg_width)
+  .attr('height', svg_height)
   .append('g')
   .attr('transform', 
   'translate(' + margin.left + ',' + margin.top + ')');
+
+$(window).on('resize', function() {
+  console.log('Redraw spectrum SVG');
+});
 
 var loader = $('#spectrum .loader')
   .css('left', width / 2 + 20 + 'px')
@@ -56,7 +62,6 @@ function temperatureRGB(minimum, maximum, value) {
   return d3.rgb(255 * x, 0, 255 * (1 - x));
 }
 
-var spectra;
 var mixtureID = $('#spectrum').attr('data-mixture-id');
 
 // Fetch all spectrum IDs belonging to mixture
@@ -65,7 +70,7 @@ d3.json('/mixture/' + mixtureID + '.json', function(error, json) {
 
   // Ask all spectra JSON using queue.js
   // https://github.com/mbostock/queue
-  q = queue()
+  q = queue();
   $.each(json.spectra, function(index, value) {
     q = q.defer(d3.json, '/spectrum/' + value + '.json');
   });
