@@ -23,7 +23,7 @@ d3.legend = function(g) {
         }
       })
 
-    items = d3.entries(items).sort(function(a,b) { return a.value.pos-b.value.pos})
+    items = d3.entries(items).sort(function(a,b) { return b.value.pos-a.value.pos})
 
     
     li.selectAll("text")

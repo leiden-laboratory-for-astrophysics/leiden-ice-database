@@ -2,6 +2,7 @@ from application import app, db
 from flask import render_template, jsonify, send_file
 import io, os
 import tarfile, gzip
+import numpy
 
 from application.models import Mixture, Spectrum
 
@@ -19,11 +20,24 @@ def mixture_show(mixture_id):
 
   return render_template('show.jade', mixture=mixture, temperatures=t, spectra=spectra)
 
+def split(arr, cond):
+  return [arr[cond], arr[~cond]]
 @app.route('/spectrum/<int:spectrum_id>.json', methods=['GET'])
 def spectrum_show_json(spectrum_id):
   spectrum = Spectrum.query.get(spectrum_id)
-  # Slice data to ::8 (only show 1 in 8 samples) to increase performance
-  data = spectrum.read_h5()[::8]
+  # Slice data to fewer samples to increase performance
+  data = spectrum.read_h5()
+  data = data[::round(len(data)/1000)]
+
+  # Signal often starts with instrument noise (wavenumber < 500), cut that out
+  parts = split(data, data[:,0] < 500)
+  noise = parts[0]
+  average = numpy.average(noise[:,1])
+  maximum_distance = abs(average * 1.5)
+  print(maximum_distance)
+  parts[0] = noise[abs(noise[:,1]-average) < maximum_distance]
+  data = numpy.concatenate(parts)
+
   return jsonify(temperature=spectrum.temperature, data=data.tolist())
 
 @app.route('/spectrum/download/<int:spectrum_id>/<string:download_filename>.txt.gz', methods=['GET'])
@@ -60,4 +74,4 @@ def mixture_download_all_txt(mixture_id):
 @app.route('/mixture/<int:mixture_id>.json', methods=['GET'])
 def mixture_show_json(mixture_id):
   mixture = Mixture.query.get(mixture_id)
-  return jsonify(spectra=[s.id for s in mixture.spectra])
+  return jsonify(spectra=sorted([s.id for s in mixture.spectra]))

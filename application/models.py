@@ -130,24 +130,7 @@ def seed():
 
   if db.session.query(func.count(Mixture.id)).scalar() == 0:
     print('Adding mixtures..')
-    user_id = db.session.query(User).first().get_id()
-    mixture1 = Mixture(
-      user_id=user_id,
-      name='Pure $\ce{CO2}$',
-      description='This is pure $\ce{CO2}$',
-      author='Olsthoorn',
-      author_email='olsthoorn@strw.leidenuniv.nl'
-    )
-    mixture2 = Mixture(
-      user_id=user_id,
-      name='$\ce{H2O}$ : $\ce{CO2}$ 2:1',
-      description='Total thickness of 4500 L',
-      author='Oberg et al, 2006',
-      author_email='oberg@strw.leidenuniv.nl'
-    )
-    db.session.add(mixture1)
-    db.session.add(mixture2)
-    db.session.commit()
+    from application.seed import fetch
+    fetch()
   
   print('Seed data successfully added to database')
-

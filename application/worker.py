@@ -12,11 +12,9 @@ import numpy as np
 def process_data(mapper, connection, target):
   # GZip raw original data
   if target.gzipped() == False:
-    f_in = open(target.ungz_file_path(), 'rb')
-    f_out = gzip.open(target.gz_file_path(), 'wb')
-    f_out.writelines(f_in)
-    f_out.close()
-    f_in.close()
+    with open(target.ungz_file_path(), 'rb') as f_in:
+      with gzip.open(target.gz_file_path(), 'wb') as f_out:
+        f_out.writelines(f_in)
     os.remove(target.ungz_file_path())
 
   t_start = time.time()
@@ -36,5 +34,5 @@ def process_data(mapper, connection, target):
   dset.attrs['temperature'] = target.temperature
   h5.close()
 
-  print('+ Converted to HPF5 in %s seconds' % (time.time()-t))
-  print('Overall processing time was %s seconds' % (time.time()-t_start))
+  print('+ Converted to HPF5 in %.2f seconds' % (time.time()-t))
+  print('Overall processing time was %.2f seconds' % (time.time()-t_start))

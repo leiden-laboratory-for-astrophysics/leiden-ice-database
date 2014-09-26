@@ -18,7 +18,11 @@ block page
   .col-md-6
     h3 More information
     p= mixture.description
-
+    h3 Author
+    p
+      = mixture.author
+      - if mixture.author_email
+       = ' <' + mixture.author_email + '>'
   .col-md-6
     h3 Download
     h4 Original Text Files
@@ -31,6 +35,4 @@ block page
           a(href= url_for('spectrum_download_gz', spectrum_id=spectrum.id, download_filename=spectrum.download_filename())) TXT.GZ
           span.text-muted= ' (%s kB)' % ((spectrum.gz_file_size() / 1000)|round(1))
       a(href= url_for('mixture_download_all_txt', mixture_id=mixture.id)) Download all in zip
-    h3 Author
-    p
-      = mixture.author + ' <' + mixture.author_email + '>'
+

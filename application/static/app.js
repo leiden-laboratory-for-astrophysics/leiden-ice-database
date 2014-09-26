@@ -107,7 +107,8 @@ function makeFigure(error, results) {
     svg.append('path')
       .attr('d', valueline(result.data))
       .attr('stroke', temperatureRGB(0, 135, result.temperature))
-      .attr('data-legend', result.temperature + ' K');
+      .attr('data-legend', result.temperature + ' K')
+      .attr('data-legend-pos', result.temperature);
   });
 
   // Add X Axes
@@ -194,7 +195,7 @@ function makeFigure(error, results) {
   // Draw legend
   legend = svg.append('g')
     .attr('class', 'legend')
-    .attr('transform', 'translate('+(width-110)+',60)')
+    .attr('transform', 'translate('+(width-110)+',40)')
     .style('font-size', '14px')
     .call(d3.legend);
  
