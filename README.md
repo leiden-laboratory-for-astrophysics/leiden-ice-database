@@ -1,5 +1,5 @@
 # Sackler Laboratory Ice Database
-A Python [Flask](http://flask.pocoo.org) project that uses [NumPy](http://www.numpy.org), [matplotlib](http://matplotlib.org/) and [D3.js](http://d3js.org) to show IR spectra of ice.
+A Python [Flask](http://flask.pocoo.org) project that uses [NumPy](http://www.numpy.org) and [D3.js](http://d3js.org) to show IR spectra of ice.
 
 Setting up a development environment can be a time-consuming process, so this project includes a fully configured Vagrant set-up (read _Development Environment Set-up_ below). It's highly recommended that you use this.
 
