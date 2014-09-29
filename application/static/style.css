@@ -1,10 +1,15 @@
-#spectrum { position: relative; }
+body { padding-bottom: 40px; }
+#spectrum {
+  position: relative;
+  cursor: default;
+}
 #spectrum img.loader {
   position: absolute;
   height: 64px;
   width: 64px;
 }
 h2 { margin-bottom: 0px; }
+
 /* D3 styles */
 g.legend { fill: none; stroke: grey; stroke-width: 1; }
 g.legend circle { stroke: none; }
@@ -28,4 +33,3 @@ text.label {
   stroke-width: 1;
   shape-rendering: crispEdges;
 }
-

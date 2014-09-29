@@ -51,11 +51,14 @@ class Mixture(db.Model):
   name = Column(String, nullable=False)
   description = Column(UnicodeText)
   author = Column(String)
-  author_email = Column(String)
+  DOI = Column(String)
   pub_date = Column(Date, default=datetime.datetime.now)
 
   def __str__(self):
     return "%s by %s" % (self.name, self.author)
+
+  def DOI_url(self):
+    return "http://doi.org/%s" % self.DOI
 
 
 # A single measured spectrum

@@ -36,7 +36,7 @@ def fetch():
     name='Pure $\ce{HCOOH}$',
     description='Deposited at 15K. Note that in the raw data the wavenumber range around 7-7.5 micron is not corrected for instrumental effects and is therefore difficult to use. In case spectra of this frequency range are required please contact Suzanne Bisschop directly (bisschop at strw dot leidenuniv dot nl).',
     author='Suzanne Bisschop',
-    author_email='bisschop@strw.leidenuniv.nl'
+    DOI='10.1051/0004-6361:20077464'
   )
   db.session.add(mixture)
   db.session.commit()
@@ -65,7 +65,7 @@ def fetch():
     name='Pure $\ce{HCOOH}$ deposited at 145 K',
     description='Ice deposited at 145 K, cooled down to 15 K and subsequently warmed up.',
     author='Suzanne Bisschop',
-    author_email='bisschop@strw.leidenuniv.nl'
+    DOI='10.1051/0004-6361:20077464'
   )
   db.session.add(mixture)
   db.session.commit()
@@ -95,7 +95,7 @@ def fetch():
     name='$\ce{HCOOH}$ 10% + $\ce{CH3OH}$ 90%',
     description='Note that in the raw data the wavenumber range around 7-7.5 micron is not corrected for instrumental effects and is therefore difficult to use. In case spectra of this frequency range are required please contact Suzanne Bisschop directly (bisschop at strw dot leidenuniv dot nl).',
     author='Suzanne Bisschop',
-    author_email='bisschop@strw.leidenuniv.nl'
+    DOI='10.1051/0004-6361:20077464'
   )
   db.session.add(mixture)
   db.session.commit()
@@ -119,7 +119,8 @@ def fetch():
     user_id=user_id,
     name='Pure $\ce{H2O}$',
     description='Total thickness 10000 L',
-    author='Oberg et al'
+    author='Öberg et al',
+    DOI='10.1051/0004-6361:20065881'
   )
   db.session.add(mixture)
   db.session.commit()
@@ -143,7 +144,7 @@ def fetch():
     name='$\ce{HCOOH}$ 11% + $\ce{CO}$ 89%',
     description='',
     author='Suzanne Bisschop',
-    author_email='bisschop@strw.leidenuniv.nl'
+    DOI='10.1051/0004-6361:20077464'
   )
   db.session.add(mixture)
   db.session.commit()

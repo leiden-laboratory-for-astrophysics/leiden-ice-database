@@ -12,7 +12,7 @@ import time
 
 class MixtureAdmin(AuthModelView):
   form_rules = [Macro('m.tex_expl'), 'name', Macro('m.tex_preview'),
-    'description', 'author', 'author_email', 'spectra']
+    'description', 'author', 'DOI', 'spectra']
   column_exclude_list = ['user', 'description']
   form_excluded_columns = ('user', 'pub_date')
 

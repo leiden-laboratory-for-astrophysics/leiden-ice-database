@@ -18,11 +18,13 @@ block page
   .col-md-6
     h3 More information
     p= mixture.description
-    h3 Author
+    h3 Paper
     p
+      |By 
       = mixture.author
-      - if mixture.author_email
-       = ' <' + mixture.author_email + '>'
+    - if mixture.DOI
+      p
+        a.btn.btn-primary(href= mixture.DOI_url()) View Paper (DOI)
   .col-md-6
     h3 Download
     h4 Original Text Files
@@ -34,7 +36,7 @@ block page
           |  or 
           a(href= url_for('spectrum_download_gz', spectrum_id=spectrum.id, download_filename=spectrum.download_filename())) TXT.GZ
           span.text-muted= ' (%s kB)' % ((spectrum.gz_file_size() / 1000)|round(1))
-      a(href= url_for('mixture_download_all_txt', mixture_id=mixture.id)) Download all in zip
+    a.btn.btn-primary(href= url_for('mixture_download_all_txt', mixture_id=mixture.id)) Download all in zip
 
 block scripts
   {{super()}}

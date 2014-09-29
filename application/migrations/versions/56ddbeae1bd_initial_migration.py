@@ -33,7 +33,7 @@ def upgrade():
       sa.Column('name', sa.String(), nullable=False),
       sa.Column('description', sa.UnicodeText(), nullable=True),
       sa.Column('author', sa.String(), nullable=True),
-      sa.Column('author_email', sa.String(), nullable=True),
+      sa.Column('DOI', sa.String(), nullable=True),
       sa.Column('pub_date', sa.Date(), nullable=True),
       sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
       sa.PrimaryKeyConstraint('id')

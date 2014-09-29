@@ -109,11 +109,12 @@ function makeFigure(error, results) {
     d3.max(yExtents, function(e) { return e[1]; }) + yMargin
   ]).nice();
 
+  var maxTemperature = d3.max(results, function(result) { return result.temperature });
   $.each(results, function(index, result) {
     svg.append('path')
       .attr('class', 'spectrum')
       .attr('d', valueline(result.data))
-      .attr('stroke', temperatureRGB(0, 135, result.temperature))
+      .attr('stroke', temperatureRGB(0, maxTemperature, result.temperature))
       .attr('data-legend', result.temperature + ' K')
       .attr('data-legend-pos', result.temperature);
   });
@@ -204,22 +205,20 @@ function makeFigure(error, results) {
       wavenumber = mixtureAnnotations[property];
       var peak_x = x(wavenumber);
       // Find highest peak at that position
-      var peaks = [], point;
-      $(container).find('path.spectrum').map(function(i, spectrum) {
+      var point, paths = $(container).find('path.spectrum');
+
+      // Minimum Y value because axis is reversed
+      var peak_y = d3.min(paths, function(spectrum) {
         var pathLength = spectrum.getTotalLength();
         var lastDelta = Infinity;
         for (i = 0; i < pathLength; i++) {
           point = spectrum.getPointAtLength(i);
           delta = Math.abs(point.x - peak_x);
-          if (delta > lastDelta) {
-            break;
-          }
+          if (delta > lastDelta) { break }
           lastDelta = delta;
         }
-        peaks.push(point.y);
+        return point.y;
       });
-
-      var peak_y = d3.min(peaks); // min because Y axis is reversed
 
       svg.append('text')
         .attr('class', 'annotation')
