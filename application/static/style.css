@@ -11,7 +11,7 @@ g.legend circle { stroke: none; }
 g.legend-items { fill: black; stroke: none;}
 .hover-plane { fill: white; }
 .hover-line line { stroke: #808080; stroke-width: 1; }
-.hover-hint { fill: grey; }
+.hover-hint { fill: black; }
 path {
   stroke-width: 1;
   fill: none;

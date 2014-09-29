@@ -32,9 +32,8 @@ def spectrum_show_json(spectrum_id):
   # Signal often starts with instrument noise (wavenumber < 500), cut that out
   parts = split(data, data[:,0] < 500)
   noise = parts[0]
-  average = numpy.average(noise[:,1])
+  average = numpy.average(parts[1][:,1])
   maximum_distance = abs(average * 1.5)
-  print(maximum_distance)
   parts[0] = noise[abs(noise[:,1]-average) < maximum_distance]
   data = numpy.concatenate(parts)
 
@@ -74,4 +73,17 @@ def mixture_download_all_txt(mixture_id):
 @app.route('/mixture/<int:mixture_id>.json', methods=['GET'])
 def mixture_show_json(mixture_id):
   mixture = Mixture.query.get(mixture_id)
-  return jsonify(spectra=sorted([s.id for s in mixture.spectra]))
+
+  # Annotate important wavenumbers
+  annotations = {}
+  if '{H2O}' in mixture.name:
+    annotations['H2O stretch'] =   3250 # cm-1
+    annotations['H2O bending'] =   1700
+    annotations['H2O libration'] = 770
+
+  if '{HCOOH}' in mixture.name:
+    annotations['C=O stretch'] =   1714
+
+  return jsonify(
+    spectra=sorted([s.id for s in mixture.spectra]),
+    annotations=annotations)

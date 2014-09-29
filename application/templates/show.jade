@@ -36,3 +36,6 @@ block page
           span.text-muted= ' (%s kB)' % ((spectrum.gz_file_size() / 1000)|round(1))
       a(href= url_for('mixture_download_all_txt', mixture_id=mixture.id)) Download all in zip
 
+block scripts
+  {{super()}}
+  script(src="{{ url_for('static', filename='app.js') }}")

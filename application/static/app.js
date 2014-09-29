@@ -63,10 +63,13 @@ function temperatureRGB(minimum, maximum, value) {
 }
 
 var mixtureID = $('#spectrum').attr('data-mixture-id');
+var mixtureAnnotations;
 
 // Fetch all spectrum IDs belonging to mixture
 d3.json('/mixture/' + mixtureID + '.json', function(error, json) {
   if (error) return console.warn(error);
+
+  mixtureAnnotations = json.annotations;
 
   // Ask all spectra JSON using queue.js
   // https://github.com/mbostock/queue
@@ -98,13 +101,17 @@ function makeFigure(error, results) {
     d3.min(xExtents, function(e) { return e[0]; }),
     d3.max(xExtents, function(e) { return e[1]; })
   ]);
+
+  // Add extra margin in case peaks need to be annotated
+  var yMargin = ($.isEmptyObject(mixtureAnnotations) ? 0 : 0.03);
   y.domain([
     d3.min(yExtents, function(e) { return e[0]; }) + 0.01,
-    d3.max(yExtents, function(e) { return e[1]; }) //+ 0.02
+    d3.max(yExtents, function(e) { return e[1]; }) + yMargin
   ]).nice();
 
   $.each(results, function(index, result) {
     svg.append('path')
+      .attr('class', 'spectrum')
       .attr('d', valueline(result.data))
       .attr('stroke', temperatureRGB(0, 135, result.temperature))
       .attr('data-legend', result.temperature + ' K')
@@ -185,17 +192,48 @@ function makeFigure(error, results) {
 
   // Hide it by default
   hoverLineGroup.classed('hide', true);
-  svg
-    .on('mousemove', mousemove);
-  svg
-    .on('mouseleave', mouseleave);
+  svg.on('mousemove',  mousemove);
+  svg.on('mouseleave', mouseleave);
 
   hoverHint = hoverLineGroup.append('text').attr('class', 'hover-hint');
+
+  // Add annotations
+  for (var property in mixtureAnnotations) {
+    if (mixtureAnnotations.hasOwnProperty(property)) {
+      console.log(property);
+      wavenumber = mixtureAnnotations[property];
+      var peak_x = x(wavenumber);
+      // Find highest peak at that position
+      var peaks = [], point;
+      $(container).find('path.spectrum').map(function(i, spectrum) {
+        var pathLength = spectrum.getTotalLength();
+        var lastDelta = Infinity;
+        for (i = 0; i < pathLength; i++) {
+          point = spectrum.getPointAtLength(i);
+          delta = Math.abs(point.x - peak_x);
+          if (delta > lastDelta) {
+            break;
+          }
+          lastDelta = delta;
+        }
+        peaks.push(point.y);
+      });
+
+      var peak_y = d3.min(peaks); // min because Y axis is reversed
+
+      svg.append('text')
+        .attr('class', 'annotation')
+        .attr('text-anchor', 'middle')
+        .attr('y', peak_y - 14)
+        .attr('x', x(wavenumber))
+        .text(property);
+    }
+  }
 
   // Draw legend
   legend = svg.append('g')
     .attr('class', 'legend')
-    .attr('transform', 'translate('+(width-110)+',40)')
+    .attr('transform', 'translate('+(width-80)+',40)')
     .style('font-size', '14px')
     .call(d3.legend);
  
