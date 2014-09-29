@@ -5,7 +5,6 @@ block page
       th 
       th Ice Composition
       th Author
-      th Author Email
       th Date Added
     - for mixture in mixtures
       tr
@@ -13,5 +12,4 @@ block page
           a(href= url_for('mixture_show', mixture_id=mixture.id)) View
         td= mixture.name
         td= mixture.author
-        td= mixture.author_email
         td= mixture.pub_date

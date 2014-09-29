@@ -198,33 +198,35 @@ function makeFigure(error, results) {
 
   hoverHint = hoverLineGroup.append('text').attr('class', 'hover-hint');
 
-  // Add annotations
+  // Add annotations (loop through annotations Object)
   for (var property in mixtureAnnotations) {
     if (mixtureAnnotations.hasOwnProperty(property)) {
-      console.log(property);
-      wavenumber = mixtureAnnotations[property];
-      var peak_x = x(wavenumber);
+      var labelX = x(mixtureAnnotations[property]);
       // Find highest peak at that position
-      var point, paths = $(container).find('path.spectrum');
+      var paths = $(container).find('path.spectrum');
 
       // Minimum Y value because axis is reversed
-      var peak_y = d3.min(paths, function(spectrum) {
-        var pathLength = spectrum.getTotalLength();
+      var peakY = d3.min(paths, function(spectrum) {
         var lastDelta = Infinity;
-        for (i = 0; i < pathLength; i++) {
-          point = spectrum.getPointAtLength(i);
-          delta = Math.abs(point.x - peak_x);
-          if (delta > lastDelta) { break }
+        for (var i = 0; i < spectrum.getTotalLength(); i++) {
+          var delta = Math.abs(spectrum.getPointAtLength(i).x - labelX);
+          if (delta > lastDelta) {
+            // Found X point on path, now find Y peak around this point
+            return d3.min(d3.range(-60, 60), function(offset) {
+              return spectrum.getPointAtLength(i + offset).y;
+            });
+          }
           lastDelta = delta;
         }
-        return point.y;
+        return console.log('Unable to find peak for label');
       });
 
+      // Append annotation
       svg.append('text')
         .attr('class', 'annotation')
         .attr('text-anchor', 'middle')
-        .attr('y', peak_y - 14)
-        .attr('x', x(wavenumber))
+        .attr('y', peakY - 14)
+        .attr('x', labelX)
         .text(property);
     }
   }
