@@ -208,11 +208,11 @@ function makeFigure(error, results) {
       // Minimum Y value because axis is reversed
       var peakY = d3.min(paths, function(spectrum) {
         var lastDelta = Infinity;
-        for (var i = 0; i < spectrum.getTotalLength(); i++) {
+        for (var i = 0; i < spectrum.getTotalLength(); i+=4) {
           var delta = Math.abs(spectrum.getPointAtLength(i).x - labelX);
           if (delta > lastDelta) {
             // Found X point on path, now find Y peak around this point
-            return d3.min(d3.range(-60, 60), function(offset) {
+            return d3.min(d3.range(-140, 140), function(offset) {
               return spectrum.getPointAtLength(i + offset).y;
             });
           }
