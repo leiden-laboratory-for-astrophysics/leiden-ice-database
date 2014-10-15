@@ -22,6 +22,8 @@ block page
     p
       | By 
       = mixture.author
+      |, DOI:
+      = mixture.DOI
     - if mixture.DOI
       p
         a.btn.btn-primary(href= mixture.DOI_url()) View Paper (DOI)

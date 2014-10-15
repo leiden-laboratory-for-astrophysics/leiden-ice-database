@@ -67,7 +67,7 @@ plt.text(0.5, 1.12, sys.argv[1], #r'Pure $\rm H_{2}O$ at 15 K',
     transform = ax2.transAxes)
 
 plt.tight_layout(pad=4.0)
-plt.show()
+plt.savefig('plot.eps', bbox_inches='tight')
 
 # for x, y in row:
 #    print "%f, %f" % (x, y)
