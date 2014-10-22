@@ -6,10 +6,15 @@ block page
       th Ice Composition
       th Author
       th Date Added
-    - for mixture in mixtures
+    - for mixture in mixtures.items
       tr
         td
           a(href= url_for('mixture_show', mixture_id=mixture.id)) View
         td= mixture.name
         td= mixture.author
         td= mixture.pub_date
+  - if mixtures.has_prev
+    a(href= url_for('index', page=mixtures.prev_num)) << Previous page
+    | | 
+  - if mixtures.has_next
+    a(href= url_for('index', page=mixtures.next_num)) Next page >>

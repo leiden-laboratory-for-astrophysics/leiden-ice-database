@@ -6,9 +6,11 @@ import numpy
 
 from application.models import Mixture, Spectrum
 
-@app.route('/')
-def index():
-  mixtures = Mixture.query.all()
+@app.route('/', defaults={'page': 1})
+@app.route('/page/<int:page>')
+def index(page):
+  count = Mixture.query.count() 
+  mixtures = Mixture.query.paginate(page, app.config['MIXTURES_PER_PAGE'], True)
   return render_template('index.jade', mixtures=mixtures)
 
 @app.route('/data/<int:mixture_id>', methods=['GET'])
