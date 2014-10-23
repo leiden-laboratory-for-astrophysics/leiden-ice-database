@@ -1,6 +1,6 @@
 from application import app, db
-from flask import render_template, jsonify, send_file
-import io, os
+from flask import render_template, jsonify, send_file, request
+import io
 import tarfile, gzip
 import numpy
 
@@ -9,8 +9,14 @@ from application.models import Mixture, Spectrum
 @app.route('/', defaults={'page': 1})
 @app.route('/page/<int:page>')
 def index(page):
-  count = Mixture.query.count() 
-  mixtures = Mixture.query.paginate(page, app.config['MIXTURES_PER_PAGE'], True)
+  searchword = request.args.get('query', '')
+
+  if searchword:
+    mixtures = Mixture.query.filter(Mixture.name.like('%' + searchword + '%'))
+  else:
+    mixtures = Mixture.query
+  mixtures = mixtures.paginate(page, app.config['MIXTURES_PER_PAGE'], True)
+
   return render_template('index.jade', mixtures=mixtures)
 
 @app.route('/data/<int:mixture_id>', methods=['GET'])

@@ -9,9 +9,6 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.script import Manager, Server
 from flask.ext.migrate import Migrate, MigrateCommand
 
-# Science tools
-#import matplotlib.pyplot as plt
-
 app = Flask(__name__)
 app.config.from_object('application.config.Configuration')
 
