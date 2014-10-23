@@ -9,7 +9,7 @@ from application.models import Mixture, Spectrum
 @app.route('/', defaults={'page': 1})
 @app.route('/page/<int:page>')
 def index(page):
-  searchword = request.args.get('query', '')
+  searchword = request.args.get('q')
 
   if searchword:
     mixtures = Mixture.query.filter(Mixture.name.like('%' + searchword + '%'))
