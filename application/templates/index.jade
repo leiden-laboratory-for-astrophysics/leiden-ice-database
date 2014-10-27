@@ -18,3 +18,4 @@ block page
     | | 
   - if mixtures.has_next
     a(href= url_for('index', page=mixtures.next_num)) Next page >>
+  p.text-muted This database contains {{ stats['mixtures_count'] }} compounds and a total of {{ stats['spectra_count'] }} spectra.

@@ -17,7 +17,12 @@ def index(page):
     mixtures = Mixture.query
   mixtures = mixtures.paginate(page, app.config['MIXTURES_PER_PAGE'], True)
 
-  return render_template('index.jade', mixtures=mixtures)
+  stats = {
+    'mixtures_count': Mixture.query.count(),
+    'spectra_count': Spectrum.query.count()
+  }
+
+  return render_template('index.jade', mixtures=mixtures, stats=stats)
 
 @app.route('/data/<int:mixture_id>', methods=['GET'])
 def mixture_show(mixture_id):
