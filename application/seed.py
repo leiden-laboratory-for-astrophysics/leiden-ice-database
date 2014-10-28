@@ -141,7 +141,9 @@ def fetch():
     'http://www.strw.leidenuniv.nl/lab/databases/hcooh/hcooh10+ch3oh90_45K.dat',
     'http://www.strw.leidenuniv.nl/lab/databases/hcooh/hcooh10+ch3oh90_60K.dat',
     'http://www.strw.leidenuniv.nl/lab/databases/hcooh/hcooh10+ch3oh90_75K.dat',
-    'http://www.strw.leidenuniv.nl/lab/databases/hcooh/hcooh10+ch3oh90_90K.dat'] 
+    # TODO: Check 90K spectrum, it's a flat line - mistake?
+    #'http://www.strw.leidenuniv.nl/lab/databases/hcooh/hcooh10+ch3oh90_90K.dat'
+  ] 
 
   def temperature(url):
     return url.split('ch3oh90_')[1].split('K.dat')[0]
@@ -262,7 +264,7 @@ def fetch():
   add_spectra(mixture, spectra, temperature)
 
 
-  # H2O 18O2 1:1 (20000 L) By Oberg et at al. 2006
+  # H2O 18O2 1:1 (20000 L) by Oberg et at al. 2006
   mixture = Mixture(
     user_id = user_id,
     name='$\ce{H2O}$:$\ce{C{^{18}O2}}$ 1:1 (20000 L)',
@@ -287,7 +289,7 @@ def fetch():
   add_spectra(mixture, spectra, temperature)
 
 
-  # H2O 18O2 1:2 (30000 L) By Oberg et at al. 2006
+  # H2O 18O2 1:2 (30000 L) by Oberg et at al. 2006
   mixture = Mixture(
     user_id = user_id,
     name='$\ce{H2O}$:$\ce{C{^{18}O2}}$ 1:2 (30000 L)',
@@ -312,7 +314,7 @@ def fetch():
   add_spectra(mixture, spectra, temperature)
 
 
-  # H2O 18O2 2:1 (15000 L) By Oberg et at al. 2006
+  # H2O 18O2 2:1 (15000 L) by Oberg et at al. 2006
   mixture = Mixture(
     user_id = user_id,
     name='$\ce{H2O}$:$\ce{C{^{18}O2}}$ 2:1 (15000 L)',
@@ -335,6 +337,53 @@ def fetch():
 
   add_spectra(mixture, spectra, temperature)
 
+
+  # H2O 18O2 2:1 (4500 L) by Oberg et at al. 2006
+  mixture = Mixture(
+    user_id = user_id,
+    name='$\ce{H2O}$:$\ce{C{^{18}O2}}$ 2:1 (4500 L)',
+    description='Total thickness 4500 L',
+    author='Öberg et al',
+    DOI='10.1051/0004-6361:20065881'
+  )
+  db.session.add(mixture)
+  db.session.commit()
+
+  spectra = [
+    'http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/H2O_C18O2_2_1_4500L/h2o_c18o2_2_1_4500l_15k.asc',
+    'http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/H2O_C18O2_2_1_4500L/h2o_c18o2_2_1_4500l_45k.asc',
+    'http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/H2O_C18O2_2_1_4500L/h2o_c18o2_2_1_4500l_75k.asc',
+    'http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/H2O_C18O2_2_1_4500L/h2o_c18o2_2_1_4500l_105k.asc',
+    'http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/H2O_C18O2_2_1_4500L/h2o_c18o2_2_1_4500l_135k.asc']
+
+  def temperature(url):
+    return url.split('1_4500l_')[1].split('k.asc')[0]
+
+  add_spectra(mixture, spectra, temperature)
+
+
+  # H2O 18O2 1:1 (6000 L) by Oberg et at al. 2006
+  mixture = Mixture(
+    user_id = user_id,
+    name='$\ce{H2O}$:$\ce{C{^{18}O2}}$ 1:1 (6000 L)',
+    description='Total thickness 6000 L',
+    author='Öberg et al',
+    DOI='10.1051/0004-6361:20065881'
+  )
+  db.session.add(mixture)
+  db.session.commit()
+
+  spectra = [
+    'http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/H2O_C18O2_1_1_6000L/h2o_c18o2_1_1_6000l_15k.asc',
+    'http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/H2O_C18O2_1_1_6000L/h2o_c18o2_1_1_6000l_45k.asc',
+    'http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/H2O_C18O2_1_1_6000L/h2o_c18o2_1_1_6000l_75k.asc',
+    'http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/H2O_C18O2_1_1_6000L/h2o_c18o2_1_1_6000l_105k.asc',
+    'http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/H2O_C18O2_1_1_6000L/h2o_c18o2_1_1_6000l_135k.asc']
+
+  def temperature(url):
+    return url.split('1_6000l_')[1].split('k.asc')[0]
+
+  add_spectra(mixture, spectra, temperature)
 
 
   print('Fetching process took %.2f seconds' % (time.time()-t_start))

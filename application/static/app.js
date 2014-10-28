@@ -103,10 +103,10 @@ function makeFigure(error, results) {
   ]);
 
   // Add extra margin in case peaks need to be annotated
-  var yMargin = ($.isEmptyObject(mixtureAnnotations) ? 0 : 0.03);
+  var yTopMargin = ($.isEmptyObject(mixtureAnnotations) ? 0 : 0.03);
   y.domain([
-    d3.min(yExtents, function(e) { return e[0]; }) + 0.01,
-    d3.max(yExtents, function(e) { return e[1]; }) + yMargin
+    d3.min(yExtents, function(e) { return e[0]; }) + 0,
+    d3.max(yExtents, function(e) { return e[1]; }) + yTopMargin
   ]).nice();
 
   var maxTemperature = d3.max(results, function(result) { return result.temperature });
