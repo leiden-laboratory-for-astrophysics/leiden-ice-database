@@ -40,4 +40,4 @@ def process_data(mapper, connection, target):
   dset.attrs['temperature'] = target.temperature
   h5.close()
 
-  print('Processing time was %.2f seconds' % (time.time()-t_start))
+  # print('Processing time was %.2f seconds' % (time.time()-t_start))

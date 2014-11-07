@@ -2,6 +2,10 @@ from application import db, data_path
 from application.models import *
 from urllib.request import urlopen
 
+# HTML parser
+from bs4 import BeautifulSoup
+import re
+
 import os.path as op
 import hashlib
 from shutil import copyfile
@@ -10,13 +14,16 @@ import time
 # Normalize X Y data files
 def write_data(f_in, target_file):
   with open(target_file, 'wt') as f_out:
-    for line in f_in.readlines():
+    for i, line in enumerate(f_in.readlines()):
       normalized_line = ' '.join(line.decode('utf-8').strip().split())
       # Test if line consists of X Y components
       if len(normalized_line.split()) == 2:
+        if i == 0 and normalized_line.split()[1] == '0':
+          print('WARNING\t Skipping first line, zero point:', normalized_line)
+          continue
         f_out.write(normalized_line + '\n')
       else:
-        print('WARNING\t Skipping line with missing X Y components: %s' % normalized_line)
+        print('WARNING\t Skipping line with missing X Y components:', normalized_line)
 
 
 # Download X Y data files
@@ -47,18 +54,28 @@ def download(url):
 
   return filename
 
+
+# Add single spectrum
+def add_spectrum(mixture, spectrum, temperature):
+  filename = download(spectrum)
+
+  db.session.add(Spectrum(
+    mixture_id=mixture.id,
+    path=filename,
+    temperature=temperature
+  ))
+
+
+# Add spectra to mixture
 def add_spectra(mixture, spectra, temperature_parser):
   for spectrum in spectra:
-    filename = download(spectrum)
     temperature = int(temperature_parser(spectrum))
-    db.session.add(Spectrum(
-      mixture_id=mixture.id,
-      path=filename,
-      temperature=temperature
-    ))
+    add_spectrum(mixture, spectrum, temperature)
+
   print('Committing %s spectra by %s' % (mixture.name, mixture.author))
   db.session.commit()
 
+# Fetch remote data
 def fetch():
   "Fetches old database files from Leiden network"
   user_id = db.session.query(User).first().get_id()
@@ -69,7 +86,7 @@ def fetch():
   mixture = Mixture(
     user_id=user_id,
     name='Pure $\ce{HCOOH}$',
-    description='Deposited at 15K. Note that in the raw data the wavenumber range around 7-7.5 micron is not corrected for instrumental effects and is therefore difficult to use. In case spectra of this frequency range are required please contact Suzanne Bisschop directly (bisschop at strw dot leidenuniv dot nl).',
+    description='Deposited at 15K. Note that in the raw data the wavenumber range around 7-7.5 micron is not corrected for instrumental effects and is therefore difficult to use.',
     author='Suzanne Bisschop',
     DOI='10.1051/0004-6361:20077464'
   )
@@ -137,7 +154,6 @@ def fetch():
   mixture = Mixture(
     user_id=user_id,
     name='$\ce{HCOOH}$ 11% + $\ce{CO}$ 89%',
-    description='',
     author='Suzanne Bisschop',
     DOI='10.1051/0004-6361:20077464'
   )
@@ -153,6 +169,124 @@ def fetch():
 
   add_spectra(mixture, spectra, temperature)
 
+  
+  # HCOOH A% + H2O B% by Suzanne Bisschop
+  for ratios in ['20:80', '34:66', '50:50']:
+    a = ratios.split(':')[0]
+    b = ratios.split(':')[1]
+
+    mixture = Mixture(
+      user_id = user_id,
+      name = '$\ce{HCOOH}$ '+a+'% + $\ce{H2O}$ '+b+'%',
+      author='Suzanne Bisschop',
+      DOI='10.1051/0004-6361:20077464'
+    )
+    db.session.add(mixture)
+    db.session.commit()
+
+    spectra = []
+    for T in [15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165]:
+      spectra.append('http://www.strw.leidenuniv.nl/lab/databases/hcooh/hcooh'+a+'+h2o'+b+'_'+str(T)+'K.dat')
+
+    def temperature(url):
+      return url.split('h2o'+b+'_')[1].split('K.dat')[0]
+
+    add_spectra(mixture, spectra, temperature)
+
+
+  # HCOOH 6% + H2O 67% + CO2 27% by Suzanne Bisschop
+  mixture = Mixture(
+    user_id = user_id,
+    name = '$\ce{HCOOH}$ 6% + $\ce{H2O}$ 67% + $\ce{CO2}$ 27%',
+    author='Suzanne Bisschop',
+    DOI='10.1051/0004-6361:20077464'
+  )
+  db.session.add(mixture)
+  db.session.commit()
+
+  spectra = ['http://www.strw.leidenuniv.nl/lab/databases/hcooh/hcooh6+h2o67+co2_27_15K.dat']
+
+  def temperature(url):
+    return url.split('co2_27_')[1].split('K.dat')[0]
+
+  add_spectra(mixture, spectra, temperature)
+
+
+  # HCOOH 6% + H2O 68% + CH3OH 26% by Suzanne Bisschop
+  mixture = Mixture(
+    user_id = user_id,
+    name = '$\ce{HCOOH}$ 6% + $\ce{H2O}$ 68% + $\ce{CH3OH}$ 26%',
+    author='Suzanne Bisschop',
+    DOI='10.1051/0004-6361:20077464'
+  )
+  db.session.add(mixture)
+  db.session.commit()
+
+  spectra = ['http://www.strw.leidenuniv.nl/lab/databases/hcooh/hcooh6+h2o68+ch3oh26_15K.dat']
+
+  def temperature(url):
+    return url.split('ch3oh26_')[1].split('K.dat')[0]
+
+  add_spectra(mixture, spectra, temperature)
+
+
+  # HCOOH 8% + H2O 62% + CO 30% by Suzanne Bisschop
+  mixture = Mixture(
+    user_id = user_id,
+    name = '$\ce{HCOOH}$ 8% + $\ce{H2O}$ 62% + $\ce{CO}$ 30%',
+    author='Suzanne Bisschop',
+    DOI='10.1051/0004-6361:20077464'
+  )
+  db.session.add(mixture)
+  db.session.commit()
+
+  spectra = ['http://www.strw.leidenuniv.nl/lab/databases/hcooh/hcooh8+h2o62+co30_15K.dat']
+
+  def temperature(url):
+    return url.split('co30_')[1].split('K.dat')[0]
+
+  add_spectra(mixture, spectra, temperature)
+
+
+  # HCOOH 9% + CO2 91% by Suzanne Bisschop
+  mixture = Mixture(
+    user_id = user_id,
+    name = '$\ce{HCOOH}$ 9% + $\ce{CO2}$ 91%',
+    author='Suzanne Bisschop',
+    DOI='10.1051/0004-6361:20077464'
+  )
+  db.session.add(mixture)
+  db.session.commit()
+
+  spectra = []
+  for T in [15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165]:
+    spectra.append('http://www.strw.leidenuniv.nl/lab/databases/hcooh/hcooh9_co2_91_'+str(T)+'K.dat')
+
+  def temperature(url):
+    return url.split('co2_91_')[1].split('K.dat')[0]
+
+  add_spectra(mixture, spectra, temperature)
+
+
+  # HCOOH 9% + H2O 91% by Suzanne Bisschop
+  mixture = Mixture(
+    user_id = user_id,
+    name = '$\ce{HCOOH}$ 9% + $\ce{H2O}$ 91%',
+    author='Suzanne Bisschop',
+    DOI='10.1051/0004-6361:20077464'
+  )
+  db.session.add(mixture)
+  db.session.commit()
+
+  spectra = []
+  for T in [15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165]:
+    spectra.append('http://www.strw.leidenuniv.nl/lab/databases/hcooh/hcooh9+h2o91_'+str(T)+'K.dat')
+
+  def temperature(url):
+    return url.split('h2o91_')[1].split('K.dat')[0]
+
+  add_spectra(mixture, spectra, temperature)
+
 
   # Pure H2O (thickness L) by Oberg et al. 2006
   for thickness in ['10000', '3000']:
@@ -165,13 +299,10 @@ def fetch():
     )
     db.session.add(mixture)
     db.session.commit()
-    
-    spectra = [
-      'http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/H2O_PURE_' + thickness + 'L/h2o_pure_' + thickness + 'l_15k.asc',
-      'http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/H2O_PURE_' + thickness + 'L/h2o_pure_' + thickness + 'l_45k.asc',
-      'http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/H2O_PURE_' + thickness + 'L/h2o_pure_' + thickness + 'l_75k.asc',
-      'http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/H2O_PURE_' + thickness + 'L/h2o_pure_' + thickness + 'l_105k.asc',
-      'http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/H2O_PURE_' + thickness + 'L/h2o_pure_' + thickness + 'l_135k.asc'] 
+  
+    spectra = []
+    for T in [15, 45, 75, 105, 135]:
+      spectra.append('http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/H2O_PURE_' + thickness + 'L/h2o_pure_' + thickness + 'l_'+str(T)+'k.asc')
 
     def temperature(url):
       return url.split('pure_' + thickness + 'l_')[1].split('k.asc')[0]
@@ -191,11 +322,9 @@ def fetch():
     db.session.add(mixture)
     db.session.commit()
 
-    spectra = [
-      'http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/C18O2_PURE_' + thickness + 'L/c18o2_pure_' + thickness + 'l_15k.asc',
-      'http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/C18O2_PURE_' + thickness + 'L/c18o2_pure_' + thickness + 'l_45k.asc',
-      'http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/C18O2_PURE_' + thickness + 'L/c18o2_pure_' + thickness + 'l_75k.asc',
-      'http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/C18O2_PURE_' + thickness + 'L/c18o2_pure_' + thickness + 'l_105k.asc']
+    spectra = []
+    for T in [15, 45, 75, 105]:
+      spectra.append('http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/C18O2_PURE_' + thickness + 'L/c18o2_pure_' + thickness + 'l_'+str(T)+'k.asc')
 
     def temperature(url):
       return url.split('pure_' + thickness + 'l_')[1].split('k.asc')[0]
@@ -232,12 +361,77 @@ def fetch():
     for T in [15, 30, 45, 75, 105, 135]:
       if T == 30 and '30k' not in attributes:
         continue
+
       spectra.append('http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/H2O_C18O2_'+a+'_'+b+'_'+attributes['thickness']+'L/h2o_c18o2_'+a+'_'+b+'_'+attributes['thickness']+'l_'+str(T)+'k.asc')
 
     def temperature(url):
       return url.split(b+'_'+attributes['thickness']+'l_')[1].split('k.asc')[0]
 
     add_spectra(mixture, spectra, temperature)
+
+  # Pascale Ehrenfreund & Stephan Schlemmer
+  # This database contains 325 infrared spectra of thermally processed H2O-CH3OH-CO2 ice mixtures in the wavelength range 6000-400 cm-1.
+  # It's faster to parse the single page featuring the spectra
+  page = 'http://www.strw.leidenuniv.nl/lab/databases/iso_www3/index.html'
+  mixtures = []
+  mixture = None
+
+  print('Downloading Pascale Ehrenfreund & Stephan Schlemmer\'s database HTML page..')
+  with urlopen(page) as f:
+    html = f.read()
+    soup = BeautifulSoup(html)
+
+    for p in soup.find_all('p'):
+      if not p.a:
+        continue
+
+      spectrum = p.a.get('href')
+      text = re.sub(r'\s+', ' ', p.text.strip()) # normalize spaces
+
+      if not spectrum:
+        continue
+      if text == '[s1]Currently not available, sorry':
+        continue
+
+      meta = text.split(' ')
+      composition = meta[1]
+      temperature = meta[2]
+
+      # TODO: Float temperature values not supported
+      # There's one spectrum at 117.5 K
+      if '.' in temperature:
+        continue
+
+      if spectrum in ['CROSS22W1', 'CROSS22W2', 'CROSS22W3']:
+        # These spectra are not available (404 error)
+        continue
+
+      print('Detected', spectrum, composition, temperature, 'K')
+
+      if composition not in mixtures:
+        # Add new mixture to database
+        # Wrap composition molecules in LateX \ce{}
+        molecules, weights = composition.split('=')
+        molecules = molecules.split(':')
+        molecules = '$\ce{{{}}}$'.format('}$:$\ce{'.join(molecules))
+        mixture_name = molecules + ' ' + weights
+        print('Adding new mixture:', mixture_name)
+
+        mixture = Mixture(
+          user_id = user_id,
+          name = mixture_name,
+          author = 'Pascale Ehrenfreund and Stephan Schlemmer',
+          DOI = ''
+        )
+        mixtures.append(composition)
+        db.session.add(mixture)
+        db.session.commit()
+
+
+      absolute_url = 'http://www.strw.leidenuniv.nl/lab/databases/iso_www3/' + spectrum
+      add_spectrum(mixture, absolute_url, int(temperature))
+    
+    db.session.commit()
 
 
   print('Fetching process took %.2f seconds' % (time.time()-t_start))
