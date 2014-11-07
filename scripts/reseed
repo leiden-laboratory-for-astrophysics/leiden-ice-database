@@ -1,0 +1,4 @@
+rm -f application/db/development.db
+rm -rf application/data
+python app.py db upgrade
+python app.py seed
