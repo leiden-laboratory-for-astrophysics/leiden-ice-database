@@ -1,4 +1,5 @@
 body { padding-bottom: 40px; }
+form.search { margin-bottom: 20px; }
 #spectrum {
   position: relative;
   cursor: default;
@@ -20,6 +21,12 @@ g.legend-items { fill: black; stroke: none;}
 path {
   stroke-width: 1;
   fill: none;
+}
+path.unfocus {
+  opacity: 0.2;
+}
+path.focus {
+  stroke-width: 2;
 }
 text.label {
   font-size: 14px;

@@ -1,5 +1,14 @@
 extends 'layout.jade'
 block page
+  form.search.form-horizontal(role='search', action='/')
+    .input-group.input-group-lg
+      input.form-control(type='text', name='q', placeholder='Search', value=q)
+      span.input-group-btn
+        input.btn.btn-default(type='submit', value='Search')
+
+  h3
+    = mixtures.total|string + ' results (' + mixtures.pages|string + ' pages)'
+
   table.table.table-striped
     tr
       th 
@@ -14,8 +23,9 @@ block page
         td= mixture.author
         td= mixture.pub_date
   - if mixtures.has_prev
-    a(href= url_for('index', page=mixtures.prev_num)) << Previous page
+    a(href= url_for('index', page=mixtures.prev_num, q=q)) << Previous page
     | | 
   - if mixtures.has_next
-    a(href= url_for('index', page=mixtures.next_num)) Next page >>
+    a(href= url_for('index', page=mixtures.next_num, q=q)) Next page >>
+
   p.text-muted This database contains {{ stats['mixtures_count'] }} compounds and a total of {{ stats['spectra_count'] }} spectra.

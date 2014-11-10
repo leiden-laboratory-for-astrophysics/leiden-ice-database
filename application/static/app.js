@@ -113,9 +113,11 @@ function makeFigure(error, results) {
   $.each(results, function(index, result) {
     svg.append('path')
       .attr('class', 'spectrum')
+      .attr('id', 'spectrum' + index)
       .attr('d', valueline(result.data))
       .attr('stroke', temperatureRGB(0, maxTemperature, result.temperature))
       .attr('data-legend', result.temperature + ' K')
+      .attr('data-index', index)
       .attr('data-legend-pos', result.temperature);
   });
 

@@ -22,7 +22,11 @@ def index(page):
     'spectra_count': Spectrum.query.count()
   }
 
-  return render_template('index.jade', mixtures=mixtures, stats=stats)
+  return render_template(
+    'index.jade',
+    mixtures=mixtures,
+    stats=stats,
+    q=searchword)
 
 @app.route('/data/<int:mixture_id>', methods=['GET'])
 def mixture_show(mixture_id):
