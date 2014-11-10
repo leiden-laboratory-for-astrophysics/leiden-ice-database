@@ -55,7 +55,7 @@ d3.legend = function(g) {
         d3.select('path#spectrum'+index).classed('focus', false);
         d3.select('g.hover-line').style('opacity', 1);
       });
- 
+
     legendItems
       .append('text')
       .attr('y',function(d,i) { return i+'em'})
@@ -76,6 +76,15 @@ d3.legend = function(g) {
         .attr("y",(lbbox.y-legendPadding))
         .attr("height",(lbbox.height+2*legendPadding))
         .attr("width",(lbbox.width+2*legendPadding))
+
+    legendItems
+      .append('rect')
+        .attr('y',function(d,i) { return i-0.8+'em'})
+        .style('fill', 'none')  
+        .attr('pointer-events', 'visible')
+        .attr('x', 0)
+        .attr('width', (lbbox.width))
+        .attr('height', '1em')
   })
   return g
 }
