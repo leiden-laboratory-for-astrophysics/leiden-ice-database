@@ -18,6 +18,10 @@ block page
   .col-md-6
     h3 More information
     p= mixture.description
+    p
+      strong Average resolution: 
+      = resolution|round(2)
+      |  cm<sup>-1</sup>
     h3 Paper
     p
       | By 

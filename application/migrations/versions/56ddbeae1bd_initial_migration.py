@@ -42,6 +42,7 @@ def upgrade():
       sa.Column('id', sa.Integer(), nullable=False),
       sa.Column('mixture_id', sa.Integer(), nullable=False),
       sa.Column('temperature', sa.Integer(), nullable=False),
+      sa.Column('resolution', sa.Float(), nullable=True),
       sa.Column('description', sa.UnicodeText(), nullable=True),
       sa.Column('path', sa.String(), nullable=False),
       sa.ForeignKeyConstraint(['mixture_id'], ['mixtures.id'], ),

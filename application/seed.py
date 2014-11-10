@@ -16,14 +16,7 @@ def write_data(f_in, target_file):
   with open(target_file, 'wt') as f_out:
     for i, line in enumerate(f_in.readlines()):
       normalized_line = ' '.join(line.decode('utf-8').strip().split())
-      # Test if line consists of X Y components
-      if len(normalized_line.split()) == 2:
-        if i == 0 and normalized_line.split()[1] == '0':
-          print('WARNING\t Skipping first line, zero point:', normalized_line)
-          continue
-        f_out.write(normalized_line + '\n')
-      else:
-        print('WARNING\t Skipping line with missing X Y components:', normalized_line)
+      f_out.write(normalized_line + '\n')
 
 
 # Download X Y data files
@@ -432,6 +425,11 @@ def fetch():
       add_spectrum(mixture, absolute_url, int(temperature))
     
     db.session.commit()
+
+
+  # Fraser database
+  # Spectra of Thin Films with Varying Exposure Time. For further details see Fraser et al. AdSpR 2004
+  # 10.1016/j.asr.2003.04.003
 
 
   print('Fetching process took %.2f seconds' % (time.time()-t_start))

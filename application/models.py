@@ -1,6 +1,6 @@
 import datetime, os, shutil, h5py
 
-from sqlalchemy import func, Column, Integer, String, UnicodeText, Date, ForeignKey
+from sqlalchemy import func, Column, Float, Integer, String, UnicodeText, Date, ForeignKey
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -69,6 +69,7 @@ class Spectrum(db.Model):
   mixture = db.relationship('Mixture', backref='spectra')
 
   temperature = Column(Integer, nullable=False)
+  resolution = Column(Float, nullable=True)
   description = Column(UnicodeText)
   path = Column(String, nullable=False)
 

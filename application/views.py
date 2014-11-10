@@ -33,9 +33,15 @@ def mixture_show(mixture_id):
   mixture = Mixture.query.get(mixture_id)
   temperatures = sorted([s.temperature for s in mixture.spectra])
   t = [str(t) for t in temperatures]
+  average_resolution = numpy.average([s.resolution for s in mixture.spectra])
   spectra = db.session.query(Spectrum).filter_by(mixture_id=mixture.id).order_by(Spectrum.temperature)
 
-  return render_template('show.jade', mixture=mixture, temperatures=t, spectra=spectra)
+  return render_template(
+    'show.jade',
+    mixture=mixture,
+    temperatures=t,
+    spectra=spectra,
+    resolution=average_resolution)
 
 def split(arr, cond):
   return [arr[cond], arr[~cond]]
