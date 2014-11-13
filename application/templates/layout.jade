@@ -3,17 +3,26 @@ block title
   |Ice Database
 
 block content
-  #content
-    .container
-      h1
-        a(href='/') Sackler Laboratory Ice Database
-      p.lead IR spectra measured by the Sackler Laboratory for Astrophysics
-
   .container
-    for message in get_flashed_messages()
-      .alert.alert-info= message
+    .row
+      .col-sm-12
+        h1
+          a(href= url_for('index')) Sackler Laboratory Ice Database
+        p.lead IR spectra measured by the Sackler Laboratory for Astrophysics
 
-    block page
+        form.search.form-horizontal(role='search', action='/')
+          .input-group.input-group-lg
+            input.form-control(type='text', name='q', placeholder='Search', value=q)
+            span.input-group-btn
+              input.btn.btn-default(type='submit', value='Search')
+    .row
+      .sidebar.col-sm-3
+        block sidebar
+      .main.col-sm-9
+        for message in get_flashed_messages()
+          .alert.alert-info= message
+
+        block page
 
 block head
   {{super()}}

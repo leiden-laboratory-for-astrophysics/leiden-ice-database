@@ -10,6 +10,22 @@ form.search { margin-bottom: 20px; }
   width: 64px;
 }
 h2 { margin-bottom: 0px; }
+ul.nav a {
+  display: block;
+  text-decoration: none;
+  background-color: transparent;
+  padding: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color: #333;
+  border-bottom: 1px solid #ccc;
+}
+h2 { margin-top: 0px; }
+ul.nav a:hover {
+  background-color: #EAEAEA;
+}
+ul.nav li { list-style: none; }
+/*.sidebar { padding: 0px; }*/
 
 /* D3 styles */
 g.legend { fill: none; stroke: grey; stroke-width: 1; }

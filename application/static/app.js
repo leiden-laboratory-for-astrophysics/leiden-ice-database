@@ -1,5 +1,5 @@
 var container = '#spectrum';
-var margin = {top: 42, right: 40, bottom: 60, left: 60},
+var margin = {top: 42, right: 10, bottom: 60, left: 60},
 width = $(container).width() - margin.left - margin.right,
 height = $(container).width() / 2 - margin.top - margin.bottom;
 var hoverLineGroup, hoverLine, hoverHint;

@@ -1,31 +1,22 @@
 extends 'layout.jade'
-block page
-  form.search.form-horizontal(role='search', action='/')
-    .input-group.input-group-lg
-      input.form-control(type='text', name='q', placeholder='Search', value=q)
-      span.input-group-btn
-        input.btn.btn-default(type='submit', value='Search')
-
-  h3
-    = mixtures.total|string + ' results (' + mixtures.pages|string + ' pages)'
-
-  table.table.table-striped
-    tr
-      th 
-      th Ice Composition
-      th Author
-      th Date Added
+block sidebar
+  ul.nav.nav-sidebar
     - for mixture in mixtures.items
-      tr
-        td
-          a(href= url_for('mixture_show', mixture_id=mixture.id)) View
-        td= mixture.name
-        td= mixture.author
-        td= mixture.pub_date
-  - if mixtures.has_prev
-    a(href= url_for('index', page=mixtures.prev_num, q=q)) << Previous page
-    | | 
-  - if mixtures.has_next
-    a(href= url_for('index', page=mixtures.next_num, q=q)) Next page >>
+      a(href= url_for('mixture_show', mixture_id=mixture.id))
+        li= mixture.name
+  nav
+    ul.pager
+      - if mixtures.has_prev
+        li
+          a(href= url_for('index', page=mixtures.prev_num, q=q)) Previous
+      - if mixtures.has_next
+        li
+          a(href= url_for('index', page=mixtures.next_num, q=q)) Next
+
+block page
+  h2 Welcome
+
+  p Use the search form or the menu to the left to find the data you are interested in.
+  = mixtures.total|string + ' results (' + mixtures.pages|string + ' pages)'
 
   p.text-muted This database contains {{ stats['mixtures_count'] }} compounds and a total of {{ stats['spectra_count'] }} spectra.
