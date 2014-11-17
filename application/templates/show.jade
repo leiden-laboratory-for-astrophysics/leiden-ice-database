@@ -6,7 +6,7 @@ block page
       - if temperatures|count > 1
         = ' (at ' + ', '.join(temperatures[:-1]) + ' and ' + temperatures[-1] + ' K)'
       - elif temperatures|count == 1
-        = temperatures[0] + ' K'
+        = ' (at ' + temperatures[0] + ' K)'
       - else
         em (no spectra found)
 

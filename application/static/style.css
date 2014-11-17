@@ -1,4 +1,5 @@
 body { padding-bottom: 40px; }
+p { font-size: 16px; line-height: 22px }
 form.search { margin-bottom: 20px; }
 #spectrum {
   position: relative;
@@ -9,7 +10,7 @@ form.search { margin-bottom: 20px; }
   height: 64px;
   width: 64px;
 }
-h2 { margin-bottom: 0px; }
+h2 { margin-top: 0px; margin-bottom: 10px; }
 ul.nav a {
   display: block;
   text-decoration: none;
@@ -20,7 +21,9 @@ ul.nav a {
   color: #333;
   border-bottom: 1px solid #ccc;
 }
-h2 { margin-top: 0px; }
+ul.nav a:first-child {
+  border-top: 1px solid #ccc;
+}
 ul.nav a:hover {
   background-color: #EAEAEA;
 }

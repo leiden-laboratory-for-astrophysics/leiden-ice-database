@@ -1,6 +1,8 @@
 extends 'layout.jade'
-block sidebar
-  ul.nav.nav-sidebar
+block page
+  p= mixtures.total|string + ' results (' + mixtures.pages|string + ' pages)'
+
+  ul.nav
     - for mixture in mixtures.items
       a(href= url_for('mixture_show', mixture_id=mixture.id))
         li= mixture.name
@@ -12,11 +14,5 @@ block sidebar
       - if mixtures.has_next
         li
           a(href= url_for('index', page=mixtures.next_num, q=q)) Next
-
-block page
-  h2 Welcome
-
-  p Use the search form or the menu to the left to find the data you are interested in.
-  = mixtures.total|string + ' results (' + mixtures.pages|string + ' pages)'
 
   p.text-muted This database contains {{ stats['mixtures_count'] }} compounds and a total of {{ stats['spectra_count'] }} spectra.

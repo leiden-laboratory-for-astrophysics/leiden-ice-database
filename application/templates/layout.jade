@@ -16,9 +16,7 @@ block content
             span.input-group-btn
               input.btn.btn-default(type='submit', value='Search')
     .row
-      .sidebar.col-sm-3
-        block sidebar
-      .main.col-sm-9
+      .main.col-sm-12
         for message in get_flashed_messages()
           .alert.alert-info= message
 

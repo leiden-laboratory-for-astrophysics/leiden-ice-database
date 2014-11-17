@@ -6,10 +6,12 @@ import numpy
 
 from application.models import Mixture, Spectrum
 
-@app.route('/', defaults={'page': 1})
-@app.route('/page/<int:page>')
-def index(page):
+@app.context_processor
+def search_mixtures():
   searchword = request.args.get('q')
+  page = request.args.get('page')
+  if not page:
+    page = 1
 
   if searchword:
     mixtures = Mixture.query.filter(Mixture.name.like('%' + searchword + '%'))
@@ -21,12 +23,14 @@ def index(page):
     'mixtures_count': Mixture.query.count(),
     'spectra_count': Spectrum.query.count()
   }
+  return dict(mixtures=mixtures, stats=stats, q=searchword)
 
-  return render_template(
-    'index.jade',
-    mixtures=mixtures,
-    stats=stats,
-    q=searchword)
+
+@app.route('/', defaults={'page': 1})
+@app.route('/page/<int:page>')
+def index(page):
+  return render_template('index.jade')
+
 
 @app.route('/data/<int:mixture_id>', methods=['GET'])
 def mixture_show(mixture_id):
@@ -43,8 +47,10 @@ def mixture_show(mixture_id):
     spectra=spectra,
     resolution=average_resolution)
 
+
 def split(arr, cond):
   return [arr[cond], arr[~cond]]
+
 @app.route('/spectrum/<int:spectrum_id>.json', methods=['GET'])
 def spectrum_show_json(spectrum_id):
   spectrum = Spectrum.query.get(spectrum_id)
@@ -62,10 +68,12 @@ def spectrum_show_json(spectrum_id):
 
   return jsonify(temperature=spectrum.temperature, data=data.tolist())
 
+
 @app.route('/spectrum/download/<int:spectrum_id>/<string:download_filename>.txt.gz', methods=['GET'])
 def spectrum_download_gz(spectrum_id, download_filename):
   spectrum = Spectrum.query.get(spectrum_id)
   return send_file(spectrum.gz_file_path(), mimetype='application/x-gzip')
+
 
 @app.route('/spectrum/download/<int:spectrum_id>/<string:download_filename>.txt', methods=['GET'])
 def spectrum_download_txt(spectrum_id, download_filename):
@@ -75,6 +83,7 @@ def spectrum_download_txt(spectrum_id, download_filename):
   mimetype = 'text/plain'
   rv = app.response_class(data, mimetype=mimetype, direct_passthrough=True)
   return rv
+
 
 @app.route('/spectrum/download/<int:mixture_id>.tar.gz', methods=['GET'])
 def mixture_download_all_txt(mixture_id):
