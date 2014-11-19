@@ -6,13 +6,11 @@ import numpy
 
 from application.models import Mixture, Spectrum
 
-@app.context_processor
-def search_mixtures():
-  searchword = request.args.get('q')
-  page = request.args.get('page')
-  if not page:
-    page = 1
 
+@app.route('/', defaults={'page': 1})
+@app.route('/page/<int:page>')
+def index(page):
+  searchword = request.args.get('q')
   if searchword:
     mixtures = Mixture.query.filter(Mixture.name.like('%' + searchword + '%'))
   else:
@@ -23,13 +21,7 @@ def search_mixtures():
     'mixtures_count': Mixture.query.count(),
     'spectra_count': Spectrum.query.count()
   }
-  return dict(mixtures=mixtures, stats=stats, q=searchword)
-
-
-@app.route('/', defaults={'page': 1})
-@app.route('/page/<int:page>')
-def index(page):
-  return render_template('index.jade')
+  return render_template('index.jade', mixtures=mixtures, stats=stats, q=searchword)
 
 
 @app.route('/data/<int:mixture_id>', methods=['GET'])
