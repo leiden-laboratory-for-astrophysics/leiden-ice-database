@@ -6,9 +6,9 @@
 apt-get update
 apt-get upgrade
 
-apt-get install -y vim zsh tmux git build-essential libssl-dev libbz2-dev \
+apt-get install -y zsh vim git tmux build-essential libssl-dev libbz2-dev \
     zlib1g-dev libreadline-dev libsqlite3-dev wget curl llvm htop \
-    libhdf5-serial-dev
+    libhdf5-serial-dev cmake unzip
 apt-get build-dep -y matplotlib
 
 # Continue provisioning with Vagrant user rights

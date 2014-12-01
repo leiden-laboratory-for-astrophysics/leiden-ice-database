@@ -15,8 +15,8 @@ Also verify you have a Terminal and `git` installed.
 Open a terminal and run the following commands and keep on reading.
 
 ```bash
-git clone xxx
-cd xxx
+git clone https://github.com/bartolsthoorn/ice-database
+cd ice-database
 vagrant up
 ```
 
