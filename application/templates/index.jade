@@ -1,18 +1,18 @@
 extends 'layout.jade'
 block page
-  p= mixtures.total|string + ' results (' + mixtures.pages|string + ' pages)'
+  p= analogues.total|string + ' results (' + analogues.pages|string + ' pages)'
 
   ul.nav
-    - for mixture in mixtures.items
-      a(href= url_for('mixture_show', mixture_id=mixture.id))
-        li= mixture.name
+    - for analogue in analogues.items
+      a(href= url_for('analogue_show', analogue_id=analogue.id))
+        li= analogue.name
   nav
     ul.pager
-      - if mixtures.has_prev
+      - if analogues.has_prev
         li
-          a(href= url_for('index', page=mixtures.prev_num, q=q)) Previous
-      - if mixtures.has_next
+          a(href= url_for('index', page=analogues.prev_num, q=q)) Previous
+      - if analogues.has_next
         li
-          a(href= url_for('index', page=mixtures.next_num, q=q)) Next
+          a(href= url_for('index', page=analogues.next_num, q=q)) Next
 
-  p.text-muted This database contains {{ stats['mixtures_count'] }} compounds and a total of {{ stats['spectra_count'] }} spectra.
+  p.text-muted This database contains {{ stats['analogues_count'] }} compounds and a total of {{ stats['spectra_count'] }} spectra.

@@ -2,6 +2,7 @@ from flask.ext import admin, login
 from flask.ext.admin.form import FileUploadField
 from flask.ext.admin.form.rules import Macro
 from flask.ext.admin.form import rules
+from jinja2 import Markup
 
 from application import app, db, data_path
 from application.auth import AuthModelView, AdminHomeView
@@ -10,10 +11,13 @@ from application.worker import *
 import time
 
 
-class MixtureAdmin(AuthModelView):
+class AnalogueAdmin(AuthModelView):
   form_rules = [Macro('m.tex_expl'), 'name', Macro('m.tex_preview'),
     'description', 'author', 'DOI', 'spectra']
   column_exclude_list = ['user', 'description']
+  column_labels = dict(DOI='Paper DOI', author='First author')
+  column_formatters = dict(DOI= lambda v, c, m, p:
+      Markup('<a href="'+m.DOI_url()+'" target="_blank">'+m.DOI+'</a>'))
   form_excluded_columns = ('user', 'pub_date')
 
   def on_model_change(self, form, model):
@@ -23,7 +27,11 @@ class MixtureAdmin(AuthModelView):
 class SpectrumAdmin(AuthModelView):
   column_exclude_list = ['description']
   column_labels = dict(temperature='Temperature (K)')
-  form_rules = ['mixture', 'temperature', Macro('m.tex_expl'), 'description', 
+  column_formatters = dict(
+      temperature= lambda v, c, m, p:
+        int(m.temperature) if m.temperature.is_integer() else m.temperature,
+      resolution=  lambda v, c, m, p: "%.2f" % m.resolution)
+  form_rules = ['analogue', 'temperature', Macro('m.tex_expl'), 'description', 
     Macro('m.data_instr'), 'path']
 
 #  def spectrum_filename(obj, file_data):
@@ -43,5 +51,5 @@ admin = admin.Admin(app,
   )
 )
 
-admin.add_view(MixtureAdmin(Mixture, db.session))
+admin.add_view(AnalogueAdmin(Analogue, db.session))
 admin.add_view(SpectrumAdmin(Spectrum, db.session))

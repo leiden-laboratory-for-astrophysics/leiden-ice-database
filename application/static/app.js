@@ -62,14 +62,14 @@ function temperatureRGB(minimum, maximum, value) {
   return d3.rgb(255 * x, 0, 255 * (1 - x));
 }
 
-var mixtureID = $('#spectrum').attr('data-mixture-id');
-var mixtureAnnotations;
+var analogueID = $('#spectrum').attr('data-analogue-id');
+var analogueAnnotations;
 
-// Fetch all spectrum IDs belonging to mixture
-d3.json('/mixture/' + mixtureID + '.json', function(error, json) {
+// Fetch all spectrum IDs belonging to analogue
+d3.json('/analogue/' + analogueID + '.json', function(error, json) {
   if (error) return console.warn(error);
 
-  mixtureAnnotations = json.annotations;
+  analogueAnnotations = json.annotations;
 
   // Ask all spectra JSON using queue.js
   // https://github.com/mbostock/queue
@@ -103,7 +103,7 @@ function makeFigure(error, results) {
   ]);
 
   // Add extra margin in case peaks need to be annotated
-  var yTopMargin = ($.isEmptyObject(mixtureAnnotations) ? 0 : 0.03);
+  var yTopMargin = ($.isEmptyObject(analogueAnnotations) ? 0 : 0.03);
   y.domain([
     d3.min(yExtents, function(e) { return e[0]; }) + 0,
     d3.max(yExtents, function(e) { return e[1]; }) + yTopMargin
@@ -201,9 +201,9 @@ function makeFigure(error, results) {
   hoverHint = hoverLineGroup.append('text').attr('class', 'hover-hint');
 
   // Add annotations (loop through annotations Object)
-  for (var property in mixtureAnnotations) {
-    if (mixtureAnnotations.hasOwnProperty(property)) {
-      var labelX = x(mixtureAnnotations[property]);
+  for (var property in analogueAnnotations) {
+    if (analogueAnnotations.hasOwnProperty(property)) {
+      var labelX = x(analogueAnnotations[property]);
       // Find highest peak at that position
       var paths = $(container).find('path.spectrum');
 

@@ -42,11 +42,11 @@ class User(db.Model):
 
 
 # Spectra always belong to a specific ice mixture
-class Mixture(db.Model):
-  __tablename__ = 'mixtures'
+class Analogue(db.Model):
+  __tablename__ = 'analogues'
   id = Column(Integer, primary_key=True, autoincrement=True)
   user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-  user = db.relationship('User', backref='mixtures')
+  user = db.relationship('User', backref='analogues')
 
   name = Column(String, nullable=False)
   description = Column(UnicodeText)
@@ -55,18 +55,26 @@ class Mixture(db.Model):
   pub_date = Column(Date, default=datetime.datetime.now)
 
   def __str__(self):
-    return "%s by %s" % (self.name, self.author)
+    return "%s" % (self.name)
 
   def DOI_url(self):
     return "http://doi.org/%s" % self.DOI
+
+  def temperatures_to_sentence(self):
+    temperatures = sorted([s.temperature for s in self.spectra])
+    t = [str(int(t)) if t.is_integer() else str(t) for t in temperatures]
+    if len(t) > 1:
+      return ', '.join(t[:-1]) + ' and ' + t[-1] + ' K'
+    else:
+      return t[0] + ' K'
 
 
 # A single measured spectrum
 class Spectrum(db.Model):
   __tablename__ = 'spectra'
   id = Column(Integer, primary_key=True, autoincrement=True)
-  mixture_id = Column(Integer, ForeignKey('mixtures.id'), nullable=False)
-  mixture = db.relationship('Mixture', backref='spectra')
+  analogue_id = Column(Integer, ForeignKey('analogues.id'), nullable=False)
+  analogue = db.relationship('Analogue', backref='spectra')
 
   temperature = Column(Integer, nullable=False)
   resolution = Column(Float, nullable=True)
@@ -74,7 +82,7 @@ class Spectrum(db.Model):
   path = Column(String, nullable=False)
 
   def __str__(self):
-    return "%s at %s K" % (self.mixture.name, self.temperature)
+    return "%s at %s K" % (self.analogue.name, self.temperature)
   
   def gzipped(self):
     return op.isfile(self.ungz_file_path()) == False
@@ -131,8 +139,8 @@ def seed():
     db.session.add(user)
     db.session.commit() # commit to get user ID
 
-  if db.session.query(func.count(Mixture.id)).scalar() == 0:
-    print('Adding mixtures..')
+  if db.session.query(func.count(Analogue.id)).scalar() == 0:
+    print('Adding ice analogues..')
     from application.seed import fetch
     fetch()
   

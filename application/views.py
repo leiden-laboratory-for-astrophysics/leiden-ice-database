@@ -4,7 +4,7 @@ import io
 import tarfile, gzip
 import numpy
 
-from application.models import Mixture, Spectrum
+from application.models import Analogue, Spectrum
 
 
 @app.route('/', defaults={'page': 1})
@@ -12,30 +12,29 @@ from application.models import Mixture, Spectrum
 def index(page):
   searchword = request.args.get('q')
   if searchword:
-    mixtures = Mixture.query.filter(Mixture.name.like('%' + searchword + '%'))
+    analogues = Analogue.query.filter(Analogue.name.like('%' + searchword + '%'))
   else:
-    mixtures = Mixture.query
-  mixtures = mixtures.paginate(page, app.config['MIXTURES_PER_PAGE'], True)
+    analogues = Analogue.query
+  analogues = analogues.paginate(page, app.config['ANALOGUES_PER_PAGE'], True)
 
   stats = {
-    'mixtures_count': Mixture.query.count(),
+    'analogues_count': Analogue.query.count(),
     'spectra_count': Spectrum.query.count()
   }
-  return render_template('index.jade', mixtures=mixtures, stats=stats, q=searchword)
+  return render_template('index.jade', analogues=analogues, stats=stats, q=searchword)
 
 
-@app.route('/data/<int:mixture_id>', methods=['GET'])
-def mixture_show(mixture_id):
-  mixture = Mixture.query.get(mixture_id)
-  temperatures = sorted([s.temperature for s in mixture.spectra])
+@app.route('/data/<int:analogue_id>', methods=['GET'])
+def analogue_show(analogue_id):
+  analogue = Analogue.query.get(analogue_id)
+  temperatures = sorted([s.temperature for s in analogue.spectra])
   t = [str(t) for t in temperatures]
-  average_resolution = numpy.average([s.resolution for s in mixture.spectra])
-  spectra = db.session.query(Spectrum).filter_by(mixture_id=mixture.id).order_by(Spectrum.temperature)
+  average_resolution = numpy.average([s.resolution for s in analogue.spectra])
+  spectra = db.session.query(Spectrum).filter_by(analogue_id=analogue.id).order_by(Spectrum.temperature)
 
   return render_template(
     'show.jade',
-    mixture=mixture,
-    temperatures=t,
+    analogue=analogue,
     spectra=spectra,
     resolution=average_resolution)
 
@@ -77,9 +76,9 @@ def spectrum_download_txt(spectrum_id, download_filename):
   return rv
 
 
-@app.route('/spectrum/download/<int:mixture_id>.tar.gz', methods=['GET'])
-def mixture_download_all_txt(mixture_id):
-  spectra = Mixture.query.get(mixture_id).spectra
+@app.route('/spectrum/download/<int:analogue_id>.tar.gz', methods=['GET'])
+def analogue_download_all_txt(analogue_id):
+  spectra = Analogue.query.get(analogue_id).spectra
   stream = io.BytesIO()
   with tarfile.open(mode='w:gz', fileobj=stream) as tar:
     for spectrum in spectra:
@@ -94,20 +93,20 @@ def mixture_download_all_txt(mixture_id):
   return rv
 
 
-@app.route('/mixture/<int:mixture_id>.json', methods=['GET'])
-def mixture_show_json(mixture_id):
-  mixture = Mixture.query.get(mixture_id)
+@app.route('/analogue/<int:analogue_id>.json', methods=['GET'])
+def analogue_show_json(analogue_id):
+  analogue = Analogue.query.get(analogue_id)
 
   # Annotate important wavenumbers
   annotations = {}
-  if '{H2O}' in mixture.name:
+  if '{H2O}' in analogue.name:
     annotations['H2O stretch'] =   3250 # cm-1
     annotations['H2O bending'] =   1700
     annotations['H2O libration'] = 770
 
-  if '{HCOOH}' in mixture.name:
+  if '{HCOOH}' in analogue.name:
     annotations['C=O stretch'] =   1714
 
   return jsonify(
-    spectra=sorted([s.id for s in mixture.spectra]),
+    spectra=sorted([s.id for s in analogue.spectra]),
     annotations=annotations)
