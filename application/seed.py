@@ -1,6 +1,7 @@
 from application import db, data_path
 from application.models import *
 from urllib.request import urlopen
+from urllib.error import HTTPError
 
 # HTML parser
 from bs4 import BeautifulSoup
@@ -41,8 +42,17 @@ def download(url):
   else:
     # Download file
     print('Downloading %s' % url)
-    with urlopen(url) as f_in:
-      write_data(f_in, target_file)
+    try:
+      with urlopen(url) as f_in:
+        write_data(f_in, target_file)
+    except HTTPError as e:
+      print('HTTP GET failed with error code ', str(e.code))
+      if e.code == 404:
+        print('Retrying and replacing .DAT with .dat')
+        url = url.replace('.DAT', '.dat')
+        print('Downloading %s' % url)
+        with urlopen(url) as f_in:
+          write_data(f_in, target_file)
     copyfile(target_file, cached_file)
 
   return filename
@@ -353,6 +363,7 @@ def fetch():
     spectra = []
     for T in [15, 30, 45, 75, 105, 135]:
       if T == 30 and '30k' not in attributes:
+        # Not all analogues have 30 K spectrum
         continue
 
       spectra.append('http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/H2O_C18O2_'+a+'_'+b+'_'+attributes['thickness']+'L/h2o_c18o2_'+a+'_'+b+'_'+attributes['thickness']+'l_'+str(T)+'k.asc')
@@ -391,12 +402,6 @@ def fetch():
       composition = meta[1]
       temperature = meta[2]
 
-      # TODO: Float temperature values not supported
-      # EDIT: This is FIXED!
-      # There's one spectrum at 117.5 K
-      # if '.' in temperature:
-      #  continue
-
       if spectrum in ['CROSS22W1', 'CROSS22W2', 'CROSS22W3']:
         # These spectra are not available (404 error)
         continue
@@ -429,9 +434,45 @@ def fetch():
     db.session.commit()
 
 
-  # Fraser database
+  # Fraser warm-up spectra
   # Spectra of Thin Films with Varying Exposure Time. For further details see Fraser et al. AdSpR 2004
   # 10.1016/j.asr.2003.04.003
+  for name, temperatures in {
+        'CH3OH': [15, 18, 20, 22.5, 25, 28, 30, 35, 40, 50, 60, 70, 80, 90, 100, 115, 130, 145, 160],
+        'CH4': [15, 18, 20, 22.5, 25, 28, 35, 40, 50],
+        'CO2': [15, 18, 20, 22.5, 25, 28, 30, 35, 40, 50, 60, 70, 80, 90, 100],
+        'CO':  [15, 18, 20, 22.5, 25, 28, 30, 35],
+        'HCOOH': [14.1, 16, 19.5, 21.7, 24.5, 27.6, 29.5, 34.6, 39, 59.6, 79.8, 99.2, 160.3],
+        'COmixCH3OH_1_1': [15, 18, 20, 22.5, 25, 28, 30, 35, 40, 50, 60, 70, 80, 90, 100, 115, 130, 145, 160],
+        'COmixCO2_1_1': [15, 18, 20, 22.5, 25, 28, 30, 35, 40, 50, 60, 70, 80, 90, 100],
+        'COmixHCOOH_1_1': [14.4, 17, 19.4, 22.7, 24.3, 27.1, 29.6, 34.5, 39.5, 59.3, 79.3, 99.8, 129, 160.1],
+        'COoverCH3OH': [15, 18, 20, 22.5, 25, 28, 30, 35, 40, 50, 60, 70, 80, 90, 100, 115, 130, 145, 160],
+        'COoverCH4': [15, 18, 20, 22.5, 25, 28, 30, 35, 40],
+        'COoverCO2': [15, 18, 20, 22.5, 25, 28, 30, 35, 40, 50, 60, 70, 80, 90, 100],
+        'COoverHCOOH': [14.3, 17.2, 19.5, 22.2, 24.5, 27.5, 29.5, 34.5, 39.1, 59.3, 79.2, 99.4, 129.5, 159.5],
+        'COunderCH3OH': [15, 18, 20, 22.5, 25, 28, 30, 35, 40, 50, 60, 70, 80, 90, 100, 115, 130, 145, 160],
+        'COunderCH4': [15, 18, 20, 22.5, 25, 28, 30, 35, 40],
+        'COunderCO2': [15, 18, 20, 22.5, 25, 28, 30, 35, 40, 50, 60, 70, 80, 90, 100],
+        'COunderHCOOH': [14.5, 17.7, 19.8, 22.3, 24.5, 27.2, 29.5, 34.6, 39.3, 59.6, 79.2, 99.3, 128.8, 159.2]
+        }.items():
 
+    analogue = Analogue(
+      user_id = user_id,
+      name='Pure $\ce{'+name+'}$', # TODO: dynamic name, they are not all pure
+      description='',
+      author='Fraser',
+      DOI='10.1016/j.asr.2003.04.003'
+    )
+    db.session.add(analogue)
+    db.session.commit()
+
+    spectra = []
+    for T in temperatures:
+      spectra.append('http://www.strw.leidenuniv.nl/astrochem/co_laboratory_spectra_database/Warm-Up_Spectra/'+name+'_'+str(T)+'K.DAT')
+
+    def temperature(url):
+      return url.split(name+'_')[1].split('K.DAT')[0]
+
+    add_spectra(analogue, spectra, temperature)
 
   print('Fetching process took %.2f seconds' % (time.time()-t_start))
