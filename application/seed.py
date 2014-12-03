@@ -434,9 +434,7 @@ def fetch():
     db.session.commit()
 
 
-  # Fraser warm-up spectra
-  # Spectra of Thin Films with Varying Exposure Time. For further details see Fraser et al. AdSpR 2004
-  # 10.1016/j.asr.2003.04.003
+  # Fraser 2004 warm-up spectra
   for name, temperatures in {
         'CH3OH': [15, 18, 20, 22.5, 25, 28, 30, 35, 40, 50, 60, 70, 80, 90, 100, 115, 130, 145, 160],
         'CH4': [15, 18, 20, 22.5, 25, 28, 35, 40, 50],
@@ -456,9 +454,21 @@ def fetch():
         'COunderHCOOH': [14.5, 17.7, 19.8, 22.3, 24.5, 27.2, 29.5, 34.6, 39.3, 59.6, 79.2, 99.3, 128.8, 159.2]
         }.items():
 
+    if 'mix' in name:
+      parts = name.split('mix')
+      display_name = '$\ce{'+parts[0]+'}$:$\ce{'+parts[1]+'}$ 1:1'
+    elif 'over' in name:
+      parts = name.split('over')
+      display_name = '$\ce{'+parts[0]+'}$ over $\ce{'+parts[1]+'}$'
+    elif 'under' in name:
+      parts = name.split('under')
+      display_name = '$\ce{'+parts[0]+'}$ under $\ce{'+parts[1]+'}$'
+    else:
+      display_name = 'Pure $\ce{'+name+'}$'
+
     analogue = Analogue(
       user_id = user_id,
-      name='Pure $\ce{'+name+'}$', # TODO: dynamic name, they are not all pure
+      name=display_name,
       description='',
       author='Fraser',
       DOI='10.1016/j.asr.2003.04.003'

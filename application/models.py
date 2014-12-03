@@ -118,14 +118,14 @@ def del_file(mapper, connection, target):
     try:
       os.remove(op.join(data_path, target.path))
     except OSError:
-      # Don't care if was not deleted because it does not exist
+      # Don't care it was not deleted because it does not exist
       pass
     try:
       shutil.rmtree(op.join(data_path, "%s" % target.id))
     except OSError:
       pass
     try:
-      os.remove(op.join(data_path, "%s.gz" % target.path))
+      os.remove(op.join(data_path, "%s.gz" % target.id))
     except OSError:
       pass
 

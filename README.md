@@ -35,6 +35,7 @@ You should now be connected to the fully configured machine. To make sure everyt
 ```bash
 pyenv versions
 cd /vagrant && python --version
+python app.py
 ```
 
 ### Developing
