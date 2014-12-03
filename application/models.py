@@ -49,6 +49,7 @@ class Analogue(db.Model):
   user = db.relationship('User', backref='analogues')
 
   name = Column(String, nullable=False)
+  deposition_temperature = Column(Float)
   description = Column(UnicodeText)
   author = Column(String)
   DOI = Column(String)
@@ -76,7 +77,7 @@ class Spectrum(db.Model):
   analogue_id = Column(Integer, ForeignKey('analogues.id'), nullable=False)
   analogue = db.relationship('Analogue', backref='spectra')
 
-  temperature = Column(Integer, nullable=False)
+  temperature = Column(Float, nullable=False)
   resolution = Column(Float, nullable=True)
   description = Column(UnicodeText)
   path = Column(String, nullable=False)

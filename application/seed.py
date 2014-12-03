@@ -112,7 +112,8 @@ def fetch():
   # HCOOH deposited at 145 K and warmed up by Suzanne Bisschop
   analogue = Analogue(
     user_id=user_id,
-    name='Pure $\ce{HCOOH}$ deposited at 145 K',
+    name='Pure $\ce{HCOOH}$',
+    deposition_temperature=145, # Kelvin
     description='Ice deposited at 145 K, cooled down to 15 K and subsequently warmed up.',
     author='Suzanne Bisschop',
     DOI='10.1051/0004-6361:20077464'

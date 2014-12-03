@@ -31,6 +31,7 @@ def upgrade():
       sa.Column('id', sa.Integer(), nullable=False),
       sa.Column('user_id', sa.Integer(), nullable=False),
       sa.Column('name', sa.String(), nullable=False),
+      sa.Column('deposition_temperature', sa.Float(), nullable=True),
       sa.Column('description', sa.UnicodeText(), nullable=True),
       sa.Column('author', sa.String(), nullable=True),
       sa.Column('DOI', sa.String(), nullable=True),
