@@ -41,7 +41,7 @@ class User(db.Model):
     return self.username
 
 
-# Spectra always belong to a specific ice mixture
+# Spectra always belong to a specific ice analogue
 class Analogue(db.Model):
   __tablename__ = 'analogues'
   id = Column(Integer, primary_key=True, autoincrement=True)

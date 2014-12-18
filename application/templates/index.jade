@@ -2,10 +2,12 @@ extends 'layout.jade'
 block page
   p= analogues.total|string + ' results (' + analogues.pages|string + ' pages)'
 
-  ul.nav
+  div.nav
     - for analogue in analogues.items
       a(href= url_for('analogue_show', analogue_id=analogue.id))
-        li= analogue.name
+        .analogue.clearfix
+          .name= analogue.name
+          .author.text-muted= analogue.author
   nav
     ul.pager
       - if analogues.has_prev

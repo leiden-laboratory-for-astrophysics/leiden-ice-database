@@ -49,6 +49,7 @@ var svg = d3.select(container)
   'translate(' + margin.left + ',' + margin.top + ')');
 
 $(window).on('resize', function() {
+  // TODO: Redraw spectrum?
   console.log('Redraw spectrum SVG');
 });
 

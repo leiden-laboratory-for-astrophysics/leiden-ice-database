@@ -11,7 +11,7 @@ form.search { margin-bottom: 20px; }
   width: 64px;
 }
 h2 { margin-top: 0px; margin-bottom: 10px; }
-ul.nav a {
+.nav a {
   display: block;
   text-decoration: none;
   background-color: transparent;
@@ -21,13 +21,15 @@ ul.nav a {
   color: #333;
   border-bottom: 1px solid #ccc;
 }
-ul.nav a:first-child {
+.nav .author { float: right; }
+.nav .name { float: left; }
+.nav a:first-child {
   border-top: 1px solid #ccc;
 }
-ul.nav a:hover {
+.nav a:hover {
   background-color: #EAEAEA;
 }
-ul.nav li { list-style: none; }
+.nav li { list-style: none; }
 /*.sidebar { padding: 0px; }*/
 
 /* D3 styles */
