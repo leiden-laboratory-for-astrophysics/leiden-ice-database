@@ -47,11 +47,14 @@ def process_data(mapper, connection, target):
 
 def process_line(i, line, f_out):
   normalized_line = ' '.join(line.strip().split())
-  # Test if line consists of X Y components
-  if len(normalized_line.split()) == 2:
-    if i == 0 and normalized_line.split()[1] == '0':
-      warnings.warn('Skipping first line, zero point: %s' % normalized_line)
-    else:
-      f_out.write(normalized_line + '\n')
+  if normalized_line[0] == '#' or normalized_line[0] == 'A':
+    warnings.warn('Skipping line: %s' % normalized_line)
   else:
-    warnings.warn('Missing X Y components in line: %s' % normalized_line)
+    # Test if line consists of X Y components
+    if len(normalized_line.split()) == 2:
+      if i == 0 and normalized_line.split()[1] == '0':
+        warnings.warn('Skipping first line, zero point: %s' % normalized_line)
+      else:
+        f_out.write(normalized_line + '\n')
+    else:
+      warnings.warn('Missing X Y components in line: %s' % normalized_line)

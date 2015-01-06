@@ -1,5 +1,6 @@
 from application import db, data_path
 from application.models import *
+from application.config import Configuration
 from urllib.request import urlopen
 from urllib.error import HTTPError
 
@@ -10,7 +11,15 @@ import re
 import os.path as op
 import hashlib
 from shutil import copyfile
+
+# Concurrency - seed.py is multithreaded
+from concurrent.futures import ThreadPoolExecutor as Pool
+from sqlalchemy.orm import scoped_session
+from sqlalchemy.orm import sessionmaker
 import time
+
+Session = scoped_session(db.session)
+pool_size = 6
 
 # Normalize X Y data files
 def write_data(f_in, target_file):
@@ -46,7 +55,7 @@ def download(url):
       with urlopen(url) as f_in:
         write_data(f_in, target_file)
     except HTTPError as e:
-      print('HTTP GET failed with error code ', str(e.code))
+      print('HTTP GET failed with error code', str(e.code))
       if e.code == 404:
         print('Retrying and replacing .DAT with .dat')
         url = url.replace('.DAT', '.dat')
@@ -62,21 +71,23 @@ def download(url):
 def add_spectrum(analogue, spectrum, temperature):
   filename = download(spectrum)
 
-  db.session.add(Spectrum(
-    analogue_id=analogue.id,
-    path=filename,
-    temperature=temperature
+  Session.add(Spectrum(
+    analogue_id = analogue if type(analogue) is int else analogue.id,
+    path = filename,
+    temperature = temperature
   ))
+  Session.commit()
 
 
 # Add spectra to analogue
 def add_spectra(analogue, spectra, temperature_parser):
-  for spectrum in spectra:
-    temperature = float(temperature_parser(spectrum))
-    add_spectrum(analogue, spectrum, temperature)
+  with Pool(max_workers=pool_size) as e:
+    for spectrum in spectra:
+      temperature = float(temperature_parser(spectrum))
+      e.submit(add_spectrum, analogue.id, spectrum, temperature)
 
-  print('Committing %s spectra by %s' % (analogue.name, analogue.author))
-  db.session.commit()
+  #print('Committing %s spectra by %s' % (analogue.name, analogue.author))
+  #db.session.commit()
 
 # Fetch remote data
 def fetch():
@@ -456,7 +467,7 @@ def fetch():
         }.items():
 
     if 'mix' in name:
-      parts = name.split('mix')
+      parts = name.split('_')[0].split('mix')
       display_name = '$\ce{'+parts[0]+'}$:$\ce{'+parts[1]+'}$ 1:1'
     elif 'over' in name:
       parts = name.split('over')
@@ -485,5 +496,57 @@ def fetch():
       return url.split(name+'_')[1].split('K.DAT')[0]
 
     add_spectra(analogue, spectra, temperature)
+
+
+  # Mixed/layered ices by ??? TODO: Find out who measured these
+  # http://www.strw.leidenuniv.nl/lab/databases/mixed_layered_co_co2/index.html
+  page = 'http://www.strw.leidenuniv.nl/lab/databases/mixed_layered_co_co2/index.html'
+
+  print('Downloading mixed/layered database HTML page..')
+  with urlopen(page) as f:
+    soup = BeautifulSoup(f.read())
+
+    for a in soup.find_all('a'):
+      if '/' in a.text:
+        molecules = a.text.split('/')
+        ratio = ':'.join(a.get('href').split('/')[1].split('_')[:2])
+        analogue_name = '$\ce{' + molecules[0] + '}$ over $\ce{' + molecules[1] + '}$ ' + ratio
+      elif ':' in a.text:
+        molecules = a.text.split(':')
+        ratio = ':'.join(a.get('href').split('/')[1].split('_'))
+        analogue_name = '$\ce{' + molecules[0] + '}$:$\ce{' + molecules[1] + '}$ ' + ratio
+      else:
+        analogue_name = 'Pure $\ce{' + a.text + '}$'
+
+      analogue = Analogue(
+        user_id = user_id,
+        name = analogue_name,
+        author = '???',
+        DOI = ''
+      )
+      db.session.add(analogue)
+      db.session.commit()
+
+      print('Downloading spectra of', analogue_name, a.get('href'))
+      analogue_url = 'http://www.strw.leidenuniv.nl/lab/databases/mixed_layered_co_co2/' + a.get('href')
+
+      with urlopen(analogue_url) as af:
+        analogue_soup = BeautifulSoup(af.read())
+        with Pool(max_workers=pool_size) as e:
+          for t in analogue_soup.find_all('a'):
+            if t.text == 'Back':
+              continue
+            
+            absolute_url = '/'.join(analogue_url.split('/')[:-1]) + '/' + t.get('href')
+            if absolute_url == 'http://www.strw.leidenuniv.nl/lab/databases/mixed_layered_co_co2/layered_ices/10_1_CO2_CO/230104w03.dat':
+              continue # TODO: spectrum is missing (404 error)
+            if absolute_url == 'http://www.strw.leidenuniv.nl/lab/databases/mixed_layered_co_co2/layered_ices/10_1_CO2_CO/230104w09.dat':
+              continue # TODO: spectrum is missing (404 error)
+            if absolute_url == 'http://www.strw.leidenuniv.nl/lab/databases/mixed_layered_co_co2/layered_ices/10_1_CO2_CO/230104w13.dat':
+              continue # TODO: spectrum is missing (404 error)
+            e.submit(add_spectrum, analogue.id, absolute_url, float(t.text))
+
+      db.session.commit()
+
 
   print('Fetching process took %.2f seconds' % (time.time()-t_start))
