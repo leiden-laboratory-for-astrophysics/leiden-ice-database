@@ -19,7 +19,7 @@ from sqlalchemy.orm import sessionmaker
 import time
 
 Session = scoped_session(db.session)
-pool_size = 6
+pool_size = 1
 
 # Normalize X Y data files
 def write_data(f_in, target_file):
@@ -69,14 +69,16 @@ def download(url):
 
 # Add single spectrum
 def add_spectrum(analogue, spectrum, temperature):
+  session = Session()
   filename = download(spectrum)
 
-  Session.add(Spectrum(
+  session.add(Spectrum(
     analogue_id = analogue if type(analogue) is int else analogue.id,
     path = filename,
     temperature = temperature
   ))
-  Session.commit()
+  session.commit()
+  session.close()
 
 
 # Add spectra to analogue
@@ -86,8 +88,6 @@ def add_spectra(analogue, spectra, temperature_parser):
       temperature = float(temperature_parser(spectrum))
       e.submit(add_spectrum, analogue.id, spectrum, temperature)
 
-  #print('Committing %s spectra by %s' % (analogue.name, analogue.author))
-  #db.session.commit()
 
 # Fetch remote data
 def fetch():
@@ -391,7 +391,7 @@ def fetch():
   # It's faster to parse the single page featuring the spectra
   page = 'http://www.strw.leidenuniv.nl/lab/databases/iso_www3/index.html'
   analogues = []
-  analogue = None
+  analogue_id = None
 
   print('Downloading Pascale Ehrenfreund & Stephan Schlemmer\'s database HTML page..')
   with urlopen(page) as f:
@@ -438,12 +438,10 @@ def fetch():
         analogues.append(composition)
         db.session.add(analogue)
         db.session.commit()
-
+        analogue_id = analogue.id
 
       absolute_url = 'http://www.strw.leidenuniv.nl/lab/databases/iso_www3/' + spectrum
-      add_spectrum(analogue, absolute_url, float(temperature))
-    
-    db.session.commit()
+      add_spectrum(analogue_id, absolute_url, float(temperature))
 
 
   # Fraser 2004 warm-up spectra
@@ -545,8 +543,6 @@ def fetch():
             if absolute_url == 'http://www.strw.leidenuniv.nl/lab/databases/mixed_layered_co_co2/layered_ices/10_1_CO2_CO/230104w13.dat':
               continue # TODO: spectrum is missing (404 error)
             e.submit(add_spectrum, analogue.id, absolute_url, float(t.text))
-
-      db.session.commit()
 
 
   print('Fetching process took %.2f seconds' % (time.time()-t_start))
