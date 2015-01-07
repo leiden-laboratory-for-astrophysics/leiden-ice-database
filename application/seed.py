@@ -18,8 +18,10 @@ from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
 import time
 
+# 869 spectra implemented
+
 Session = scoped_session(db.session)
-pool_size = 1
+pool_size = 4
 
 # Normalize X Y data files
 def write_data(f_in, target_file):
@@ -46,8 +48,7 @@ def download(url):
   # Load cache when available
   if op.isfile(cached_file):
     print('Loading data from cache for %s (%s)' % (url, md5))
-    with open(cached_file, 'rb') as f_cache:
-      write_data(f_cache, target_file)
+    copyfile(cached_file, target_file)
   else:
     # Download file
     print('Downloading %s' % url)
@@ -69,24 +70,23 @@ def download(url):
 
 # Add single spectrum
 def add_spectrum(analogue, spectrum, temperature):
-  session = Session()
-  filename = download(spectrum)
+  filename = download(spectrum) if spectrum[0:4] == 'http' else spectrum
 
-  session.add(Spectrum(
+  db.session.add(Spectrum(
     analogue_id = analogue if type(analogue) is int else analogue.id,
     path = filename,
     temperature = temperature
   ))
-  session.commit()
-  session.close()
 
 
 # Add spectra to analogue
 def add_spectra(analogue, spectra, temperature_parser):
+  # Pre-download using multiple threads
   with Pool(max_workers=pool_size) as e:
-    for spectrum in spectra:
+    for spectrum in e.map(download, spectra):
       temperature = float(temperature_parser(spectrum))
-      e.submit(add_spectrum, analogue.id, spectrum, temperature)
+      add_spectrum(analogue.id, spectrum, temperature)
+  db.session.commit()
 
 
 # Fetch remote data
@@ -184,7 +184,7 @@ def fetch():
 
   add_spectra(analogue, spectra, temperature)
 
-  
+
   # HCOOH A% + H2O B% by Suzanne Bisschop
   for ratios in ['20:80', '34:66', '50:50']:
     a = ratios.split(':')[0]
@@ -314,7 +314,7 @@ def fetch():
     )
     db.session.add(analogue)
     db.session.commit()
-  
+
     spectra = []
     for T in [15, 45, 75, 105, 135]:
       spectra.append('http://www.strw.leidenuniv.nl/lab/databases/h2o_co2_ices/H2O_PURE_' + thickness + 'L/h2o_pure_' + thickness + 'l_'+str(T)+'k.asc')
@@ -371,7 +371,7 @@ def fetch():
     )
     db.session.add(analogue)
     db.session.commit()
-    
+
     spectra = []
     for T in [15, 30, 45, 75, 105, 135]:
       if T == 30 and '30k' not in attributes:
@@ -391,7 +391,7 @@ def fetch():
   # It's faster to parse the single page featuring the spectra
   page = 'http://www.strw.leidenuniv.nl/lab/databases/iso_www3/index.html'
   analogues = []
-  analogue_id = None
+  analogue = None
 
   print('Downloading Pascale Ehrenfreund & Stephan Schlemmer\'s database HTML page..')
   with urlopen(page) as f:
@@ -438,10 +438,10 @@ def fetch():
         analogues.append(composition)
         db.session.add(analogue)
         db.session.commit()
-        analogue_id = analogue.id
 
       absolute_url = 'http://www.strw.leidenuniv.nl/lab/databases/iso_www3/' + spectrum
-      add_spectrum(analogue_id, absolute_url, float(temperature))
+      add_spectrum(analogue.id, absolute_url, float(temperature))
+    db.session.commit()
 
 
   # Fraser 2004 warm-up spectra
@@ -530,19 +530,20 @@ def fetch():
 
       with urlopen(analogue_url) as af:
         analogue_soup = BeautifulSoup(af.read())
-        with Pool(max_workers=pool_size) as e:
-          for t in analogue_soup.find_all('a'):
-            if t.text == 'Back':
-              continue
-            
-            absolute_url = '/'.join(analogue_url.split('/')[:-1]) + '/' + t.get('href')
-            if absolute_url == 'http://www.strw.leidenuniv.nl/lab/databases/mixed_layered_co_co2/layered_ices/10_1_CO2_CO/230104w03.dat':
-              continue # TODO: spectrum is missing (404 error)
-            if absolute_url == 'http://www.strw.leidenuniv.nl/lab/databases/mixed_layered_co_co2/layered_ices/10_1_CO2_CO/230104w09.dat':
-              continue # TODO: spectrum is missing (404 error)
-            if absolute_url == 'http://www.strw.leidenuniv.nl/lab/databases/mixed_layered_co_co2/layered_ices/10_1_CO2_CO/230104w13.dat':
-              continue # TODO: spectrum is missing (404 error)
-            e.submit(add_spectrum, analogue.id, absolute_url, float(t.text))
+
+        for t in analogue_soup.find_all('a'):
+          if t.text == 'Back':
+            continue
+
+          absolute_url = '/'.join(analogue_url.split('/')[:-1]) + '/' + t.get('href')
+          if absolute_url == 'http://www.strw.leidenuniv.nl/lab/databases/mixed_layered_co_co2/layered_ices/10_1_CO2_CO/230104w03.dat':
+            continue # TODO: spectrum is missing (404 error)
+          if absolute_url == 'http://www.strw.leidenuniv.nl/lab/databases/mixed_layered_co_co2/layered_ices/10_1_CO2_CO/230104w09.dat':
+            continue # TODO: spectrum is missing (404 error)
+          if absolute_url == 'http://www.strw.leidenuniv.nl/lab/databases/mixed_layered_co_co2/layered_ices/10_1_CO2_CO/230104w13.dat':
+            continue # TODO: spectrum is missing (404 error)
+          add_spectrum(analogue.id, absolute_url, float(t.text))
+        db.session.commit()
 
 
   print('Fetching process took %.2f seconds' % (time.time()-t_start))

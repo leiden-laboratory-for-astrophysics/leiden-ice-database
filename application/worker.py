@@ -10,7 +10,7 @@ import numpy as np
 @listens_for(Spectrum, 'after_insert')
 @listens_for(Spectrum, 'after_update')
 def process_data(mapper, connection, target):
-  # t_start = time.time()
+  #t_start = time.time()
   print("Processing spectrum #%s" % target.id)
 
   # GZip raw original data
@@ -42,7 +42,7 @@ def process_data(mapper, connection, target):
   dset.attrs['temperature'] = target.temperature
   h5.close()
 
-  # print('Processing time was %.2f seconds' % (time.time()-t_start))
+  #print('Processing time was %.2f seconds' % (time.time()-t_start))
 
 
 def process_line(i, line, f_out):
