@@ -14,13 +14,13 @@ from shutil import copyfile
 
 # Concurrency - seed.py is multithreaded
 from concurrent.futures import ThreadPoolExecutor as Pool
-from sqlalchemy.orm import scoped_session
-from sqlalchemy.orm import sessionmaker
+#from sqlalchemy.orm import scoped_session
+#from sqlalchemy.orm import sessionmaker
 import time
 
 # 869 spectra implemented
 
-Session = scoped_session(db.session)
+#Session = scoped_session(db.session)
 pool_size = 4
 
 # Normalize X Y data files
