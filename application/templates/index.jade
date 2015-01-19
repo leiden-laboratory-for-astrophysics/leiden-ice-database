@@ -7,6 +7,11 @@ block page
       a(href= url_for('analogue_show', analogue_id=analogue.id))
         .analogue.clearfix
           .name= analogue.name
+          .meta.text-muted
+            = analogue.spectra[0].wavenumber_range
+            |  @ 
+            = analogue.average_resolution()|round(2)
+            |  cm<sup>-1</sup>
           .author.text-muted= analogue.author
   nav
     ul.pager

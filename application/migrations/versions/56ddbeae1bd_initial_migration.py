@@ -44,6 +44,7 @@ def upgrade():
       sa.Column('analogue_id', sa.Integer(), nullable=False),
       sa.Column('temperature', sa.Float(), nullable=False),
       sa.Column('resolution', sa.Float(), nullable=True),
+      sa.Column('wavenumber_range', sa.String(), nullable=True),
       sa.Column('description', sa.UnicodeText(), nullable=True),
       sa.Column('path', sa.String(), nullable=False),
       sa.ForeignKeyConstraint(['analogue_id'], ['analogues.id'], ),

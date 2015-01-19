@@ -13,7 +13,7 @@ import time
 
 class AnalogueAdmin(AuthModelView):
   form_rules = [Macro('m.tex_expl'), 'name', Macro('m.tex_preview'),
-    'description', 'author', 'DOI', 'spectra']
+    'description', 'author', 'DOI']
   column_exclude_list = ['user', 'description']
   column_labels = dict(DOI='Paper DOI', author='First author')
   column_formatters = dict(DOI= lambda v, c, m, p:
@@ -31,7 +31,7 @@ class SpectrumAdmin(AuthModelView):
       temperature= lambda v, c, m, p:
         int(m.temperature) if m.temperature.is_integer() else m.temperature,
       resolution=  lambda v, c, m, p: "%.2f" % m.resolution)
-  form_rules = ['analogue', 'temperature', Macro('m.tex_expl'), 'description', 
+  form_rules = ['analogue', 'temperature', Macro('m.tex_expl'), 'description',
     Macro('m.data_instr'), 'path']
 
 #  def spectrum_filename(obj, file_data):

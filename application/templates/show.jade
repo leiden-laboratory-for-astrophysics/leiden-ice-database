@@ -17,7 +17,7 @@ block page
     p= analogue.description
     p
       strong Average resolution: 
-      = resolution|round(2)
+      = analogue.average_resolution()|round(2)
       |  cm<sup>-1</sup>
     h3 Paper
     p

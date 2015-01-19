@@ -44,13 +44,24 @@ def generate_hpf5(target, data):
 
 
 def detect_wavenumber_resolution(target, data):
-  resolution = np.average(np.diff(data[:,0]))
-  db.session.query(Spectrum).filter_by(id=target.id).update({'resolution': resolution})
+  x = data[:,0]
+  resolution = np.average(np.diff(x))
+  wavenumber_range = "%d - %d" % (round(np.amin(x)), round(np.amax(x)))
+  db.session.query(Spectrum).filter_by(id=target.id).update({'resolution': resolution, 'wavenumber_range': wavenumber_range})
 
 
 def process_line(line):
   i, line = line
-  normalized_line = ' '.join(line.split())
+  normalized_line = ' '.join(line.split()).replace(', ', ' ')
+  # Python can't cast comma floats, so turn into dots
+  if ',' in normalized_line:
+    if '.' not in normalized_line:
+      # Comma was used as a dot
+      normalized_line = normalized_line.replace(',', '.')
+    else:
+      # Comma was probably used to seperate thousands
+      normalized_line = normalized_line.replace(',', '')
+      
   if normalized_line[0] in ['#', 'A']:
     warnings.warn('Skipping line: %s' % normalized_line)
   else:

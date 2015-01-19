@@ -22,7 +22,8 @@ h2 { margin-top: 0px; margin-bottom: 10px; }
   border-bottom: 1px solid #ccc;
 }
 .nav .author { float: right; }
-.nav .name { float: left; }
+.nav .meta { float: left; }
+.nav .name { float: left; width: 50%; padding-right: 20px }
 .nav a:first-child {
   border-top: 1px solid #ccc;
 }

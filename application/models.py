@@ -1,4 +1,4 @@
-import datetime, os, shutil, h5py
+import datetime, os, shutil, h5py, numpy
 
 from sqlalchemy import func, Column, Float, Integer, String, UnicodeText, Date, ForeignKey
 from werkzeug.utils import secure_filename
@@ -26,7 +26,7 @@ class User(db.Model):
 
   def check_password(self, password):
     return check_password_hash(self.password, password)
-  
+
   # Flask-Login integration
   def is_active(self):
     return True
@@ -61,6 +61,9 @@ class Analogue(db.Model):
   def DOI_url(self):
     return "http://doi.org/%s" % self.DOI
 
+  def average_resolution(self):
+    return numpy.average([s.resolution for s in self.spectra])
+
   def temperatures_to_sentence(self):
     temperatures = sorted([s.temperature for s in self.spectra])
     t = [str(int(t)) if t.is_integer() else str(t) for t in temperatures]
@@ -79,18 +82,19 @@ class Spectrum(db.Model):
 
   temperature = Column(Float, nullable=False)
   resolution = Column(Float, nullable=True)
+  wavenumber_range = Column(String, nullable=True)
   description = Column(UnicodeText)
   path = Column(String, nullable=False)
 
   def __str__(self):
     return "%s at %s K" % (self.analogue.name, self.temperature)
-  
+
   def gzipped(self):
     return op.isfile(self.ungz_file_path()) == False
 
   def ungz_file_path(self):
     return op.join(data_path, self.path)
-  
+
   def data_folder(self):
     return op.join(data_path, "%s" % self.id)
 
@@ -144,5 +148,5 @@ def seed():
     print('Adding ice analogues..')
     from application.seed import fetch
     fetch()
-  
+
   print('Seed data successfully added to database')

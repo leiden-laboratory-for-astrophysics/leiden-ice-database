@@ -5,6 +5,7 @@ import tarfile, gzip
 import numpy
 
 from application.models import Analogue, Spectrum
+from sqlalchemy import or_, and_
 
 
 @app.route('/', defaults={'page': 1})
@@ -12,7 +13,9 @@ from application.models import Analogue, Spectrum
 def index(page):
   searchword = request.args.get('q')
   if searchword:
-    analogues = Analogue.query.filter(Analogue.name.like('%' + searchword + '%'))
+    analogues = Analogue.query.filter(
+      and_(Analogue.name.like('%' + word + '%') for word in searchword.split()))
+    #analogues = Analogue.query.filter(Analogue.name.like('%' + searchword + '%'))
   else:
     analogues = Analogue.query
   analogues = analogues.paginate(page, app.config['ANALOGUES_PER_PAGE'], True)
@@ -29,14 +32,12 @@ def analogue_show(analogue_id):
   analogue = Analogue.query.get(analogue_id)
   temperatures = sorted([s.temperature for s in analogue.spectra])
   t = [str(t) for t in temperatures]
-  average_resolution = numpy.average([s.resolution for s in analogue.spectra])
   spectra = db.session.query(Spectrum).filter_by(analogue_id=analogue.id).order_by(Spectrum.temperature)
 
   return render_template(
     'show.jade',
     analogue=analogue,
-    spectra=spectra,
-    resolution=average_resolution)
+    spectra=spectra)
 
 
 def split(arr, cond):

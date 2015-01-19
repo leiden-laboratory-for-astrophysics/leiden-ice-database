@@ -14,13 +14,10 @@ from shutil import copyfile
 
 # Concurrency - seed.py is multithreaded
 from concurrent.futures import ThreadPoolExecutor as Pool
-#from sqlalchemy.orm import scoped_session
-#from sqlalchemy.orm import sessionmaker
 import time
 
 # 869 spectra implemented
 
-#Session = scoped_session(db.session)
 pool_size = 4
 
 # Normalize X Y data files
@@ -100,7 +97,6 @@ def fetch():
   analogue = Analogue(
     user_id=user_id,
     name='Pure $\ce{HCOOH}$',
-    deposition_temperature=15, # Kelvin
     description='Deposited at 15K. Note that in the raw data the wavenumber range around 7-7.5 micron is not corrected for instrumental effects and is therefore difficult to use.',
     author='Suzanne Bisschop',
     DOI='10.1051/0004-6361:20077464'
@@ -124,7 +120,7 @@ def fetch():
   # HCOOH deposited at 145 K and warmed up by Suzanne Bisschop
   analogue = Analogue(
     user_id=user_id,
-    name='Pure $\ce{HCOOH}$ deposited at 145 K',
+    name='Pure $\ce{HCOOH}$',
     deposition_temperature=145, # Kelvin
     description='Ice deposited at 145 K, cooled down to 15 K and subsequently warmed up.',
     author='Suzanne Bisschop',
@@ -303,6 +299,8 @@ def fetch():
 
   add_spectra(analogue, spectra, temperature)
 
+  #==========================================================================
+  #==========================================================================
 
   # Pure H2O (thickness L) by Oberg et al. 2006
   for thickness in ['10000', '3000']:
@@ -326,7 +324,7 @@ def fetch():
     add_spectra(analogue, spectra, temperature)
 
 
-  # Pure C 18O2 (xxxxx L) by Oberg et al. 2006
+  # Pure C 18O2 (thickness L) by Oberg et al. 2006
   for thickness in ['10000', '3000']:
     analogue = Analogue(
       user_id=user_id,
@@ -433,7 +431,7 @@ def fetch():
         analogue = Analogue(
           user_id = user_id,
           name = analogue_name,
-          author = 'Ehrenfreund and Schlemmer',
+          author = 'Pascale Ehrenfreund and Stephan Schlemmer',
           DOI = ''
         )
         analogues.append(composition)
