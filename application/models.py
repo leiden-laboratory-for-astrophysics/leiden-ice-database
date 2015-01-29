@@ -81,6 +81,7 @@ class Spectrum(db.Model):
   analogue = db.relationship('Analogue', backref='spectra')
 
   temperature = Column(Float, nullable=False)
+  category = Column(Integer, default=0)
   resolution = Column(Float, nullable=True)
   wavenumber_range = Column(String, nullable=True)
   description = Column(UnicodeText)

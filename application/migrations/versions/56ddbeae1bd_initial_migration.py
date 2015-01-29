@@ -43,6 +43,7 @@ def upgrade():
       sa.Column('id', sa.Integer(), nullable=False),
       sa.Column('analogue_id', sa.Integer(), nullable=False),
       sa.Column('temperature', sa.Float(), nullable=False),
+      sa.Column('category', sa.Integer(), default=0, nullable=False),
       sa.Column('resolution', sa.Float(), nullable=True),
       sa.Column('wavenumber_range', sa.String(), nullable=True),
       sa.Column('description', sa.UnicodeText(), nullable=True),

@@ -2,13 +2,13 @@ from flask.ext import admin, login
 from flask.ext.admin.form import FileUploadField
 from flask.ext.admin.form.rules import Macro
 from flask.ext.admin.form import rules
+from wtforms.fields import SelectField
 from jinja2 import Markup
 
 from application import app, db, data_path
 from application.auth import AuthModelView, AdminHomeView
 from application.models import *
 from application.worker import *
-import time
 
 
 class AnalogueAdmin(AuthModelView):
@@ -24,6 +24,7 @@ class AnalogueAdmin(AuthModelView):
     model.user_id = login.current_user.get_id()
     return model
 
+
 class SpectrumAdmin(AuthModelView):
   column_exclude_list = ['description']
   column_labels = dict(temperature='Temperature (K)')
@@ -31,9 +32,10 @@ class SpectrumAdmin(AuthModelView):
       temperature= lambda v, c, m, p:
         int(m.temperature) if m.temperature.is_integer() else m.temperature,
       resolution=  lambda v, c, m, p: "%.2f" % m.resolution)
-  form_rules = ['analogue', 'temperature', Macro('m.tex_expl'), 'description',
-    Macro('m.data_instr'), 'path']
+  form_rules = ['analogue', 'temperature', Macro('m.category'), 'category',
+    Macro('m.tex_expl'), 'description', Macro('m.data_instr'), 'path']
 
+#  This method would set the uploaded data file name to a timestamp
 #  def spectrum_filename(obj, file_data):
 #    return secure_filename('%s.txt' % int(time.time()))
 
@@ -41,6 +43,14 @@ class SpectrumAdmin(AuthModelView):
     'path': FileUploadField('Data file', base_path=data_path,
     allowed_extensions=['asc', 'dat', ''])
   }
+
+  form_overrides = dict(category=SelectField)
+  form_args = dict(
+  # Pass the choices to the `SelectField`
+  category=dict(
+    choices=[(0, 'Warm-up'), (1, 'Exposure time'), (2, 'Other')]
+  ))
+
 
 
 admin = admin.Admin(app,

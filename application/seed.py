@@ -520,8 +520,9 @@ def fetch():
       analogue = Analogue(
         user_id = user_id,
         name = analogue_name,
-        author = '???',
-        DOI = ''
+        author = 'Suzanne Bisschop',
+        DOI = '',
+        description = 'Thesis: Complex Molecules in the Laboratory and Star Forming Regions'
       )
       db.session.add(analogue)
       db.session.commit()
