@@ -82,6 +82,7 @@ class Spectrum(db.Model):
 
   temperature = Column(Float, nullable=False)
   category = Column(Integer, default=0)
+  exposure_time = Column(Integer, nullable=True)
   resolution = Column(Float, nullable=True)
   wavenumber_range = Column(String, nullable=True)
   description = Column(UnicodeText)

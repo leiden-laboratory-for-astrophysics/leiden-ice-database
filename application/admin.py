@@ -33,7 +33,8 @@ class SpectrumAdmin(AuthModelView):
         int(m.temperature) if m.temperature.is_integer() else m.temperature,
       resolution=  lambda v, c, m, p: "%.2f" % m.resolution)
   form_rules = ['analogue', 'temperature', Macro('m.category'), 'category',
-    Macro('m.tex_expl'), 'description', Macro('m.data_instr'), 'path']
+    Macro('m.exposure_time'), 'exposure_time', Macro('m.tex_expl'),
+    'description', Macro('m.data_instr'), 'path']
 
 #  This method would set the uploaded data file name to a timestamp
 #  def spectrum_filename(obj, file_data):
