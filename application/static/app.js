@@ -45,7 +45,7 @@ var svg = d3.select(container)
   .attr('width', svg_width)
   .attr('height', svg_height)
   .append('g')
-  .attr('transform', 
+  .attr('transform',
   'translate(' + margin.left + ',' + margin.top + ')');
 
 $(window).on('resize', function() {
@@ -175,7 +175,7 @@ function makeFigure(error, results) {
     .attr('class', 'y0 axis')
     .attr('transform', 'translate(' + width + ',0)')
     .call(yAxisRight);
-  
+
   // Add Y Axis label
   svg.append('text')
     .attr('class', 'y label')
@@ -184,7 +184,7 @@ function makeFigure(error, results) {
     .attr('y', 14 - margin.left)
     .attr('x', 0 - height / 2)
     .text('Absorbance');
-  
+
   // Draw Hover tools
   hoverLineGroup = svg.append('g').attr('class', 'hover-line');
 
@@ -240,7 +240,7 @@ function makeFigure(error, results) {
     .attr('transform', 'translate('+(width-80)+',40)')
     .style('font-size', '14px')
     .call(d3.legend);
- 
+
   // Finish drawing figure
   loader.hide();
 }
@@ -251,7 +251,7 @@ function mousemove(d, i) {
   if (mouseX > 0 && mouseY > 0 && mouseY < height) {
     hoverLineGroup.classed('hide', false);
     hoverLine.attr('x1', mouseX).attr('x2', mouseX);
-    hoverHint.attr('x', mouseX+20).attr('y', mouseY); 
+    hoverHint.attr('x', mouseX+20).attr('y', mouseY);
     var wavenumber = Math.round(x.invert(mouseX));
     var absorbance = Math.round(y.invert(mouseY) * 1000) / 1000;
     hoverHint.text('(' + wavenumber + ', ' + absorbance + ')');

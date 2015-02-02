@@ -5,22 +5,29 @@ block title
 block content
   .container
     .row
-      .col-sm-12
+      .col-md-12
         h1
           a(href= url_for('index')) Sackler Laboratory Ice Database
         p.lead IR spectra measured by the Sackler Laboratory for Astrophysics
 
         form.search.form-horizontal(role='search', action='/')
           .input-group.input-group-lg
-            input.form-control(type='text', name='q', placeholder='Search', value=q)
+            input.form-control(type='text', name='q', placeholder='Search for a compound', value=q)
             span.input-group-btn
               input.btn.btn-default(type='submit', value='Search')
     .row
-      .main.col-sm-12
+      .main.col-md-12
         for message in get_flashed_messages()
           .alert.alert-info= message
 
         block page
+        .row.footer.col-md-12
+          .col-md-6
+            p
+              a(href='#') Open source on GitHub
+          .col-md-6.contact
+            p
+              a(href='http://home.strw.leidenuniv.nl/~linnartz/') Questions?
 
 block head
   {{super()}}

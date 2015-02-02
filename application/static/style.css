@@ -31,6 +31,11 @@ h2 { margin-top: 0px; margin-bottom: 10px; }
   background-color: #EAEAEA;
 }
 .nav li { list-style: none; }
+.header .results-count { float: left; }
+.header .info { float: right; }
+.footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid #ccc; }
+.footer .col-md-6 { padding: 0px }
+.footer .contact { text-align: right; }
 /*.sidebar { padding: 0px; }*/
 
 /* D3 styles */

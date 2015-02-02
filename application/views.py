@@ -100,13 +100,13 @@ def analogue_show_json(analogue_id):
 
   # Annotate important wavenumbers
   annotations = {}
-  if '{H2O}' in analogue.name:
-    annotations['H2O stretch'] =   3250 # cm-1
-    annotations['H2O bending'] =   1700
-    annotations['H2O libration'] = 770
+  #if '{H2O}' in analogue.name:
+  #  annotations['H2O stretch'] =   3250 # cm-1
+  #  annotations['H2O bending'] =   1700
+  #  annotations['H2O libration'] = 770
 
-  if '{HCOOH}' in analogue.name:
-    annotations['C=O stretch'] =   1714
+  #if '{HCOOH}' in analogue.name:
+  #  annotations['C=O stretch'] =   1714
 
   return jsonify(
     spectra=sorted([s.id for s in analogue.spectra]),

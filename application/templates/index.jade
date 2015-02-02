@@ -1,8 +1,12 @@
 extends 'layout.jade'
 block page
-  p= analogues.total|string + ' results (' + analogues.pages|string + ' pages)'
+  .header.clearfix
+    .results-count
+      p {{ analogues.total|string }} results ({{ analogues.pages|string }} pages)
+    .info.text-muted
+      p.text-muted This database contains {{ stats['analogues_count'] }} compounds and a total of {{ stats['spectra_count'] }} spectra.
 
-  div.nav
+  .nav
     - for analogue in analogues.items
       a(href= url_for('analogue_show', analogue_id=analogue.id))
         .analogue.clearfix
@@ -21,5 +25,3 @@ block page
       - if analogues.has_next
         li
           a(href= url_for('index', page=analogues.next_num, q=q)) Next
-
-  p.text-muted This database contains {{ stats['analogues_count'] }} compounds and a total of {{ stats['spectra_count'] }} spectra.
