@@ -12,3 +12,4 @@ numpy==1.9.1
 Cython==0.21.2
 h5py==2.4.0
 paramiko==1.15.2
+beautifulsoup4==4.3.2
