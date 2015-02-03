@@ -45,3 +45,10 @@ This set-up features a ViM configuration, so you could use this as your editor. 
 
 ### Delete machine
 To delete a vagrant machine use `vagrant destroy` (this will delete all its data as well). To rebuild use `vagrant up` again.
+
+### Starting the production server
+```bash
+ssh icedb.strw.leidenuniv.nl
+cd /data/icedb/ice-database
+gunicorn application:app -b 0.0.0.0:5000 --pid ../gunicorn -D
+```

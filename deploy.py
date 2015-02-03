@@ -8,8 +8,7 @@ destiny = '/data/icedb'
 username = getpass.getuser()
 
 if username == 'vagrant':
-  #username = input('STRW username: ')
-  username = 'olsthoorn'
+  username = input('STRW username: ')
 else:
   print('Deploying with user:', username)
 
@@ -40,6 +39,9 @@ run(ssh, 'cd %s/ice-database; rm application/config.py' % destiny)
 run(ssh, 'cd %s/ice-database; ln -s /data/icedb/shared/config.py application/config.py' % destiny)
 run(ssh, 'cd %s/ice-database; rm -rf application/data' % destiny)
 run(ssh, 'cd %s/ice-database; ln -s /data/icedb/shared/data application/data' % destiny)
+
+# Restart server (gunicorn)
+run(ssh, 'kill -HUP $(cat /data/icedb/gunicorn)')
 
 ssh.close()
 print('Finished deploying to %s@%s' % (username, server))
