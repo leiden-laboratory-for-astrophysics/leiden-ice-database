@@ -34,7 +34,10 @@ block head
   link(rel='stylesheet', href="{{ url_for('static', filename='style.css') }}")
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta charset="utf-8">
-  script(src="{{ url_for('static', filename='html5shiv.min.js') }}")
+  <!--[if lt IE 9]>
+    script(src="{{ url_for('static', filename='html5shiv.min.js') }}")
+    script(src="{{ url_for('static', filename='respond.min.js') }}")
+  <![endif]-->
   script(src="{{ url_for('static', filename='es5-shim.min.js') }}")
   include mathjax.html
 block scripts
