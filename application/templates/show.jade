@@ -17,28 +17,25 @@ block page
     p= analogue.description
     p
       strong Average resolution: 
-      = analogue.average_resolution()|round(2)
-      |  cm<sup>-1</sup>
+      {{analogue.average_resolution()|round(2)}} cm<sup>-1</sup>
     h3 Paper
     p
-      | By 
-      = analogue.author
-      |, DOI:
-      = analogue.DOI
+      By {{ analogue.author }}, DOI: {{ analogue.DOI }}
     - if analogue.DOI
       p
         a.btn.btn-primary(href= analogue.DOI_url()) View Paper (DOI)
   .col-md-6
     h3 Download
-    p
-      | Please make sure to cite 
-      a(href=analogue.DOI_url()) the paper
-      |  when you use this data.
+    - if analogue.DOI
+      p
+        | Please make sure to cite 
+        a(href=analogue.DOI_url()) the paper
+        |  when you use this data.
     h4 Original Text Files
     ul
       - for spectrum in spectra
         li
-          = '%s K: ' % spectrum.temperature
+          {{spectrum.temperature}} K ({{spectrum.category_str()}}):
           a(href= url_for('spectrum_download_txt', spectrum_id=spectrum.id, download_filename=spectrum.download_filename())) TXT
           |  or 
           a(href= url_for('spectrum_download_gz', spectrum_id=spectrum.id, download_filename=spectrum.download_filename())) TXT.GZ

@@ -38,6 +38,8 @@ cd /vagrant && python --version
 python app.py
 ```
 
+The `/vagrant` folder is a shared folder between the virtual machine and your developer machine.
+
 ### Developing
 This set-up features a ViM configuration, so you could use this as your editor. This is not at all required though, it's handy to know that the `/vagrant` folder on the virtual machine is actually the same folder as this repository. So you can freely edit the files on your host machine with your favourite editor and just run python / server using the virtual machine.
 

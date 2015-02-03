@@ -11,26 +11,47 @@ form.search { margin-bottom: 20px; }
   width: 64px;
 }
 h2 { margin-top: 0px; margin-bottom: 10px; }
-.nav a {
-  display: block;
+.analogues {
+  width: 100%;
+}
+.analogues a {
+  color: #333;
   text-decoration: none;
-  background-color: transparent;
+  display: block;
+}
+.analogues tr {
+  cursor: pointer;
+}
+.analogues td {
+  padding-left: 5px;
+  padding-right: 5px;
+  line-height: 40px;
+  /* padding-top: 10px;
+  padding-bottom: 10px; */
+}
+.analogues td.name {
+  padding-right: 0px;
+}
+.analogues td.meta {
+  padding: 0px;
+}
+.analogues td.author {
+  padding-left: 0px;
+}
+td.author { text-align: right; }
+.analogue {
   padding: 5px;
   padding-top: 10px;
   padding-bottom: 10px;
-  color: #333;
   border-bottom: 1px solid #ccc;
 }
-.nav .author { float: right; }
-.nav .meta { float: left; }
-.nav .name { float: left; width: 50%; padding-right: 20px }
-.nav a:first-child {
+.analogues {
   border-top: 1px solid #ccc;
 }
-.nav a:hover {
+.analogues td.name { width: 50%; }
+.analogues tr:hover {
   background-color: #EAEAEA;
 }
-.nav li { list-style: none; }
 .header .results-count { float: left; }
 .header .info { float: right; }
 .footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid #ccc; }

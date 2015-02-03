@@ -47,11 +47,9 @@ class SpectrumAdmin(AuthModelView):
 
   form_overrides = dict(category=SelectField)
   form_args = dict(
-  # Pass the choices to the `SelectField`
-  category=dict(
-    choices=[(0, 'Warm-up'), (1, 'Exposure time'), (2, 'Other')]
-  ))
-
+    # Pass the choices to the `SelectField`
+    category=dict(choices=Spectrum.CATEGORIES)
+  )
 
 
 admin = admin.Admin(app,
