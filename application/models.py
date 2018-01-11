@@ -88,10 +88,10 @@ class Spectrum(db.Model):
   description = Column(UnicodeText)
   path = Column(String, nullable=False)
 
-  CATEGORIES = [(0, 'Warm-up'), (1, 'Exposure time'), (2, 'Other')]
+  CATEGORIES = [('0', 'Warm-up'), ('1', 'Exposure time'), ('2', 'Other')]
 
   def category_str(self):
-    return [category for category in Spectrum.CATEGORIES if category[0] == self.category][0][1]
+    return [category for category in Spectrum.CATEGORIES if int(category[0]) == self.category][0][1]
 
   def __str__(self):
     return "%s at %s K" % (self.analogue.name, self.temperature)
