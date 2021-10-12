@@ -1,0 +1,102 @@
+body {
+  margin: 1em;
+  font-family: arial, helvetica, sans-serif;
+  color: black;
+  background: white;
+}
+
+h2, h3, h4, h5, h6 { text-align: left }
+h1, h2, h3, h4, h5 { color: #040099 }
+h1 { 
+	text-align:center; 
+	font: 170% arial, helvetica, sans-serif; 
+	font-weight:bold; 
+	position:absolute; margin:0; padding:0; 
+	left:calc(1em + 230px);
+	width:calc(100% - 228px - 13em); 
+	top:1.2em;
+}
+h1.homepage { /* long text, avoid being pushed to header area */
+	text-align:left; 
+	position:relative; margin:0; padding:0; 
+	left:0;
+	width:100%; 
+	top:0;
+}
+h2 { font: 140% arial, helvetica, sans-serif; }
+h3 { font: 120% arial, helvetica, sans-serif; }
+h4 { font: bold 100% arial, helvetica, sans-serif; }
+h5 { font: italic 100% arial, helvetica, sans-serif; }
+h6 { font: small-caps 100% arial, helvetica, sans-serif; }
+
+p { font-family: arial, helvetica, sans-serif; }
+
+ul, td, th {
+  font-family: arial, helvetica, sans-serif;
+}
+
+tt, pre, code {
+  font-family: monospace; font-size:1.15em;
+}
+
+td.btfah {
+  text-align: center;
+  line-height: 1.5em;
+  padding-left: 0;
+  padding-right: 0;
+}
+td.btfah input {
+  margin-left: 0;
+  margin-right: 0;
+  width: 3em;
+}
+
+#perTable td {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	text-align:center;
+	cursor:default;
+}
+.symbols {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	text-align:center;
+}
+.colorTable {
+	border: solid black;
+	border-width: 0px 2px 1px 1px;
+}
+.colorTable td {
+	border: solid black;
+	border-width: 0 0 1px 0;
+}
+.colorTable th {
+	border: solid black;
+	border-width: 1px 0 1px 0;
+}
+.outdatedMessage {
+	padding:6px; 
+	border:3px outset #99CC33;
+	text-align:center;
+	font-size:1.2em; 
+	color:#FFFFFF; 
+	background-color:#99CC33; 
+	background-image:url(images/warning.gif); 
+	background-position:left; 
+	background-repeat:no-repeat;
+}
+.optP {
+	border-bottom: 2px dotted #666;
+}
+
+ul.toc { list-style:none; margin-left:1em; font-size:0.85em; 
+	border:1px dotted #040099; border-radius:0.6em;
+	display:table; padding:0.5em 0.8em;
+}
+ul.toc ul { list-style:none; margin-left:2em; padding-left:0; }
+ul.toc li { margin-top:0.2em; }
+
+header #logo { margin-left:0.5em; height:3em; min-height:45px; }
+header img { border:none; }
+header #navi { position:absolute; top:0.8em; right:1.1em; font-size:0.9em; line-height:150%; }
+.versal {
+	font-variant: small-caps;
+}

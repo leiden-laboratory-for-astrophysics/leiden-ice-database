@@ -10,6 +10,7 @@ form.search { margin-bottom: 20px; }
   height: 64px;
   width: 64px;
 }
+
 h2 { margin-top: 0px; margin-bottom: 10px; }
 .analogues {
   width: 100%;
@@ -88,3 +89,46 @@ text.label {
   stroke-width: 1;
   shape-rendering: crispEdges;
 }
+
+
+.navbar-nav li a {
+  padding:0 15px;
+  line-height:60px;    
+}
+.navbar-header a {
+  padding:0 15px;
+  line-height:60px;    
+}
+
+
+
+/* START OF Change the Navbar Colors/Font/Size */
+/* Adjust Menu (red) text color, (Garamond) font-family, (1.5em) font-size  */
+.navbar .nav > li > a, .navbar .nav > li > a:first-letter,
+.navbar .nav > li.current-menu-item > a, 
+.navbar .nav > li.current-menu-ancestor > a {                       
+font-size:      1.17em;
+}
+
+.navbar-brand
+{
+  font-size: 22px;
+}
+
+.glyphicon {
+  min-height: 40px;
+  line-height: 40px;
+  font-size: 20px;
+}
+
+#authForm0 {
+  display:inline-block;
+  width:20px;
+}
+
+#authForm1 {
+  display:inline-block;
+  width:50px;
+}
+
+

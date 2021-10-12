@@ -1,0 +1,149 @@
+extends 'bootstrap/base.html'
+block title
+  |Ice Database
+
+
+
+block navbar
+  <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+  <button type="button" class="navbar-toggle collapsed">
+  </button>
+  <a class="navbar-brand" href="/"><img style="max-width:64px; margin-top: -0px;" src="{{ url_for('static', filename='sla-pictogram.png') }}" alt="Ice Database">
+  </a>
+  <a class="navbar-brand" style="color: #fff" href="/">Ice Database</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+  <ul class="nav navbar-nav">
+  <li><a href="/spectrum_data">Spectral data <span class="sr-only">(current)</span></a></li>
+  <li><a href="/refrac_index">Optical Constants</a></li>
+  <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools <span class="caret"></span></a>
+  <ul class="dropdown-menu">
+  <li><a href="/Kramers_Kronig"><span style="font-family: Calibri, sans-serif; font-size: 20px;">Complex refractive index calculator</span></a></li>
+  <li role="separator" class="divider"></li>
+  <li><a href="/Kramers_Kronig"><span style="font-family: Calibri, sans-serif; font-size: 20px;">Synthetic spectrum creator</span></a></li>
+  </ul>
+  </li>
+  </ul>
+  <ul class="nav navbar-nav navbar-right">
+  <button type="button" class="btn btn-link btn-lg" id="authForm0" aria-label="Left Align">
+  <a <span class="glyphicon glyphicon-certificate" href="/Credit" style="color: #fff" aria-hidden="true"></span> </a>
+  </button>
+  <button type="button" class="btn btn-link btn-lg" id="authForm0" aria-label="Left Align">
+  <a <span class="glyphicon glyphicon-envelope" href="/formpage" style="color: #fff" aria-hidden="true"></span> </a>
+  </button>
+  <button type="button" class="btn btn-link btn-lg" id="authForm1" aria-label="Left Align">
+  <a <span class="glyphicon glyphicon-info-sign" href="https://home.strw.leidenuniv.nl/~linnartz/index.html" style="color: #fff" aria-hidden="true"></span> </a>
+  </button>
+  </ul>
+  </li>
+  </ul>
+  </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+  </nav>
+
+
+block content
+  .container
+    .row
+      .col-md-12
+        <div class="card border-0 shadow my-5">
+        <div class="card-body p-5">
+        
+        
+        h1
+        <p style="text-align: center;"><span style="color: rgb(41, 105, 176);"><strong><span style='font-family: "Arial Black", Gadget, sans-serif; font-size: 30px;'><u>Acknowledgments</u></span></strong></span></p>
+        <div style="height: 20px"></div>
+        <p style="text-align: justify;"><span style="color: rgb(0,0,0); font-size: 20px;"style="font-family: Calibri, sans-serif;">The Leiden Ice Database is the result of the great work of several bachelor, master students, as well as PhD candidates, postdocs, visiting researchers at Leiden University. The efficient administration from the leaders of the Laboratory for Astrophysics over the years (Prof. Mayo Greenberg, Prof. Ewine van Dishoeck, Prof. Stephan Schlemmer, and Prof. Harold Linnartz), has been of paramount importance to keep the high quality of the data produced in Leiden.</span></p>
+        <div style="height: 0px"></div>
+        
+
+        h1
+        <p style="text-align: center;"><span style="color: rgb(41, 105, 176);"><strong><span style='font-family: "Arial Black", Gadget, sans-serif; font-size: 30px;'><u>Funds</u></span></strong></span></p>
+        <div style="height: 20px"></div>
+        p(style='text-align:center;')
+          <img src="static/Leiden_Logo.png" alt="Leiden_logo" style="width: 20vw; min-width: 330px; ">
+        <div style="height: 0px"></div>
+
+        h1
+        <p style="text-align: center;"><span style="color: rgb(41, 105, 176);"><strong><span style='font-family: "Arial Black", Gadget, sans-serif; font-size: 30px;'><u>Scientific head</u></span></strong></span></p>
+        <div style="height: 20px"></div>
+        <p style="text-align: center;"><span style="color: rgb(0,0,0); font-size: 20px;"style="font-family: Calibri, sans-serif;">Prof. Harold Linnartz</span></p>
+        <div style="height: 0px"></div>
+        
+
+        h1
+        <p style="text-align: center;"><span style="color: rgb(41, 105, 176);"><strong><span style='font-family: "Arial Black", Gadget, sans-serif; font-size: 30px;'><u>Developers</u></span></strong></span></p>
+        <div style="height: 20px"></div>
+        <p style="text-align: center;"><span style="color: rgb(0,0,0); font-size: 20px;"style="font-family: Calibri, sans-serif;">Dr. Will R. M. Rocha (Postdoc Leiden): Upgraded version in 2021</span></p>
+        <p style="text-align: center;"><span style="color: rgb(0,0,0); font-size: 20px;"style="font-family: Calibri, sans-serif;">MSc. Bart Olsthoorn (PhD Candidate NORDITA): Original version in 2015</span></p>
+        <div style="height: 0px"></div>
+        
+
+    
+        h1
+        <p style="text-align: center;"><span style="color: rgb(41, 105, 176);"><strong><span style='font-family: "Arial Black", Gadget, sans-serif; font-size: 30px;'><u>Softwares</u></span></strong></span></p>
+        <div style="height: 20px"></div>
+        p(style='text-align:center;')
+          a(href='https://flask.palletsprojects.com/en/2.0.x/', target='_blank')<span style="font-family: Calibri, sans-serif; font-size: 20px;">Python Flask</span></p>
+        p(style='text-align:center;')  
+          a(href='https://getbootstrap.com/', target='_blank')<span style="font-family: Calibri, sans-serif; font-size: 20px;">Bootstrap 3</span></p>
+        p(style='text-align:center;')  
+          a(href='http://jmol.sourceforge.net/', target='_blank')<span style="font-family: Calibri, sans-serif; font-size: 20px;">Jmol</span></p>
+        p(style='text-align:center;')  
+          a(href='https://developer.mozilla.org/pt-BR/docs/Web/JavaScript', target='_blank')<span style="font-family: Calibri, sans-serif; font-size: 20px;">JavaScript</span></p>
+        p(style='text-align:center;')  
+          a(href='https://html.com/html5/', target='_blank')<span style="font-family: Calibri, sans-serif; font-size: 20px;">HTML5</span></p>
+        p(style='text-align:center;')  
+          a(href='https://docs.bokeh.org/en/latest/index.html', target='_blank')<span style="font-family: Calibri, sans-serif; font-size: 20px;">Bokeh</span></p>
+        p(style='text-align:center;')  
+          a(href='https://numpy.org/', target='_blank')<span style="font-family: Calibri, sans-serif; font-size: 20px;">Numpy</span></p>
+        p(style='text-align:center;')  
+          a(href='https://pandas.pydata.org/', target='_blank')<span style="font-family: Calibri, sans-serif; font-size: 20px;">Pandas</span></p>
+        p(style='text-align:center;')  
+          a(href='https://alembic.sqlalchemy.org/en/latest/', target='_blank')<span style="font-family: Calibri, sans-serif; font-size: 20px;">Alembic</span></p>
+        p(style='text-align:center;')  
+          a(href='https://jinja.palletsprojects.com/en/3.0.x/', target='_blank')<span style="font-family: Calibri, sans-serif; font-size: 20px;">Jinja</span></p>
+        p(style='text-align:center;')  
+          a(href='https://www.mathjax.org/', target='_blank')<span style="font-family: Calibri, sans-serif; font-size: 20px;">MatJax</span></p>
+        p(style='text-align:center;')  
+          a(href='https://jquery.com/', target='_blank')<span style="font-family: Calibri, sans-serif; font-size: 20px;">JQuery</span></p>
+        p(style='text-align:center;')  
+          a(href='https://wtforms.readthedocs.io/en/2.3.x/', target='_blank')<span style="font-family: Calibri, sans-serif; font-size: 20px;">WTForms</span></p>
+        <div style="height: 0px"></div>
+        </div> 
+        </div>
+
+        
+
+        
+
+
+
+
+block head
+  {{super()}}
+  link(rel='stylesheet', href="{{ url_for('static', filename='style_credit.css') }}")
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta charset="utf-8">
+  <!--[if lt IE 9]>
+  script(src="{{ url_for('static', filename='html5shiv.min.js') }}")
+  script(src="{{ url_for('static', filename='respond.min.js') }}")
+  <![endif]-->
+  script(src="{{ url_for('static', filename='es5-shim.min.js') }}")
+  include mathjax.html
+block scripts
+  {{super()}}
+  script(src="{{ url_for('static', filename='d3.v3.min.js') }}")
+  //script(src="http://d3js.org/d3.v3.js")
+  script(src="{{ url_for('static', filename='d3.legend.js') }}")
+  script(src="http://d3js.org/queue.v1.min.js")
+
+    ga('create', 'UA-59238456-1', 'auto');
+    ga('send', 'pageview');
+

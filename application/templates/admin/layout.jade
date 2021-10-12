@@ -7,7 +7,7 @@ block head_css
   {{ super() }}
   link(href="{{ url_for('static', filename='admin/admin.css') }}" rel="stylesheet")
 
-  if current_user.is_authenticated() == False
+  if current_user.is_authenticated == False
     link(href="{{ url_for('static', filename='admin/login.css') }}" rel="stylesheet")
 block head_tail
   {{ super() }}
@@ -20,7 +20,7 @@ block tail_js
 block page_body
   .container
     .row
-      if current_user.is_authenticated()
+      if current_user.is_authenticated
         .col-md-2(role="navigation")
           ul.nav.nav-pills.nav-stacked
             {{ layout.menu() }}

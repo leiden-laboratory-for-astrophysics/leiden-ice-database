@@ -1,0 +1,194 @@
+body { padding-bottom: 40px; }
+p { font-size: 16px; line-height: 22px }
+form.search { margin-bottom: 20px; }
+#spectrum {
+  position: relative;
+  cursor: default;
+}
+#spectrum img.loader {
+  position: absolute;
+  height: 64px;
+  width: 64px;
+}
+
+h2 { margin-top: 0px; margin-bottom: 10px; }
+.analogues {
+  width: 100%;
+}
+.analogues a {
+  color: #333;
+  text-decoration: none;
+  display: block;
+}
+.analogues tr {
+  cursor: pointer;
+}
+.analogues td {
+  padding-left: 5px;
+  padding-right: 5px;
+  line-height: 40px;
+  /* padding-top: 10px;
+  padding-bottom: 10px; */
+}
+.analogues td.name {
+  padding-right: 0px;
+}
+.analogues td.meta {
+  padding: 0px;
+}
+.analogues td.author {
+  padding-left: 0px;
+}
+td.author { text-align: right; }
+.analogue {
+  padding: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+}
+.analogues {
+  border-top: 1px solid #ccc;
+}
+.analogues td.name { width: 50%; }
+.analogues tr:hover {
+  background-color: #EAEAEA;
+}
+.header .results-count { float: left; }
+.header .info { float: right; }
+.footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid #ccc; }
+.footer .col-md-6 { padding: 0px }
+.footer .contact { text-align: right; }
+/*.sidebar { padding: 0px; }*/
+
+/* D3 styles */
+g.legend { fill: none; stroke: grey; stroke-width: 1; }
+g.legend circle { stroke: none; }
+g.legend-items { fill: black; stroke: none;}
+.hover-plane { fill: white; }
+.hover-line line { stroke: #808080; stroke-width: 1; }
+.hover-hint { fill: black; }
+path {
+  stroke-width: 1;
+  fill: none;
+}
+path.unfocus {
+  opacity: 0.2;
+}
+path.focus {
+  stroke-width: 2;
+}
+text.label {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: grey;
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+
+
+.navbar-nav li a {
+  padding:0 15px;
+  line-height:60px;    
+}
+.navbar-header a {
+  padding:0 15px;
+  line-height:60px;    
+}
+
+
+
+/* START OF Change the Navbar Colors/Font/Size */
+/* Adjust Menu (red) text color, (Garamond) font-family, (1.5em) font-size  */
+.navbar .nav > li > a, .navbar .nav > li > a:first-letter,
+.navbar .nav > li.current-menu-item > a, 
+.navbar .nav > li.current-menu-ancestor > a {                       
+font-size:      1.17em;
+}
+
+.navbar-brand
+{
+  font-size: 22px;
+}
+
+.glyphicon {
+  min-height: 40px;
+  line-height: 40px;
+  font-size: 20px;
+}
+
+#authForm0 {
+  display:inline-block;
+  width:20px;
+}
+
+#authForm1 {
+  display:inline-block;
+  width:50px;
+}
+
+
+/* Set a background image by replacing the URL below */
+body {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://www.nasa.gov/sites/default/files/thumbnails/image/stsci-h-p2016a-m-2000x1374.png') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+}
+
+form {
+  text-align: center;
+  font-size: 32px;
+
+}
+
+***************************************************************************
+                                CONTACT
+***************************************************************************/
+
+.contact form {
+    margin-top: 0px;
+    padding: 0px 30px;
+}
+.contact h3 {
+    color: #ffffff;
+    text-align: center;
+    font-weight: 600;
+    margin-top: 120px;
+    margin-bottom: 0px;
+}
+
+.contact p {
+    text-align: center;
+    margin: 0 0px 10px;
+    margin-left: 0px!important;
+}
+.contact label {
+    display: none;
+}
+.contact input {
+  text-align: center;
+   width: 50%;
+    border: none;
+    border: 1px solid #dddddd78;
+    padding: 10px;
+    border-radius: 4px;
+}
+.contact textarea#message {
+  text-align: center;
+    width: 50%;
+    height: 122px;
+    border: 1px solid #dddddd78;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+
+/***************************************************************************
+                                END CONTACT
+***************************************************************************/

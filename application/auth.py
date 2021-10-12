@@ -1,7 +1,8 @@
 from flask import request, redirect, url_for
-from flask.ext import login
-from flask.ext.admin import helpers, expose, AdminIndexView
-from flask.ext.admin.contrib.sqla import ModelView
+from flask_login import LoginManager
+from flask_login import login_user, logout_user, current_user
+from flask_admin import helpers, expose, AdminIndexView
+from flask_admin.contrib.sqla import ModelView
 from wtforms import form, fields, validators
 
 from application import app, db
@@ -9,10 +10,10 @@ from application.models import User
 
 class AuthModelView(ModelView):
   create_template = 'admin/create.html'
-  edit_template = 'admin/edit.jade'
+  edit_template = 'admin/edit.html'
 
   def is_accessible(self):
-    return login.current_user.is_authenticated()
+    return current_user.is_authenticated
 
 
 # Define login and registration forms (for flask-login)
@@ -38,7 +39,7 @@ class LoginForm(form.Form):
 class AdminHomeView(AdminIndexView):
   @expose('/')
   def index(self):
-    if not login.current_user.is_authenticated():
+    if not current_user.is_authenticated: #Will's update: removed ()
       return redirect(url_for('.login_view'))
     return super(AdminHomeView, self).index()
 
@@ -48,9 +49,9 @@ class AdminHomeView(AdminIndexView):
     form = LoginForm(request.form)
     if helpers.validate_form_on_submit(form):
       user = form.get_user()
-      login.login_user(user)
+      login_user(user)
 
-    if login.current_user.is_authenticated():
+    if current_user.is_authenticated:
       return redirect(url_for('.index'))
 
     self._template_args['form'] = form
@@ -58,13 +59,13 @@ class AdminHomeView(AdminIndexView):
 
   @expose('/logout/')
   def logout_view(self):
-    login.logout_user()
+    logout_user()
     return redirect(url_for('.index'))
  
 
 # Initialize flask-login
 def init_login():
-  login_manager = login.LoginManager()
+  login_manager = LoginManager()
   login_manager.init_app(app)
 
   # Create user loader function

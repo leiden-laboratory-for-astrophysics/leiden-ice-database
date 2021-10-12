@@ -1,0 +1,20 @@
+<head>
+  <script type="text/javascript">
+   var myJmol = 'myJmol';
+   var JmolInfo = {
+   width:'100%',
+   height:'100%',
+   color:'#E2F4F5',
+   j2sPath:'https://chemapps.stolaf.edu/jmol/jsmol/j2s',
+   serverURL:'https://chemapps.stolaf.edu/jmol/jsmol/php/jsmol.php',
+   use:'html5'
+  }
+  $(document).ready(function(){
+    $('#JmolDiv').html( Jmol.getAppletHtml(myJmol, JmolInfo) );
+    Jmol.script(myJmol, 'load https://chemapps.stolaf.edu/jmol/jsmol-2013-09-18/data/caffeine.mol');
+  });
+  </script>
+  </head>
+  <body>
+  <div id="JmolDiv" style="width:30vmin; height:30vmin;"></div>
+  </body>

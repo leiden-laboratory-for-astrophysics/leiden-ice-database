@@ -1,7 +1,7 @@
 extends 'admin/master.html'
 block body
   {{ super() }}
-  if current_user.is_authenticated()
+  if current_user.is_authenticated
     p.lead
       |Welcome to the administration section of the ice database.
     p
@@ -26,3 +26,5 @@ block body
         |Sign in
 
   <a class="btn" href="/"><i class="icon-arrow-left icon-white"></i> Back to the public website</a>
+  <a class="btn" href="/admin/Statistics"><i class="icon-arrow-left icon-white"></i> Go to LID accesses numbers</a>
+  

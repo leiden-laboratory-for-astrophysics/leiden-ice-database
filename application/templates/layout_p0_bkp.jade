@@ -1,0 +1,109 @@
+extends 'bootstrap/base.html'
+block title
+  |Ice Database
+
+
+block navbar
+  <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+  <button type="button" class="navbar-toggle collapsed">
+  </button>
+  <a class="navbar-brand" href="/"><img style="max-width:64px; margin-top: -0px;" src="{{ url_for('static', filename='sla-pictogram.png') }}" alt="Ice Database">
+  </a>
+  <a class="navbar-brand" style="color: #fff" href="/">Ice Database</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+  <ul class="nav navbar-nav">
+  <li><a href="/spectrum_data">Spectral data <span class="sr-only">(current)</span></a></li>
+  <li><a href="/refrac_index">Optical Constants</a></li>
+  <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools <span class="caret"></span></a>
+  <ul class="dropdown-menu">
+  <li><a href="/Kramers_Kronig"><span style="font-family: Calibri, sans-serif; font-size: 20px;">Complex refractive index calculator</span></a></li>
+  <li role="separator" class="divider"></li>
+  <li><a href="/Synt_Spec"><span style="font-family: Calibri, sans-serif; font-size: 20px;">Synthetic spectrum creator</span></a></li>
+  </ul>
+  </li>
+  </ul>
+  <ul class="nav navbar-nav navbar-right">
+  <button type="button" class="btn btn-link btn-lg" id="authForm0" aria-label="Left Align">
+  <a <span class="glyphicon glyphicon-certificate" href="/Credit" style="color: #fff" aria-hidden="true"></span> </a>
+  </button>
+  <button type="button" class="btn btn-link btn-lg" id="authForm0" aria-label="Left Align">
+  <a <span class="glyphicon glyphicon-envelope" href="/formpage" style="color: #fff" aria-hidden="true"></span> </a>
+  </button>
+  <button type="button" class="btn btn-link btn-lg" id="authForm1" aria-label="Left Align">
+  <a <span class="glyphicon glyphicon-info-sign" href="https://home.strw.leidenuniv.nl/~linnartz/index.html" style="color: #fff" aria-hidden="true"></span> </a>
+  </button>
+  </ul>
+  </li>
+  </ul>
+  </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+  </nav>
+
+block content
+  .container
+    .row
+      .col-md-12
+        <div class="card border-0 shadow my-5">
+        <div class="card-body p-5">
+        
+        
+        h1
+        <p style='margin: 0px; font-stretch: normal; font-size: 12px; line-height: normal; font-family: "Helvetica Neue"; color: rgb(41, 105, 176); text-align: center;'><span style='font-family: "Comic Sans MS", sans-serif; font-size: 48px; text-shadow: rgba(136, 136, 136, 0.8) 3px 3px 2px;'
+        >Leiden Ice Database for Astrochemistry</span></p>
+        <p>&nbsp;</p>
+
+        <p style="text-align: center;"><span style="font-family: Calibri, sans-serif; color: rgb(0, 0, 0); font-size: 25px;">IR spectra and optical constants measured in the Leiden Laboratory for Astrophysics</span></p>
+
+        <p><img style="max-width:100%; margin-top: 10px; margin-left: 0px;" src="{{ url_for('static', filename='Lab.jpg') }}" ></p>
+        <div style="height: 20px"></div>
+        <p style="text-align: justify;"><span style="font-family: Calibri, sans-serif;">The Leiden Laboratory Ice Database contains the infrared spectra of a massive number of astrophysical ice analogs at different temperatures and chemical environments. The data stored in this database have served the astronomical ice community since the 80&apos;s that helped to successfully interpret the observations carried out by ground- and space-based telescopes.</span></p>
+        <p style="text-align: justify;"><span style="font-family: Calibri, sans-serif;">With the launching of the </span><a href="https://www.jwst.nasa.gov" rel="noopener noreferrer" target="_blank"><span style="font-family: Calibri, sans-serif;"><em>James Webb Space Telescope</em> (JWST)</span></a><span style="font-family: Calibri, sans-serif;"> on an Ariane 5 rocket from French Guiana in October 31st, 2021, the ice observations in star-forming regions will enter in an gold age, and several questions regarding the ice mantle composition, structure and physical-chemical evolution will be answered. In particular, the JWST Early Release Science program called <a href="http://jwst-iceage.org" rel="noopener noreferrer" target="_blank">ICE AGE</a> will shed light on several ice&apos;s open questions.</span></p>
+        <p style="text-align: justify;"><span style="font-family: Calibri, sans-serif;">In this website, you will find public and comprehensive number of IR spectra and optical constants of astrophysical ice analogues, as well as online tools to support the ice spectral analysis of astronomical observations. &nbsp;</span></p>
+        <div style="height: 0px"></div>
+        </div> 
+        </div>
+    
+    .row
+      .main.col-md-12
+        block page
+        .row.footer.col-md-12
+          .col-md-6
+           p(style='text-align:left;')
+              <img src="static/LfA_logo_Will.jpeg" alt="Leiden_logo" style="width: 10vw; min-width: 300px; "> 
+          .col-md-6.contact
+            p(style='text-align:right;')
+              <img src="static/Leiden_Logo.png" alt="Leiden_logo" style="width: 8vw; min-width: 260px; ">
+
+
+
+
+block head
+  {{super()}}
+  link(rel='stylesheet', href="{{ url_for('static', filename='style_home.css') }}")
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta charset="utf-8">
+  <!--[if lt IE 9]>
+  script(src="{{ url_for('static', filename='html5shiv.min.js') }}")
+  script(src="{{ url_for('static', filename='respond.min.js') }}")
+  <![endif]-->
+  script(src="{{ url_for('static', filename='es5-shim.min.js') }}")
+  include mathjax.html
+block scripts
+  {{super()}}
+  script(src="{{ url_for('static', filename='d3.v3.min.js') }}")
+  //script(src="http://d3js.org/d3.v3.js")
+  script(src="{{ url_for('static', filename='d3.legend.js') }}")
+  script(src="http://d3js.org/queue.v1.min.js")
+
+    ga('create', 'UA-59238456-1', 'auto');
+    ga('send', 'pageview');
+  
+  
+

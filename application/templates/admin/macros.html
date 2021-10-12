@@ -2,7 +2,7 @@
 <div class="col-md-2"></div><div class="col-md-10">
   <p>
   Inline TeX is supported and must be used to write chemical formulas like 
-  $\ce{H2O}$
+  $\ce{H2O}$.
   </p>
   <p>A few examples:</p>
   <ul>
@@ -30,6 +30,35 @@
 <div class="form-group">
   <div class="col-md-2"></div>
   <div class="col-md-10">Enter the exposure time (optional) in seconds below:</div>
+</div>
+{% endmacro %}
+
+{% macro resolution() %}
+<div class="form-group">
+  <div class="col-md-2"></div>
+  <div class="col-md-10">Enter the resolution (optional) in cm-2:</div>
+</div>
+{% endmacro %}
+
+{% macro cont_model() %}
+<div class="form-group">
+  <div class="col-md-2"></div>
+  <div class="col-md-10">Enter the continuum model below (e.g., B2008 for Boogert et al. 2008):</div>
+</div>
+{% endmacro %}
+
+
+{% macro column_density() %}
+<div class="form-group">
+  <div class="col-md-2"></div>
+  <div class="col-md-10">Enter the ice column density below:</div>
+</div>
+{% endmacro %}
+
+{% macro ice_thickness() %}
+<div class="form-group">
+  <div class="col-md-2"></div>
+  <div class="col-md-10">Enter the ice thickness in centimeters below:</div>
 </div>
 {% endmacro %}
 

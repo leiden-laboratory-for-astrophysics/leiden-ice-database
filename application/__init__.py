@@ -5,9 +5,9 @@ from flask import Flask
 from flask_bootstrap import Bootstrap
 
 # Flask-Migrate (using Flask-Script) and SQLAlchemy
-from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.script import Manager, Server
-from flask.ext.migrate import Migrate, MigrateCommand
+from flask_sqlalchemy import SQLAlchemy
+from flask_script import Manager, Server
+from flask_migrate import Migrate, MigrateCommand
 
 app = Flask(__name__)
 app.config.from_object('application.config.Configuration')
@@ -26,6 +26,26 @@ app.jinja_env.add_extension('pyjade.ext.jinja.PyJadeExtension')
 data_path = op.join(op.dirname(__file__), 'data')
 try:
   os.mkdir(data_path)
+except OSError:
+  pass
+
+## Change - Will 23/04/2021
+# Create directory for data file fields to use
+data_path_optc = op.join(op.dirname(__file__), 'data_opt_const')
+try:
+  os.mkdir(data_path_optc)
+except OSError:
+  pass
+
+data_path_sc = op.join(op.dirname(__file__), 'data_sc')
+try:
+  os.mkdir(data_path_sc)
+except OSError:
+  pass
+
+data_path_annot = op.join(op.dirname(__file__), 'annotation_test')
+try:
+  os.mkdir(data_path_annot)
 except OSError:
   pass
 

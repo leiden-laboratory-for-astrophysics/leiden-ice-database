@@ -1,0 +1,227 @@
+extends 'bootstrap/base.html'
+block title
+  |Ice Database
+
+
+block navbar
+  <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+  <button type="button" class="navbar-toggle collapsed">
+  </button>
+  <a class="navbar-brand" href="/"><img style="max-width:64px; margin-top: -0px;" src="{{ url_for('static', filename='sla-pictogram.png') }}" alt="Ice Database">
+  </a>
+  <a class="navbar-brand" style="color: #fff" href="/">Ice Database</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+  <ul class="nav navbar-nav">
+  <li><a href="/spectrum_data">Spectral data <span class="sr-only">(current)</span></a></li>
+  <li><a href="/refrac_index">Optical Constants</a></li>
+  <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="color: #fff">Tools <span class="caret"></span></a>
+  <ul class="dropdown-menu">
+  <li><a href="/Kramers_Kronig"><span style="font-family: Calibri, sans-serif; font-size: 20px;">Complex refractive index calculator</span></a></li>
+  <li role="separator" class="divider"></li>
+  <li><a href="/Synt_Spec"><span style="font-family: Calibri, sans-serif; font-size: 20px;">Synthetic spectrum creator</span></a></li>
+  </ul>
+  </li>
+  </ul>
+  <ul class="nav navbar-nav navbar-right">
+  <button type="button" class="btn btn-link btn-lg" id="authForm0" aria-label="Left Align">
+  <a <span class="glyphicon glyphicon-certificate" href="/Credit" style="color: #fff" aria-hidden="true"></span> </a>
+  </button>
+  <button type="button" class="btn btn-link btn-lg" id="authForm0" aria-label="Left Align">
+  <a <span class="glyphicon glyphicon-envelope" href="/formpage" style="color: #fff" aria-hidden="true"></span> </a>
+  </button>
+  <button type="button" class="btn btn-link btn-lg" id="authForm1" aria-label="Left Align">
+  <a <span class="glyphicon glyphicon-info-sign" href="https://home.strw.leidenuniv.nl/~linnartz/index.html" style="color: #fff" aria-hidden="true"></span> </a>
+  </button>
+  </ul>
+  </li>
+  </ul>
+  </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+  </nav>
+
+
+
+block content
+  .container
+    .row
+      .col-md-12
+        <div class="card border-0 shadow my-5">
+        <div class="card-body p-5">
+        
+        
+        h1
+        <p style="text-align: center;"><span style="color: rgb(255, 255, 0);"><strong><span style='font-family: "Arial Black", Gadget, sans-serif; font-size: 30px;'>Tool for creating protostellar synthetic spectrum containing ice features</span></strong></span></p>
+
+        
+        <div style="height: 20px"></div>
+        <p style="text-align: justify;"><span style="color: rgb(255, 255, 255);"style="font-family: Calibri, sans-serif;">This tool allows to combine different ice spectra from this datatabase to produce a synthetic infrared spectrum in optical depth scale. A linear combination of the laboratory spectrum is used. Additionally, the spectrum can be used to create a protostellar spectrum by adopting a continuum template.</span></p>
+        <div style="height: 0px"></div>
+        </div> 
+        </div>
+    
+    .row
+      .col-md-12
+        p
+        form(action='/Synt_Spec', method='get')
+          fieldset
+            legend <p style="text-align: center;"><span style="color: rgb(255, 255, 255);">Step 1: Set the spectral range:</span></p>
+            .form-group(style='text-align: center;display:inline-block; width:20%;padding-left: 10%;')
+              label(for='email') <span style="color: rgb(255, 255, 255);"style="font-family: Calibri, sans-serif;">Wavelength 1:</span>
+              input(type='text', name='inp_lam1')
+            .form-group(style='text-align: center;display:inline-block; width:20%;padding-left: 1.7%;')
+              label(for='email') <span style="color: rgb(255, 255, 255);"style="font-family: Calibri, sans-serif;">Wavelength 2:</span>              
+              input(type='text', name='inp_lam2')
+            input.btn.btn-success(type='submit', value='Set ranges')
+        p
+        form(method='POST')
+          fieldset
+            p
+            {% for category, message in get_flashed_messages(with_categories=True) %}
+            <div class="alert-{{category}}"> {{ message }}</div>
+            {% endfor %}
+            p
+            legend <p style="text-align: center;"><span style="color: rgb(255, 255, 255);">Step 2: Select spectrum for the linear combination and provide the required column density:</span></p>
+            | {{ form.csrf_token}}  
+            .form-group(style='text-align: center;display:inline-block; width:20%;padding-right: 1%;')
+              label(for='email') <span style="color: rgb(255, 255, 255);"style="font-family: Calibri, sans-serif;">Analogue:</span>
+              |     {{ form.ice_analogue(class="form-control") }}
+            .form-group(style='display:inline-block; width:20%;padding-right: 1%;')
+              label(for='email') <span style="color: rgb(255, 255, 255);"style="font-family: Calibri, sans-serif;">Temperature:</span>
+              |     {{ form.ice_spectrum(class="form-control")}}
+            br
+            .form-group(style='display:inline-block; width:20%;padding-left: 0%;')
+              label(for='email') <span style="color: rgb(255, 255, 255);"style="font-family: Calibri, sans-serif;">Column density:</span>
+              input(type='text', name='cd_scale')
+            //.form-group(style='display:inline-block; width:20%;padding-right: 7%;')
+              label(for='email') <span style="color: rgb(255, 255, 255);"style="font-family: Calibri, sans-serif;">Number density:</span>
+              input(type='text', name='num_dens')
+            br
+            input.btn.btn-success(type='submit', name="form_analogue", value='Add spectrum')
+        
+        
+        br
+        form(method='POST')
+          fieldset
+            legend <p style="text-align: center;"><span style="color: rgb(255, 255, 255);">Step 3: Select the continuum template:</span></p>
+            | {{ form_cont.csrf_token}}  
+            .form-group(style='text-align: center;display:inline-block; width:30%;padding-right: 1%;')
+              label(for='email') <span style="color: rgb(255, 255, 255);"style="font-family: Calibri, sans-serif;">Object:</span>
+              |     {{ form_cont.cont_analogue(class="form-control") }}
+            .form-group(style='display:inline-block; width:30%;padding-right: 1%;')
+              label(for='email') <span style="color: rgb(255, 255, 255);"style="font-family: Calibri, sans-serif;">Continuum model:</span>
+              |     {{ form_cont.cont_spectrum(class="form-control")}}
+            br
+            input.btn.btn-success(type='submit', name="form_continuum", value='Add continuum')
+
+    .row
+      .col-md-12
+        br
+        table(style='width: 100%; border-collapse: collapse; border: dotted rgb(26, 188, 156);' border='3')
+          thead
+            tr
+              th(style='background-color: rgb(26, 188, 156);')
+                h1(style='text-align: center; margin-bottom: 10px; margin-top: 10px; color: rgb(255, 255, 255)') Synthetic spectrum viewer
+          tbody
+            tr
+              td(style='width: 100%;')
+                br
+                | {{ js_resources|indent(4)|safe }}
+                | {{ css_resources|indent(4)|safe }}
+                | {{ plot_script|indent(4)|safe }}
+                |     
+                div(style='display: flex; justify-content: center;')
+                  | {{ plot_div|indent(4)|safe }}
+                p
+                .text-center
+                  a(href='/delete_item/', target='blank')
+                      button.btn.btn-warning Clear and restart!
+                  a(href="{{ url_for('download_file')}}")
+                      button.btn.btn-success Download the synthetic spectrum!
+                br
+                  
+                
+
+    
+
+    block page
+    .row.footer.col-md-12
+      p(style="text-align: center;")<span style="color: rgb(255, 255, 255);"style="font-family: Calibri, sans-serif;">SPECFY Version 0.0. Created on 23-08-2021. Online documentation available here.</span>
+    .col-md-6
+      p(style='text-align:left;')
+        <img src="static/LfA_logo_Will_black.jpeg" style="width: 10vw; min-width: 300px; "> 
+    .col-md-6.contact
+      p(style='text-align:right;')
+        <img src="static/leiden_logo_white.png" style="width: 8vw; min-width: 260px; ">  
+
+        
+
+
+
+
+block head
+  {{super()}}
+  link#bootstrap-css(href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css', rel='stylesheet')
+  script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js')
+  link(rel='stylesheet', href="{{ url_for('static', filename='style_t1.css') }}")
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta charset="utf-8">
+  <!--[if lt IE 9]>
+  script(src="{{ url_for('static', filename='html5shiv.min.js') }}")
+  script(src="{{ url_for('static', filename='respond.min.js') }}")
+  <![endif]-->
+  script(src="{{ url_for('static', filename='es5-shim.min.js') }}")
+  include mathjax.html
+  
+block scripts
+  {{super()}}
+  script.
+    let analogue_select = document.getElementById('ice_analogue');
+    let spectrum_select = document.getElementById('ice_spectrum');
+    
+    analogue_select.onchange = function() {
+      ice_analogue = analogue_select.value;
+      /*alert(ice_analogue);*/
+      fetch('/pick_analogue/' + ice_analogue).then(function(response) {
+      response.json().then(function(data) {
+      let optionHTML = '';
+      for (let ice_spectrum of data.all_spec) {
+      optionHTML += '<option value="' + ice_spectrum.id + '">' + ice_spectrum.temperature + '</option>';
+      }
+      spectrum_select.innerHTML = optionHTML;
+      });
+      });
+    }
+  script.
+    let sc_analogue_select = document.getElementById('cont_analogue');
+    let sc_spectrum_select = document.getElementById('cont_spectrum');
+      
+    sc_analogue_select.onchange = function() {
+      cont_analogue = sc_analogue_select.value;
+      /*alert(ice_analogue);*/
+      fetch('/pick_object/' + cont_analogue).then(function(response) {
+      response.json().then(function(data) {
+      let optionHTML = '';
+      for (let cont_spectrum of data.all_spec_cont) {
+      optionHTML += '<option value="' + cont_spectrum.id + '">' + cont_spectrum.cont_model + '</option>';
+      }
+      sc_spectrum_select.innerHTML = optionHTML;
+      });
+      });
+    }
+  script(src="{{ url_for('static', filename='d3.v3.min.js') }}")
+  //script(src="http://d3js.org/d3.v3.js")
+  script(src="{{ url_for('static', filename='d3.legend.js') }}")
+  script(src="http://d3js.org/queue.v1.min.js")
+
+    ga('create', 'UA-59238456-1', 'auto');
+    ga('send', 'pageview');
+  
+  
+

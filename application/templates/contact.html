@@ -1,0 +1,45 @@
+<!-- here we add our contact forms -->
+{% block content %}
+<div class="contact">
+    <h3>Contact us</h3>
+    <form action="{{ url_for('get_contact') }}" method=post>
+        <div>
+            <!-- name forms -->
+            <p>
+                {{ form.name.label }} <br>
+                {{ form.name(placeholder='Your name') }}
+            </p>
+            <!-- email forms -->
+            <p>
+                {{ form.email.label }} <br>
+                {{ form.email(placeholder='Your e-mail ...') }}
+            </p>
+            <!-- Subject of your request -->
+            <p>
+                {{ form.institution.label }}<br>
+                {{form.institution(placeholder='Your Institution ...')}}
+            </p>
+            <!-- Content of your request -->
+            <p>
+                {{ form.message.label }}<br>
+                {{ form.message(placeholder='Write your request ...') }}
+            </p>
+            <!-- Submit button -->
+            <p>
+                {{ form.submit }}
+            </p>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+
+
+<!-- add the right css file -->
+{% block styles %}
+<link rel="stylesheet" href="{{url_for('static', filename='styles_contact_form.css')}}">
+{% endblock %}
+
+
+

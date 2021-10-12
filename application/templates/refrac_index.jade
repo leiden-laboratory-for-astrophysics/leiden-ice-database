@@ -1,0 +1,47 @@
+extends 'layout_cri.jade'
+block page
+  .header.clearfix
+    .results-count
+      p {{ n_analogues.total|string }} results ({{ n_analogues.pages|string }} pages)
+    .info.text-muted
+      p.text-muted This database contains {{ n_stats['n_analogues_count'] }} compounds and a total of {{ n_stats['n_spectra_count'] }} spectra.
+
+  table.analogues
+    tr(style='background-color:#BDB76B;color:#000000; font-size: 18px;')
+      td Analogue
+      td Spectral range/resolution
+      td Author
+      | 
+      td Published
+    - for n_analogue in n_analogues.items
+      tr.n_analogue
+        td.name
+          a(href= url_for('n_analogue_show', n_analogue_id=n_analogue.id)).name= n_analogue.name
+        td
+          a(href= url_for('n_analogue_show', n_analogue_id=n_analogue.id))
+            = n_analogue.n_val[0].wavenumber_range
+            |  @ 
+            = n_analogue.n_average_resolution()|round(2)
+            |  cm<sup>-1</sup>
+        td
+          a(href= url_for('n_analogue_show', n_analogue_id=n_analogue.id))
+            = n_analogue.author
+        td
+          | {% if n_analogue.DOI == null or n_analogue.DOI == "" or n_analogue.DOI == 'NA' %}
+          span.glyphicon.glyphicon-question-sign(aria-hidden='true', style='color:orange')
+          | {% else %}
+          span.glyphicon.glyphicon-ok-circle(aria-hidden='true', style='color:green')
+          | {% endif %}
+  nav
+    ul.pager
+      - if n_analogues.has_prev
+        li
+          a(href= url_for('index_cri', page=n_analogues.prev_num, q=q)) Previous
+      - if n_analogues.has_next
+        li
+          a(href= url_for('index_cri', page=n_analogues.next_num, q=q)) Next
+
+
+block scripts
+  {{super()}}
+  script(src="{{ url_for('static', filename='index_cri.js') }}")

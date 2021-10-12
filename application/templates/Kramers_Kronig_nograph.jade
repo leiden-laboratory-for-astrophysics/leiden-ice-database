@@ -1,0 +1,35 @@
+extends 'layout_tools_nograph.jade'
+block page
+  .header.clearfix
+    .results-count
+      p {{ analogues.total|string }} results ({{ analogues.pages|string }} pages)
+    .info.text-muted
+      p.text-muted This database contains {{ stats['analogues_count'] }} compounds and a total of {{ stats['spectra_count'] }} spectra.
+
+  table.analogues
+    - for analogue in analogues.items
+      tr.analogue
+        td.name
+          a(href= url_for('analogue_show', analogue_id=analogue.id)).name= analogue.name
+        td.meta.text-muted
+          a(href= url_for('analogue_show', analogue_id=analogue.id))
+            = analogue.spectra[0].wavenumber_range
+            |  @ 
+            = analogue.average_resolution()|round(2)
+            |  cm<sup>-1</sup>
+        td.author.text-muted
+          a(href= url_for('analogue_show', analogue_id=analogue.id))
+            = analogue.author
+  nav
+    ul.pager
+      - if analogues.has_prev
+        li
+          a(href= url_for('index', page=analogues.prev_num, q=q)) Previous
+      - if analogues.has_next
+        li
+          a(href= url_for('index', page=analogues.next_num, q=q)) Next
+
+
+block scripts
+  {{super()}}
+  script(src="{{ url_for('static', filename='index.js') }}")

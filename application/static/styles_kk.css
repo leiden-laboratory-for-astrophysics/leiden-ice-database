@@ -1,0 +1,51 @@
+html {
+    width: 100%;
+}
+div {
+    font-family: 'Helvetica'; 
+}
+body {
+    min-width: 1150px;
+    max-width: 1300px;
+    width: 75%;
+    margin: auto;
+}
+.center {
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+.content {
+    margin: 2em;
+}
+h1 {
+    font-family: 'Helvetica';
+    margin: 2em 1 1 1;
+    color: #efc233;
+    font-size: 1.8em;
+    text-transform: uppercase;
+}
+a:link {
+    font-weight: bold;
+    text-decoration: none;
+    color: #efc233;
+}
+a:visited {
+    font-weight: bold;
+    text-decoration: none;
+    color: #fefe63;
+}
+a:hover, a:focus, a:active {
+    text-decoration: underline;
+    color: #efc233;
+}
+p {
+    font-size: 1.2em;
+    text-align: justify;
+    text-justify: inter-word;
+}
+.bordered {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #fefe63;
+}

@@ -1,6 +1,12 @@
 __pycache__/
 *.py[cod]
 application/db/development.db
+application/db/dbn.db
+application/db/dbsc.db
 application/snippets.py
 application/data
 application/cache
+application/jmol
+.DS_Store
+application/data_opt_const
+application/data_sc

@@ -10,7 +10,8 @@ username = getpass.getuser()
 if username == 'vagrant':
   username = input('STRW username: ')
 else:
-  print('Deploying with user:', username)
+  username = input('STRW username: ')
+  #print('Deploying with user:', username)
 
 password = getpass.getpass()
 
@@ -32,10 +33,10 @@ run(ssh, 'cd %s/ice-database; git pull' % destiny)
 
 # Update requirements
 print('Updating requirements (this might take a while)..')
-run(ssh, 'cd %s; pip install -r ice-database/requirements.txt' % destiny)
+run(ssh, 'cd %s; pip3 install -r ice-database/requirements.txt' % destiny)
 
 # Symlink shared files/directories
-run(ssh, 'cd %s/ice-database; rm application/config.py' % destiny)
+run(ssh, 'cd %s/ice-database; rm -rf application/config.py' % destiny)
 run(ssh, 'cd %s/ice-database; ln -s /data/icedb/shared/config.py application/config.py' % destiny)
 run(ssh, 'cd %s/ice-database; rm -rf application/data' % destiny)
 run(ssh, 'cd %s/ice-database; ln -s /data/icedb/shared/data application/data' % destiny)

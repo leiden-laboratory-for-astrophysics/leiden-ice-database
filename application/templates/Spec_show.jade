@@ -1,0 +1,143 @@
+extends 'layout.jade'
+
+block page
+  h2
+    = analogue.name
+    span.text-muted
+      - if analogue.spectra|count > 0
+        = ' (at ' + analogue.temperatures_to_sentence() + ')'
+      - else
+        em (no spectra found)
+    
+
+  - if analogue.spectra|count > 0
+    body
+    | {{ js_resources|indent(4)|safe }}
+    | {{ css_resources|indent(4)|safe }}
+    | {{ plot_script|indent(4)|safe }}
+    div(style='display: flex; justify-content: center;') 
+      | {{ plot_div|indent(4)|safe }}
+
+  .col-md-0.8
+  form
+  table(border='3')
+    tbody
+      tr
+        td
+          h2<p style="text-align: center;"><strong><span style="color: rgb(41, 105, 176); font-size: 36px; text-shadow: rgba(136, 136, 136, 0.8) 3px 3px 2px;">&nbsp; &nbsp; &nbsp;</span><span style="color: rgb(255, 255, 255); font-size: 36px; text-shadow: rgba(255, 255, 255, 0.8) 3px 3px 2px;">&lt;&lt;&lt;&lt;&lt;</span><span style="color: rgb(41, 105, 176); font-size: 36px; text-shadow: rgba(136, 136, 136, 0.8) 3px 3px 2px;">&nbsp;3D Molecule Viewer </span><span style="color: rgb(255, 255, 255); font-size: 36px; text-shadow: rgba(255, 255, 255, 0.8) 3px 3px 2px;">&lt;&lt;&lt;&lt;&lt;</span><span style="color: rgb(41, 105, 176); font-size: 36px; text-shadow: rgba(136, 136, 136, 0.8) 3px 3px 2px;"> &nbsp; &nbsp;&nbsp;</span></strong></p>
+          <p style="text-align: center;"><br></p>
+          script(type='text/javascript').
+            var name = '{{ mol_name }}';
+            var myJmol = 'myJmol';
+            var JmolInfo = {
+            height: 300,
+            width: 700,
+            color:'white',
+            serverURL:'https://chemapps.stolaf.edu/jmol/jsmol/php/jsmol.php',
+            use:'HTML5',
+            j2sPath:'https://chemapps.stolaf.edu/jmol/jsmol/j2s',
+            language:'en',
+            script:"wireframe .1; cpk off;" +
+            "spacefill 20%;" +
+            "zoom 70;" +
+            "frame 1; vectors 0.05;vector scale 4.0 ; color vectors yellow;" +
+            "move 10 -20 10 0 0 0 0 0 1; delay 1; vibration on;vibration scale 0.4;",
+            defaultModel:name,
+            }
+            $(document).ready(function(){
+            $('#JmolDiv').html( Jmol.getAppletHtml(myJmol, JmolInfo) );
+            Jmol.script(myJmol);
+            });
+          #JmolDiv()
+          <p class="p1" style="text-align: center;"><span style="font-size: 20px; color: rgb(84, 172, 210);"><strong>Search for a molecule below (e.g., :water or :h2o):</strong></span></p>
+          <p style="text-align: center;">
+          input#myJmol_query(type='text', onfocus='jQuery(this).select()', onkeypress="if(13==event.which){Jmol._applets['myJmol']._search();return false}", size='32', value='')
+          nobr
+          button#myJmol_submit(onclick="Jmol._applets['myJmol']._search()") Search
+          </p>
+        td
+          #freqDiv()
+            <p style="text-align: center;"><br></p>
+            <p class="p1" style="text-align: center;"><span style="font-size: 24px; color: rgb(84, 172, 210);"><strong>Control for files and animation</strong></span></p>
+          
+          blockquote
+            script.
+              jmolBr();
+              Jmol.jmolButton(myJmol, function() { Jmol.loadFileFromDialog(myJmol) }, "Load a file to show vibrational modes");
+              jmolBr();
+              jmolBr();
+              jmolBr();
+              Jmol.jmolCheckbox(myJmol,"vibration on", "vibration off", "vibration", "checked");
+              jmolBr();
+              Jmol.jmolCheckbox(myJmol, "vectors 0.05", "vectors off", "vectors");
+              jmolBr();
+              Jmol.jmolRadioGroup(myJmol,[
+              ["color vectors yellow", null],
+              "color vectors cyan"
+              ]);
+              jmolBr();
+              Jmol.jmolRadioGroup(myJmol,[
+              ["vector scale 1.0", null],
+              "vector scale 0.5"
+              ]);
+              jmolBr();
+              Jmol.jmolRadioGroup(myJmol,[
+              ["spacefill 15%", null, "checked"],
+              "spacefill 20%"
+              ]);
+              jmolBr();
+              Jmol.jmolRadioGroup(myJmol,[
+              "wireframe on",
+              ["wireframe 0.1", null, "checked"],
+              ]);
+              jmolBr();
+              Jmol.jmolCheckbox(myJmol, "spin on", "spin off", "spin");
+              jmolBr();
+          br
+          | 	   <p class="p1" style="text-align: center;"><span style="font-size: 14px; color: rgb(84, 172, 210);"><strong>Right click on the molecule window to view other Jmol commands.</strong></span></p>
+          br
+
+      
+  
+  .col-md-6
+    h3 Notes:
+    p= analogue.description
+    p
+      strong Average resolution: 
+      {{analogue.average_resolution()|round(2)}} cm<sup>-1</sup>
+    h3 Paper:
+    p
+      By {{ analogue.author }}, DOI: {{ analogue.DOI }}
+    - if analogue.DOI
+      p
+        a.btn.btn-primary(href= analogue.DOI_url()) View Paper (DOI)
+  
+
+  .col-md-6
+    h3 Download data:
+    - if analogue.DOI
+      p
+        | Please make sure to cite 
+        a(href=analogue.DOI_url()) the paper
+        |  when you use this data.
+    h4 Processed files (ASCII format)
+    ul
+      - for spectrum in spectra
+        li
+          {{spectrum.temperature}} K ({{spectrum.category_str()}}):
+          a(href= url_for('spectrum_download_txt', spectrum_id=spectrum.id, download_filename=spectrum.download_filename())) TXT
+          |  or 
+          a(href= url_for('spectrum_download_gz', spectrum_id=spectrum.id, download_filename=spectrum.download_filename())) TXT.GZ
+          span.text-muted= ' (%s kB)' % ((spectrum.gz_file_size() / 1000)|round(1))
+    a.btn.btn-primary(href= url_for('analogue_download_all_txt', analogue_id=analogue.id)) Download all in zip
+
+
+
+block head
+  {{super()}}
+  meta(charset='utf-8')
+  script(src='https://chemapps.stolaf.edu/jmol/jsmol/JSmol.min.js')     
+  script(src='https://chemapps.stolaf.edu/jmol/jsmol/js/Jmol2.js')
+      
+  
+

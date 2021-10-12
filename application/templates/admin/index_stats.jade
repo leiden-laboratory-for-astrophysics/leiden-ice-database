@@ -1,0 +1,42 @@
+extends 'layout_stats.jade'
+block body
+  {{ super() }}
+  if current_user.is_authenticated
+    p.lead
+      |Welcome to the statistic section of the ice database.
+    p
+      |The charts below provide information of the number of accesses of the ice database and the number of downloads of each data.
+  
+    table(style='width: 100%; border-collapse: collapse;')
+      thead
+        tr
+          th(style='background-color: rgb(26, 188, 156);')
+            h1(style='text-align: center; margin-bottom: 10px; margin-top: 10px; color: rgb(255, 255, 255)') Accesses and downloads tracker
+      tbody
+        tr
+          td(style='width: 100%;')
+            br
+            | {{ js_resources|indent(4)|safe }}
+            | {{ css_resources|indent(4)|safe }}
+            | {{ plot_script|indent(4)|safe }}
+            |     
+            div(style='display: flex; justify-content: center;')
+              | {{ plot_div|indent(4)|safe }}
+        br
+
+  else
+    form(method='POST', action='')
+      {{ form.hidden_tag() if form.hidden_tag }}
+      {% for f in form if f.type != 'CSRFTokenField' %}
+      div
+          {{ f.label }}
+          {{ f(class='form-control') }}
+          if f.errors
+            ul
+              {% for e in f.errors %}
+              <li>{{ e }}</li>
+              {% endfor %}
+      {% endfor %}
+      button(class='btn btn-lg btn-primary btn-block', type='submit')
+        |Sign in
+  

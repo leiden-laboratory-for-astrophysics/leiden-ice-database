@@ -1,0 +1,14 @@
+extends 'layout_cri.jade'
+head
+body
+  | {{ resources }}
+  - if n_analogue.n_val|count > 0
+    #spectrum_nval('data-n_analogue-id'= n_analogue.id)
+      img.loader(src= '/static/loading-bars.svg')
+  |   
+  script.
+    fetch('/spectrum_nval/<int:spectrum_id>.json')
+    .then(function(response) { return response.json(); })
+    .then(function(item) { return Bokeh.embed.embed_item(item); })
+
+

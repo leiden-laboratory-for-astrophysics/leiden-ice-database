@@ -8,6 +8,8 @@ block page
       - else
         em (no spectra found)
 
+  <p><label for="zoom-rect"><input type="checkbox" id="zoom-rect"> zoom by rectangle (not available yet)</label>
+
   - if analogue.spectra|count > 0
     #spectrum('data-analogue-id'= analogue.id)
       img.loader(src= '/static/loading-bars.svg')
@@ -44,4 +46,4 @@ block page
 
 block scripts
   {{super()}}
-  script(src="{{ url_for('static', filename='app.js') }}")
+  script(src="{{ url_for('static', filename='app_tmp00576.js') }}")

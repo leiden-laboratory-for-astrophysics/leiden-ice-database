@@ -1,0 +1,159 @@
+extends 'bootstrap/base.html'
+block title
+  |Ice Database
+
+
+block navbar
+  <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+  <button type="button" class="navbar-toggle collapsed">
+  </button>
+  <a class="navbar-brand" href="/"><img style="max-width:64px; margin-top: -0px;" src="{{ url_for('static', filename='sla-pictogram.png') }}" alt="Ice Database">
+  </a>
+  <a class="navbar-brand" style="color: #fff" href="/">Ice Database</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+  <ul class="nav navbar-nav">
+  <li><a href="/spectrum_data">Spectral data <span class="sr-only">(current)</span></a></li>
+  <li><a href="/refrac_index">Optical Constants</a></li>
+  <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools <span class="caret"></span></a>
+  <ul class="dropdown-menu">
+  <li><a href="/Kramers_Kronig">Kramers-Kronig calculations</a></li>
+  <li><a href="#">Reflectance Spectrum (Hapke Model)</a></li>
+  <li><a href="/Synt_Spec">Synthetic spectrum creator</a></li>
+  <li role="separator" class="divider"></li>
+  <li><a href="#">Separated link</a></li>
+  <li role="separator" class="divider"></li>
+  <li><a href="#">One more separated link</a></li>
+  </ul>
+  </li>
+  </ul>
+  <ul class="nav navbar-nav navbar-right">
+  <button type="button" class="btn btn-link btn-lg" id="authForm0" aria-label="Left Align">
+  <a <span class="glyphicon glyphicon-envelope" href="/formpage" style="color: #fff" aria-hidden="true"></span> </a>
+  </button>
+  <button type="button" class="btn btn-link btn-lg" id="authForm1" aria-label="Left Align">
+  <a <span class="glyphicon glyphicon-info-sign" href="https://home.strw.leidenuniv.nl/~linnartz/index.html" style="color: #fff" aria-hidden="true"></span> </a>
+  </button>
+  </ul>
+  </li>
+  </ul>
+  </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+  </nav>
+
+block content
+  .container
+    .row
+      .col-md-12
+        <div class="card border-0 shadow my-5">
+        <div class="card-body p-5">
+        
+        
+        h1
+        <p style="text-align: center;"><span style="color: rgb(255, 255, 0);"><strong><span style='font-family: "Arial Black", Gadget, sans-serif; font-size: 30px;'>Tool for calculating IR complex refractive index</span></strong></span></p>
+
+        
+        <div style="height: 20px"></div>
+        <p style="text-align: justify;"><span style="color: rgb(255, 255, 255);"style="font-family: Calibri, sans-serif;">This tool uses the source code from NKABS Python package for calculating the complex refractive index of astrophysical ices from the absorbance spectrum. The methodology adopted in this code is detailed in Rocha & Pilling (2014). The input parameters are the absorbance spectrum with the wavenumber (cm<sup>-1</sup>) the thickness of the ice (d), the refractive index of the ice at 670 nm (n<sub>0</sub>), the refractive index of the substrate (n<sub>2</sub>) and the Mean Average Percentual Error (MAPE) as the stop criteria. The outputs of the code are the real (n) and imaginary (k) part of the refractive index with the wavelength.</span></p>
+        <div style="height: 0px"></div>
+        </div> 
+        </div>
+
+       table(class="center", style='width: 70%; border-collapse: collapse; border-width:5px; border-style:outset;')
+         thead
+          tr
+           th(style='text-align: center; background-color: rgb(0, 0, 0); font-size: 20px; color: rgb(255, 255, 255)') Upload the absorbance spectrum
+         tbody
+          tr
+           td(style='width: 100%; background-color: rgb(255, 255, 255)')
+            br
+            p
+            | {% with messages = get_flashed_messages() %}
+            | {% if messages %}
+            ul.flashes
+            | {% for message in messages %}
+            li {{ message }}
+            | &#x9;&#x9;{% endfor %}
+            | &#x9;  {% endif %}
+            | &#x9;{% endwith %}
+            p
+            form(method='POST', action='index00', enctype='multipart/form-data')
+             <div class="vertical-center">
+             input#inp(type='file', name='file')
+             p
+             input(type='submit', value='Submit')
+             </div>
+            p
+
+       
+      
+       p
+       |
+       |      
+       table(class="center", style='width: 70%; border-collapse: collapse; border-width:5px; border-style:outset;')
+        thead
+          tr
+           th(colspan='2', style='width: 99.8445%; text-align: center; background-color: rgb(0, 0, 0); font-size: 20px; color: rgb(255, 255, 255)') Insert the input parameters
+        tbody
+         tr
+          td(style='width: 50.0000%; text-align: center; background-color: rgb(255, 255, 255)')
+            form(action='/Kramers_Kronig', method='get')
+              <br>
+              | Ice thickness in microns: 
+              input(type='text', name='inp_thickness')
+              | Refractive index at 670 nm:              
+              input(type='text', name='inp_nvis')
+              </br>
+              br 
+              | Refractive index of the substrate:              
+              input(type='text', name='inp_nsubs')
+              | MAPE:              
+              input(type='text', name='inp_mape')
+              br
+              <br>               
+              input(type='submit', value='Start calculation')
+              </br>
+        
+            p
+            a(href="{{ url_for('download_optc_const')}}")
+                button.btn.btn-success Download the refractive index!
+            p
+
+      <div style="height: 20px"></div>
+      <p style="text-align: center;"><strong><span style="background-color: rgb(250, 197, 28);">This tool is also available to download at the </span></strong><a href="https://github.com/sackler-laboratory-for-astrophysics" rel="noopener noreferrer" target="_blank"><strong><span style="background-color: rgb(250, 197, 28);">Leiden Ice Database GitHub!</span></strong></a><strong><span style="background-color: rgb(250, 197, 28);"> The code can be download either in the .exe and .py formats.</span></strong></p>
+      <div style="height: 0px"></div>
+      
+        
+
+
+
+
+block head
+  {{super()}}
+  link(rel='stylesheet', href="{{ url_for('static', filename='style_t1.css') }}")
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta charset="utf-8">
+  <!--[if lt IE 9]>
+  script(src="{{ url_for('static', filename='html5shiv.min.js') }}")
+  script(src="{{ url_for('static', filename='respond.min.js') }}")
+  <![endif]-->
+  script(src="{{ url_for('static', filename='es5-shim.min.js') }}")
+  include mathjax.html
+block scripts
+  {{super()}}
+  script(src="{{ url_for('static', filename='d3.v3.min.js') }}")
+  //script(src="http://d3js.org/d3.v3.js")
+  script(src="{{ url_for('static', filename='d3.legend.js') }}")
+  script(src="http://d3js.org/queue.v1.min.js")
+
+    ga('create', 'UA-59238456-1', 'auto');
+    ga('send', 'pageview');
+  
+  
+
