@@ -1,0 +1,252 @@
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Protostar synthetic spectrum &#8212; Leiden Ice Database 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Refractive index calculator" href="Refractive_index_calculation.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="Refractive_index_calculation.html" title="Refractive index calculator"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Leiden Ice Database 0.1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Protostar synthetic spectrum</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="protostar-synthetic-spectrum">
+<h1>Protostar synthetic spectrum<a class="headerlink" href="#protostar-synthetic-spectrum" title="Permalink to this headline">¶</a></h1>
+<p>In this section, we introduce the protostar synthetic spectrum calculator. This tool aims to support the interpretation of JWST observations.
+The steps through the construction of the synthetic spectrum are described below as well as the link with JWST/ETC calculator.</p>
+<section id="setting-up-the-interpolation-range">
+<h2>Setting up the interpolation range<a class="headerlink" href="#setting-up-the-interpolation-range" title="Permalink to this headline">¶</a></h2>
+<p>This online tool uses data of several ice spectra as well as of spectral energy distribution (SED) of protostars. These data often have different
+resolution, and therefore, they need to be interpolated to be treated consistently through out mathematical operations.</p>
+<p>When the range provided to the tool is out of the boundaries of the data hosted in the database, the user is notified and instructed to add different ranges, as shown in Figure 1.</p>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="_images/Boundary_notification.png"><img alt="alternate text" src="_images/Boundary_notification.png" style="width: 700px; height: 25px;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 1: Boundary error notification.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="selecting-the-ice-spectra">
+<h2>Selecting the ice spectra<a class="headerlink" href="#selecting-the-ice-spectra" title="Permalink to this headline">¶</a></h2>
+<p>All absorbance spectra hosted in the Leiden Ice Database can be accessed via this online tool. By clicking on the <em>Analogue</em> field, the user will see a dropdown with the ice analogues available,
+as shown in Figure 2:</p>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="_images/analogues.png"><img alt="alternate text" src="_images/analogues.png" style="width: 370px; height: 500px;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 2: Dropdown menu for selection of ice analogues.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>When the ice analogue is selected, the temperature options are automatically load in the field <em>Temperature</em>, as show in Figure 3.</p>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="_images/temp.png"><img alt="alternate text" src="_images/temp.png" style="width: 320px; height: 250px;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 3: Dropdown menu for selection of the spectrum temperature.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<section id="defining-ice-column-density">
+<h3>Defining ice column density<a class="headerlink" href="#defining-ice-column-density" title="Permalink to this headline">¶</a></h3>
+<p>After selecting the ice analogue and temperature, the user must provide the ice column density. The input provided in the field <em>Column density</em> (<span class="math notranslate nohighlight">\(N_{ice}^{input}\)</span>)
+is used to create a scale factor, defined as:</p>
+<div class="math notranslate nohighlight">
+\[w = \frac{N_{ice}^{input}}{N_{ice}^{lab}},\]</div>
+<p>where <span class="math notranslate nohighlight">\(N_{ice}^{lab}\)</span> is the ice column density of the experimental data. The scaling factor <span class="math notranslate nohighlight">\(w\)</span> is a factor to increase or decrease the ice column density
+of the selected analogue.</p>
+</section>
+<section id="optical-depth-spectrum">
+<h3>Optical depth spectrum<a class="headerlink" href="#optical-depth-spectrum" title="Permalink to this headline">¶</a></h3>
+<p>The IR absorbance spectra of ices are converted to an optical depth scale after the column density is provided. The reason for this conversion is that astronomical spectra toward
+protostars are often converted to optical depth scale for comparison with experimental data. The conversion from absorbance (<span class="math notranslate nohighlight">\(Abs\)</span>) to optical depth is performed by:</p>
+<div class="math notranslate nohighlight">
+\[\tau_{\lambda}^{lab} = 2.3wAbs,\]</div>
+<p>When more than one ice analogue is selected, the total spectrum in optical depth scale is obtained with a linear combination of all components. Figure 4 shows an optical depth
+synthetic spectrum after the combination of three ice analogues and the silicate from the astronomical source GCS3.</p>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="_images/Spec_EL29_tau_leg.png"><img alt="alternate text" src="_images/Spec_EL29_tau_leg.png" style="width: 800px; height: 360px;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 4: Synthetic spectrum in optical depth scale.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="selecting-the-sed-continuum">
+<h2>Selecting the SED continuum<a class="headerlink" href="#selecting-the-sed-continuum" title="Permalink to this headline">¶</a></h2>
+<p>Now that the optical depth synthetic spectrum has been created, the user can go one step forward and simulate the spectrum of a protostar in flux scale, i.e., in Jy units (<span class="math notranslate nohighlight">\(F_{\lambda}^{synth}\)</span>).
+To do this step, SPECFY uses the following equation:</p>
+<div class="math notranslate nohighlight">
+\[F_{\lambda}^{synth} = F_{\lambda}^{cont} \rm{exp}(-\tau_{\lambda}),\]</div>
+<p>where <span class="math notranslate nohighlight">\(F_{\lambda}^{cont}\)</span> is the continuum SED toward the protostar and <span class="math notranslate nohighlight">\(\tau_{\lambda}\)</span> is the synthetic optical depth spectrum created before.
+To make this step simple, a few continuum SED were compiled from <a class="reference external" href="https://iopscience.iop.org/article/10.1086/533425/pdf">Boogert et al. (2008)</a>. For more details
+about the methodology used, please, check out the paper and Rocha et al. (in prep.).</p>
+<p>As an example, the optical depth spectrum in Figure 4 is converted to Flux scale by using the continuum SED of the protostar Elias 29. The result is shown in Figure 5.</p>
+<figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="_images/Spec_EL29.png"><img alt="alternate text" src="_images/Spec_EL29.png" style="width: 800px; height: 360px;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 5: Synthetic spectrum with ice absorption bands. Continuum SED from Elias 29 protostar.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="downloading-the-results">
+<h2>Downloading the results<a class="headerlink" href="#downloading-the-results" title="Permalink to this headline">¶</a></h2>
+<p>The plots can be downloaded by using the <em>save</em> tool in the <a class="reference external" href="https://docs.bokeh.org/en/latest/">Bokeh</a> toolbar. To download the files with the data, please use the green button labeled <strong>Download the synthetic spectrum</strong>.</p>
+</section>
+<section id="synergy-connecting-specfy-with-the-jwst-exposure-time-calculator">
+<h2>Synergy: connecting SPECFY with the JWST/Exposure Time Calculator<a class="headerlink" href="#synergy-connecting-specfy-with-the-jwst-exposure-time-calculator" title="Permalink to this headline">¶</a></h2>
+<p>Under construction…</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/Logo.png" alt="Logo"/>
+        </a></p><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Protostar synthetic spectrum</a><ul>
+<li><a class="reference internal" href="#setting-up-the-interpolation-range">Setting up the interpolation range</a></li>
+<li><a class="reference internal" href="#selecting-the-ice-spectra">Selecting the ice spectra</a><ul>
+<li><a class="reference internal" href="#defining-ice-column-density">Defining ice column density</a></li>
+<li><a class="reference internal" href="#optical-depth-spectrum">Optical depth spectrum</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#selecting-the-sed-continuum">Selecting the SED continuum</a></li>
+<li><a class="reference internal" href="#downloading-the-results">Downloading the results</a></li>
+<li><a class="reference internal" href="#synergy-connecting-specfy-with-the-jwst-exposure-time-calculator">Synergy: connecting SPECFY with the JWST/Exposure Time Calculator</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="Refractive_index_calculation.html"
+                          title="Previous page">&larr; Refractive index calculator</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Protostar_synthetic_spectrum.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="Refractive_index_calculation.html" title="Refractive index calculator"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Leiden Ice Database 0.1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Protostar synthetic spectrum</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Will Rocha.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

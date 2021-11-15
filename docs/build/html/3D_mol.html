@@ -1,0 +1,299 @@
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>3D molecule viewer &#8212; Leiden Ice Database 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="UV/vis refractive index" href="UV_vis_refractive_index.html" />
+    <link rel="prev" title="Infrared spectrum" href="IR_spectrum.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="UV_vis_refractive_index.html" title="UV/vis refractive index"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="IR_spectrum.html" title="Infrared spectrum"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Leiden Ice Database 0.1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">3D molecule viewer</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="d-molecule-viewer">
+<h1>3D molecule viewer<a class="headerlink" href="#d-molecule-viewer" title="Permalink to this headline">¶</a></h1>
+<p>This section is dedicated to show how to manipulate the 3D molecule viewer inside the Leiden Ice Database. The viewer used the <a class="reference external" href="http://jmol.sourceforge.net/">Jmol</a> package.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Jmol interactive documentation can be found <a class="reference external" href="https://chemapps.stolaf.edu/jmol/docs/">here</a>.</p>
+</div>
+<section id="featured-capabilities">
+<h2>Featured capabilities<a class="headerlink" href="#featured-capabilities" title="Permalink to this headline">¶</a></h2>
+<p>Figure 1 displays the 3D molecule viewer window. The user can move the 3D model of the molecule shown in the left side of the viewer.</p>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="PNG_figs/3dv0.png"><img alt="alternate text" src="PNG_figs/3dv0.png" style="width: 800px; height: 380px;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 1: 3D molecule viewer window. The left side shows the 3D model of the molecule and the searching feature. The right side makes available dedicated controls to manipulate the molecule.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The atom colour adopts the CPK colour scheme that is indicated in Figure 2. Source in this <a class="reference external" href="http://jmol.sourceforge.net/jscolors/#color_Be">link</a>.</p>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="PNG_figs/colors.png"><img alt="alternate text" src="PNG_figs/colors.png" style="width: 600px; height: 280px;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 2: Atom color code used in the 3D molecule viewer.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<section id="searching-capability">
+<h3>Searching capability<a class="headerlink" href="#searching-capability" title="Permalink to this headline">¶</a></h3>
+<p>The searching capability on the left side allows the user to search and visualize other molecules that are not necessarily linked to the ice spectrum in the database. By default, this viewer is connected
+with the public databases of molecule called <a class="reference external" href="https://pubchem.ncbi.nlm.nih.gov/">PubChem</a>. For this, the user must type the colon symbol and the name of the molecule, as for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">methanol</span>
+</pre></div>
+</div>
+<p>After the command above, the viewer will show the 3D model of CH<sub>3</sub>OH molecule as indicated in Figure 3.</p>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="PNG_figs/CH3OH.png"><img alt="alternate text" src="PNG_figs/CH3OH.png" style="width: 800px; height: 380px;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 3: 3D model of methanol using the searching capability.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="dedicated-controls">
+<h3>Dedicated controls<a class="headerlink" href="#dedicated-controls" title="Permalink to this headline">¶</a></h3>
+<p>To make easier to control some aspects of the 3D molecule model, a few dedicated controls are available in the right side of the viewer. Some of these buttons allow to control the animation of
+the vibrational modes of the molecule.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The buttons <em>vibration, vectors, color vector yellow, color vector cyan, vector scale 1.0 and vector scale 0.5</em> are only activated when a file is upload with the button <strong>Load a file to show vibrational modes</strong>.</p>
+</div>
+<p>The field list below describes the function of the buttons:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Load a file to show vibrational modes</dt>
+<dd class="field-odd"><p>A file can be uploaded to the viewer containing the information of the vibrational modes. More about this file is given in <a class="reference internal" href="#vibrational-modes">Vibrational modes</a>.</p>
+</dd>
+<dt class="field-even">vibration</dt>
+<dd class="field-even"><p>This button activated by default. It enables the animation of the molecule when the file is uploaded. When deactivated, the vibrational mode animation stops.</p>
+</dd>
+<dt class="field-odd">vectors</dt>
+<dd class="field-odd"><p>The direction of the vibrational mode of a certain functional group is shown by clinking on this button.</p>
+</dd>
+<dt class="field-even">color vectors yellow</dt>
+<dd class="field-even"><p>Turns the color of the vibrational modes to yellow.</p>
+</dd>
+<dt class="field-odd">color vectors cyan</dt>
+<dd class="field-odd"><p>Turns the color of the vibrational modes to cyan.</p>
+</dd>
+<dt class="field-even">vector scale 1.0</dt>
+<dd class="field-even"><p>Set the size vector to a scale of 1.0.</p>
+</dd>
+<dt class="field-odd">vector scale 0.5</dt>
+<dd class="field-odd"><p>Set the size vector to a scale of 0.5.</p>
+</dd>
+<dt class="field-even">spacefill 15%</dt>
+<dd class="field-even"><p>Shows the size of the atoms (balls) in 15%.</p>
+</dd>
+<dt class="field-odd">spacefill 20%</dt>
+<dd class="field-odd"><p>Shows the size of the atoms (balls) in 20% (default).</p>
+</dd>
+<dt class="field-even">wireframe on</dt>
+<dd class="field-even"><p>Reduce the size of the bonds and shows only wires.</p>
+</dd>
+<dt class="field-odd">wireframe 0.1</dt>
+<dd class="field-odd"><p>Size of the bonds scaled to 0.1 (default).</p>
+</dd>
+<dt class="field-even">spin</dt>
+<dd class="field-even"><p>Rotates the molecule in an animation mode.</p>
+</dd>
+</dl>
+</section>
+<section id="vibrational-modes">
+<h3>Vibrational modes<a class="headerlink" href="#vibrational-modes" title="Permalink to this headline">¶</a></h3>
+<p>The vibrational modes of the molecules hosted in the Leiden Ice Database are calculated with the ORCA software. The goal of this feature is to show the animation of the functional group associated with the
+vibrational mode, rather than the accuracy of the frequency of the transition. The information of the vibrational modes are available at the GitHub page of the Leiden Ice Database. The files have extension <em>.xyz</em>.</p>
+<p>By clicking on the button <em>Load a file to show vibrational modes</em>, the user can upload the <em>.xyz</em> file, and the animation will start automatically. Figure 4 shows a snapshot of the bending mode of H<sub>2</sub>O ice.</p>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="PNG_figs/H2O_vib.png"><img alt="alternate text" src="PNG_figs/H2O_vib.png" style="width: 800px; height: 380px;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 4: Snapshot of the H<sub>2</sub>O bending mode.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="dipole-moment">
+<h2>Dipole moment<a class="headerlink" href="#dipole-moment" title="Permalink to this headline">¶</a></h2>
+<p>Several commands are available by right clicking on the JSmol icon on the bottom right corner close to the 3D molecule model. One of these options
+is the capability to show the dipole moment of the molecule, an important feature in the context of IR spectroscopy.</p>
+<p>To enable the dipole moment visualization, the user have to open the console option by right clicking on the JSmol icon, and moving the cursor to the <em>console</em> option.
+Next, the dipole bond can be visualized by running the command below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dipole</span> <span class="n">bonds</span>
+</pre></div>
+</div>
+<p>To delete the vectors, use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dipole</span> <span class="n">bonds</span> <span class="n">delete</span>
+</pre></div>
+</div>
+<p>Individual vectors can also be visualized with the command (e.g., between atoms 1 and 3):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dipole</span> <span class="p">(</span><span class="n">atomno</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="p">(</span><span class="n">atomno</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The molecular dipole can also be visualized with the command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dipole</span> <span class="n">molecular</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/Logo.png" alt="Logo"/>
+        </a></p><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">3D molecule viewer</a><ul>
+<li><a class="reference internal" href="#featured-capabilities">Featured capabilities</a><ul>
+<li><a class="reference internal" href="#searching-capability">Searching capability</a></li>
+<li><a class="reference internal" href="#dedicated-controls">Dedicated controls</a></li>
+<li><a class="reference internal" href="#vibrational-modes">Vibrational modes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dipole-moment">Dipole moment</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="IR_spectrum.html"
+                          title="Previous page">&larr; Infrared spectrum</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="UV_vis_refractive_index.html"
+                          title="Next page">&rarr; UV/vis refractive index</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/3D_mol.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="UV_vis_refractive_index.html" title="UV/vis refractive index"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="IR_spectrum.html" title="Infrared spectrum"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Leiden Ice Database 0.1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">3D molecule viewer</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Will Rocha.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

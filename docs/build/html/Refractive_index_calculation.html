@@ -1,0 +1,271 @@
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Refractive index calculator &#8212; Leiden Ice Database 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Protostar synthetic spectrum" href="Protostar_synthetic_spectrum.html" />
+    <link rel="prev" title="UV/vis refractive index" href="UV_vis_refractive_index.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="Protostar_synthetic_spectrum.html" title="Protostar synthetic spectrum"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="UV_vis_refractive_index.html" title="UV/vis refractive index"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Leiden Ice Database 0.1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Refractive index calculator</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="refractive-index-calculator">
+<h1>Refractive index calculator<a class="headerlink" href="#refractive-index-calculator" title="Permalink to this headline">¶</a></h1>
+<p>In this section, we provide a description of the online and offline tools for calculations of the refractive index of ices. Details that are common to both cases are presented below.</p>
+<p>The online version of this tool is available at: <a class="reference external" href="https://icedb.strw.leidenuniv.nl/Kramers_Kronig">https://icedb.strw.leidenuniv.nl/Kramers_Kronig</a>.</p>
+<section id="absorbance-spectrum-file">
+<h2>Absorbance spectrum file<a class="headerlink" href="#absorbance-spectrum-file" title="Permalink to this headline">¶</a></h2>
+<p>Both online and offline tools uses the absorbance spectrum of ices as input data to calculate the real and imaginary refractive index.
+This file is required to be in ASCII format with two columns. The first column contains the wavenumber and the second column contains
+the absorbance data. An example is shown in Figure 1.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The wavenumber column must be sorted in decreasing order.</p>
+</div>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="PNG_figs/abs_data.png"><img alt="alternate text" src="PNG_figs/abs_data.png" style="width: 500px; height: 300px;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 1: Example of absorbance spectrum file used as input in the refractive index calculator.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="input-parameters">
+<h2>Input parameters<a class="headerlink" href="#input-parameters" title="Permalink to this headline">¶</a></h2>
+<p>A few input parameters are required before starting the calculations of the real and imaginary refractive index. A description of these parameters are given below:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Ice thickness in microns</dt>
+<dd class="field-odd"><p>The methodology requires the ice thickness of the ice sample in units of micrometers.</p>
+</dd>
+<dt class="field-even">Refractive index at 670 nm</dt>
+<dd class="field-even"><p>The real refractive index of the ice at 670 nm. This value is highly dependent of the composition and structure of the ice. For example, see <a href="#id6"><span class="problematic" id="id7">UV_vis_refractive_index_</span></a> for values suitable for pure H<sub>2</sub>O ice at different temperatures.</p>
+</dd>
+<dt class="field-odd">Refractive index of the substrate</dt>
+<dd class="field-odd"><p>The real refractive index of the substrate (superficie where the gases condense to form ice) is needed in this methodology. The values for typical substrates are 1.73 for CsI, 1.54 for KBr and 2.54 for ZnSe.</p>
+</dd>
+<dt class="field-even">MAPE</dt>
+<dd class="field-even"><p>This stands for Mean Average Percentage Error. This value is used as a convergency criteria to stop the code after several iterations. See <a class="reference internal" href="#calculations">Calculations</a> for more details.</p>
+</dd>
+</dl>
+</section>
+<section id="calculations">
+<h2>Calculations<a class="headerlink" href="#calculations" title="Permalink to this headline">¶</a></h2>
+<p>The calculations are performed by using mostly Lambert-Beer equation and Kramers-Kronig relations. More details about these two equations can be found in <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S1386142513015060">Rocha &amp; Pilling (2014)</a> and Rocha et al. (in prep.).</p>
+<p>Figure 2 shows an illustrations of the steps performed in the calculations of the real and imaginary refractive index of ices.</p>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="PNG_figs/nkabs.png"><img alt="alternate text" src="PNG_figs/nkabs.png" style="width: 500px; height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 2: Flowchart of the steps involving the calculations of the real and imaginary refractive index of ices.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The calculations in the online version takes around 1 minute for 5000 datapoints. For larger files, we recommend to use the offline version of the code (See <a class="reference internal" href="#offline-code">Offline code</a> ).</p>
+</div>
+</section>
+<section id="refractive-index-viewer">
+<h2>Refractive index viewer<a class="headerlink" href="#refractive-index-viewer" title="Permalink to this headline">¶</a></h2>
+<p>Once the calculations are performed, the online tools enables the plot visualization automatically. The viewer also used <a class="reference external" href="https://docs.bokeh.org/en/latest/">Bokeh</a> to plot the results.
+An example of outputs are shown in Figure 3.</p>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="PNG_figs/nk_viewer.png"><img alt="alternate text" src="PNG_figs/nk_viewer.png" style="width: 750px; height: 620px;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 3: Viewer showing an example of the real and imaginary refractive index.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="downloading-results">
+<h2>Downloading results<a class="headerlink" href="#downloading-results" title="Permalink to this headline">¶</a></h2>
+<p>The plots can be downloaded by using the <em>save</em> tool in the <a class="reference external" href="https://docs.bokeh.org/en/latest/">Bokeh</a> toolbar. To download the files with the data, please use the green button labeled <strong>Download the refractive index</strong>.</p>
+</section>
+<section id="offline-code">
+<h2>Offline code<a class="headerlink" href="#offline-code" title="Permalink to this headline">¶</a></h2>
+<p>The offline code can be downloaded from the Leiden Ice Database <a class="reference external" href="https://github.com/sackler-laboratory-for-astrophysics/ice-database">GitHub</a> page. Versions for Windows and Linux/Mac are available.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In both versions, the absorbance file must be inside the folder that contains the Python script.</p>
+</div>
+<section id="windows">
+<h3>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h3>
+<p>To run the code in Windows is as simple as double clicking on the <em>.exe</em> files. Next, the input parameters are required before proceeding with the calculation.</p>
+</section>
+<section id="linux">
+<h3>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h3>
+<p>In Linux, the user can open the <em>.py</em> file to run the offline calculations. The welcome interface is shown in Figure 4.</p>
+<figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="PNG_figs/offline.png"><img alt="alternate text" src="PNG_figs/offline.png" style="width: 750px; height: 620px;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 4: Terminal version of the offline tool for the refractive index calculation.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/Logo.png" alt="Logo"/>
+        </a></p><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Refractive index calculator</a><ul>
+<li><a class="reference internal" href="#absorbance-spectrum-file">Absorbance spectrum file</a></li>
+<li><a class="reference internal" href="#input-parameters">Input parameters</a></li>
+<li><a class="reference internal" href="#calculations">Calculations</a></li>
+<li><a class="reference internal" href="#refractive-index-viewer">Refractive index viewer</a></li>
+<li><a class="reference internal" href="#downloading-results">Downloading results</a></li>
+<li><a class="reference internal" href="#offline-code">Offline code</a><ul>
+<li><a class="reference internal" href="#windows">Windows</a></li>
+<li><a class="reference internal" href="#linux">Linux</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="UV_vis_refractive_index.html"
+                          title="Previous page">&larr; UV/vis refractive index</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="Protostar_synthetic_spectrum.html"
+                          title="Next page">&rarr; Protostar synthetic spectrum</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Refractive_index_calculation.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="Protostar_synthetic_spectrum.html" title="Protostar synthetic spectrum"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="UV_vis_refractive_index.html" title="UV/vis refractive index"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Leiden Ice Database 0.1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Refractive index calculator</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Will Rocha.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

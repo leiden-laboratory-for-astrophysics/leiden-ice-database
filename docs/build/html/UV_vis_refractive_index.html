@@ -1,0 +1,215 @@
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>UV/vis refractive index &#8212; Leiden Ice Database 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Refractive index calculator" href="Refractive_index_calculation.html" />
+    <link rel="prev" title="3D molecule viewer" href="3D_mol.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="Refractive_index_calculation.html" title="Refractive index calculator"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="3D_mol.html" title="3D molecule viewer"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Leiden Ice Database 0.1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">UV/vis refractive index</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="uv-vis-refractive-index">
+<h1>UV/vis refractive index<a class="headerlink" href="#uv-vis-refractive-index" title="Permalink to this headline">¶</a></h1>
+<p>In this section we provide technical details on how to explore the IR spectrum of ices within the Leiden Ice database.</p>
+<section id="bokeh-plot-of-the-uv-vis-refractive-index">
+<h2>Bokeh plot of the UV/vis refractive index<a class="headerlink" href="#bokeh-plot-of-the-uv-vis-refractive-index" title="Permalink to this headline">¶</a></h2>
+<p>As used in the case of IR spectrum, <a class="reference external" href="https://docs.bokeh.org/en/latest/">Bokeh</a> is also adopted to show the plots of UV.vis refractive index.</p>
+<p><a class="reference external" href="https://docs.bokeh.org/en/latest/">Bokeh</a> is used to provide interactive visualization of IR spectra in the Leiden Ice Database. A series of options are further detailed below:</p>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="PNG_figs/Refrac.png"><img alt="alternate text" src="PNG_figs/Refrac.png" style="width: 800px; height: 400px;" /></a>
+<figcaption>
+<p><span class="caption-text">Refractive index of H<sub>2</sub>O at different temperatures. The artifact at 0.64 microns is due to interference with the HeNe laser.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<section id="data-point-information">
+<h3>Data point information<a class="headerlink" href="#data-point-information" title="Permalink to this headline">¶</a></h3>
+<p>A hover dynamically shows information for each datapoint, e.g., wavenumber, wavelength and refractive index. Also, the refractive index at different temperatures are highlighted by passing the hover across them.</p>
+</section>
+<section id="interactive-legend">
+<h3>Interactive legend<a class="headerlink" href="#interactive-legend" title="Permalink to this headline">¶</a></h3>
+<p>Another interesting feature from Bokeh is the interactive legend. By clicking on the temperature values, the user can hide the spectra and click again to show the refractive index.</p>
+</section>
+<section id="toolbar">
+<h3>Toolbar<a class="headerlink" href="#toolbar" title="Permalink to this headline">¶</a></h3>
+<p>The toolbar on the right side provides further options to interact with the plot. Among the options, the user can zoom-in and zoom-out one specific region of the plot.
+Wheel zoom is also available in this plot that is centered on the cursor position. All the changes can be saved using the floppy icon or restored to the original plot with the circle icon.</p>
+</section>
+</section>
+<section id="download-data">
+<h2>Download data<a class="headerlink" href="#download-data" title="Permalink to this headline">¶</a></h2>
+<p>All the spectra in the database are available for download in ASCII format. Each spectrum can be downloaded separately or all together in a zip file.</p>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="PNG_figs/Download_Refrac.png"><img alt="alternate text" src="PNG_figs/Download_Refrac.png" style="width: 500px; height: 260px;" /></a>
+<figcaption>
+<p><span class="caption-text">Example of the download section for obtaining the data from the database.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html" title="index">
+          <img class="logo" src="_static/Logo.png" alt="Logo"/>
+        </a></p><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">UV/vis refractive index</a><ul>
+<li><a class="reference internal" href="#bokeh-plot-of-the-uv-vis-refractive-index">Bokeh plot of the UV/vis refractive index</a><ul>
+<li><a class="reference internal" href="#data-point-information">Data point information</a></li>
+<li><a class="reference internal" href="#interactive-legend">Interactive legend</a></li>
+<li><a class="reference internal" href="#toolbar">Toolbar</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#download-data">Download data</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="3D_mol.html"
+                          title="Previous page">&larr; 3D molecule viewer</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="Refractive_index_calculation.html"
+                          title="Next page">&rarr; Refractive index calculator</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/UV_vis_refractive_index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="Refractive_index_calculation.html" title="Refractive index calculator"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="3D_mol.html" title="3D molecule viewer"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">Leiden Ice Database 0.1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">UV/vis refractive index</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Will Rocha.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>
