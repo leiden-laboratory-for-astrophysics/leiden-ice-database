@@ -14,3 +14,4 @@ Cython==0.29.22
 h5py==3.2.1
 paramiko==2.7.2
 beautifulsoup4==4.9.3
+cloud-sptheme
