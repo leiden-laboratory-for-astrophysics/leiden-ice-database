@@ -8,7 +8,7 @@ Welcome to Leiden Ice Database's documentation!
 Introduction
 ------------
 
-The Leiden Ice Database (LID) for Astrochemistry host more than 1000 infrared spectra of solid-phase molecules in pure form or mixed in astrophysical relevant ice matrices. 
+The Leiden Ice Database (LIDxx) for Astrochemistry host more than 1000 infrared spectra of solid-phase molecules in pure form or mixed in astrophysical relevant ice matrices. 
 The ice spectra are also recorded in temperatures between 10 and ~100K, which are suitable for interstellar and circumstellar regions. The database also hosts UV/vis
 refractive index of ice samples covering the range between 250 and 750 nm.
 
