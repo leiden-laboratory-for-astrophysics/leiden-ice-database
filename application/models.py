@@ -440,9 +440,9 @@ def seed_refrac_index():
   "Add N_seed data to the database."
   if db.session.query(func.count(N_User.id)).scalar() == 0:
     print('Adding test user..')
-    #user = User(username='lab', email='olsthoorn@strw.leidenuniv.nl')
-    n_user = N_User(username='lab', email='rocha@strw.leidenuniv.nl') #changed in 17/03/2021
-    n_user.set_password('test')
+    #user = User(username='username', email='olsthoorn@strw.leidenuniv.nl')
+    n_user = N_User(username='username', email='rocha@strw.leidenuniv.nl') #changed in 17/03/2021
+    n_user.set_password('password')
     db.session.add(n_user)
     db.session.commit() # commit to get user ID
 
@@ -458,9 +458,9 @@ def seed_sc():
   "Add SC_seed data to the database."
   if db.session.query(func.count(SC_User.id)).scalar() == 0:
     print('Adding test user..')
-    #user = User(username='lab', email='olsthoorn@strw.leidenuniv.nl')
-    sc_user = SC_User(username='lab', email='rocha@strw.leidenuniv.nl') #changed in 17/03/2021
-    sc_user.set_password('test')
+    #user = User(username='username', email='olsthoorn@strw.leidenuniv.nl')
+    sc_user = SC_User(username='username', email='rocha@strw.leidenuniv.nl') #changed in 17/03/2021
+    sc_user.set_password('password')
     db.session.add(sc_user)
     db.session.commit() # commit to get user ID
 
